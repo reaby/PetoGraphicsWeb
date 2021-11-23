@@ -22,12 +22,12 @@ const AnimationProperties = memo(({
                     select
                 >
                     <MenuItem value='Fade'>Fade</MenuItem>
-                    <MenuItem value='Slide_Top'>Slide Top</MenuItem>
-                    <MenuItem value='Slide_Bottom'>Slide Bottom</MenuItem>
-                    <MenuItem value='Slide_Left'>Slide Left</MenuItem>
-                    <MenuItem value='Slide_Right'>Slide Right</MenuItem>
-                    <MenuItem value='Wipe_Top'>Wipe Top</MenuItem>
-                    <MenuItem value='Wipe_Left'>Wipe Left</MenuItem>
+                    <MenuItem value='SlideTop'>Slide Top</MenuItem>
+                    <MenuItem value='SlideBottom'>Slide Bottom</MenuItem>
+                    <MenuItem value='SlideLeft'>Slide Left</MenuItem>
+                    <MenuItem value='SlideRight'>Slide Right</MenuItem>
+                    <MenuItem value='WipeTop'>Wipe Top</MenuItem>
+                    <MenuItem value='WipeLeft'>Wipe Left</MenuItem>
                     <MenuItem value='ExpandY'>ExpandY</MenuItem>
                     <MenuItem value='ExpandX'>ExpandX</MenuItem>
                 </TextField>
