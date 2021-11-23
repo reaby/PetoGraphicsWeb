@@ -2,18 +2,14 @@ import { useState, useContext } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { BLANK } from './Graphics';
+import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE } from './Templates';
 import { Context } from '../Context';
+import Graphic from './Graphic';
 
 const GraphicList = ({ matches }) => {
     const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic } = useContext(Context);
@@ -75,38 +71,23 @@ const GraphicList = ({ matches }) => {
                         horizontal: 'right',
                     }}
                 >
-                    <MenuItem onClick={() => addGraphic(BLANK)}>Blank</MenuItem>
-                    <MenuItem onClick={addGraphic}>Single Text</MenuItem>
-                    <MenuItem onClick={addGraphic}>Double Text</MenuItem>
-                    <MenuItem onClick={addGraphic}>Rick Text</MenuItem>
-                    <MenuItem onClick={addGraphic}>Image</MenuItem>
+                    <MenuItem onClick={() => addGraphic(SINGLE_TEXT)}>Single Text</MenuItem>
+                    <MenuItem onClick={() => addGraphic(DOUBLE_TEXT)}>Double Text</MenuItem>
+                    <MenuItem onClick={() => addGraphic(IMAGE)}>Image</MenuItem>
                 </Menu>
             </Toolbar>
             <Divider />
             <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={hotkeys}>
                 {config?.map((graphic, index) => (
-                    <ListItem
+                    <Graphic
                         key={graphic.id}
-                        onClick={() => setSelectedGraphicId(graphic.id)}
-                        disablePadding
-                    >
-                        <ListItemButton selected={selectedGraphic?.id === graphic.id}>
-                            <ListItemText primary={graphic.name} />
-                            <ListItemSecondaryAction>
-                                <Button
-                                    variant='contained'
-                                    color={graphic.visible ? 'primary' : 'secondary'}
-                                    onClick={(event) => {
-                                        updateGraphic(graphic.id, 'visible', !graphic.visible);
-                                        event.stopPropagation();
-                                    }}
-                                    sx={{ width: 100 }}
-                                >
-                                    {graphic.visible ? 'Hide' : 'Show'}
-                                </Button>
-                            </ListItemSecondaryAction>
-                        </ListItemButton>
-                    </ListItem>
+                        id={graphic.id}
+                        name={graphic.name}
+                        visible={graphic.visible}
+                        selected={graphic.id === selectedGraphic?.id}
+                        onSelect={setSelectedGraphicId}
+                        updateGraphic={updateGraphic}
+                    />
                 ))}
             </List>
         </>

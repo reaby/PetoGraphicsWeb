@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Context } from '../Context';
 import AppBar from './AppBar';
-import GraphicList from './GraphicList';
+import GraphicList from '../list/List';
+import GraphicSettings from '../settings/Settings';
 
 const Main = () => {
     const { projects, config } = useContext(Context);
@@ -24,8 +24,9 @@ const Main = () => {
                             <GraphicList matches={matches} />
                         </Paper>
                     </Grid>
-                    <Grid item xs={5} sx={{ height: '100%' }}>
-                        <Paper sx={{ width: '100%', height: '100%' }}>
+                    <Grid item xs={5} sx={{ height: matches ? '100%' : '30%' }}>
+                        <Paper sx={{ width: '100%', height: '100%', overflowY: 'scroll' }}>
+                            <GraphicSettings />
                         </Paper>
                     </Grid>
                 </Grid>

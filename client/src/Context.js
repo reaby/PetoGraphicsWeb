@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import useFetch from './common/hooks/useFetch';
 import fetch from './common/functions/fetchWrap';
 import { showMessage } from './common/Notifier';
@@ -13,11 +13,21 @@ export const ContextProvider = ({ children }) => {
     const [project, setProject] = useState(null);
     const [live, setLive] = useState(false);
     const [selectedGraphicId, setSelectedGraphicId] = useState(null);
+    const [{ data: fonts, refresh: refreshFonts }] = useFetch('/api/fonts');
     const [{ data: projects, refresh: refreshProjects }] = useFetch('/api/projects');
 
     const selectedGraphic = useMemo(() => {
         return config?.find((item) => item.id === selectedGraphicId);
     }, [config, selectedGraphicId]);
+
+    const updateGraphic = useCallback((id, path, value) => {
+        setConfig((prev) => {
+            const newConfig = [...prev];
+            const index = newConfig.findIndex((item) => item.id === id);
+            _.set(newConfig[index], path, value);
+            return newConfig;
+        });
+    }, []);
 
     useEffect(() => {
         socket = new WebSocket('ws://localhost:5000');
@@ -60,13 +70,6 @@ export const ContextProvider = ({ children }) => {
         }
     }, [config]);
 
-    const updateGraphic = (id, path, value) => {
-        const newConfig = [...config];
-        const index = newConfig.findIndex((item) => item.id === id);
-        _.set(newConfig[index], path, value);
-        setConfig(newConfig);
-    };
-
     return (
         <Context.Provider
             value={{
@@ -75,7 +78,8 @@ export const ContextProvider = ({ children }) => {
                 live, setLive,
                 setSelectedGraphicId,
                 selectedGraphic, updateGraphic,
-                projects, refreshProjects
+                projects, refreshProjects,
+                fonts, refreshFonts
             }}
         >
             {children}

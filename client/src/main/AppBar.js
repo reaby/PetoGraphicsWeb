@@ -1,74 +1,21 @@
-import { useState, useContext, useEffect } from 'react';
-import AppBar from '@mui/material/AppBar';
+import { useState, useContext } from 'react';
+import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import fetch from '../common/functions/fetchWrap';
 import { showMessage } from '../common/Notifier';
 import { Context } from '../Context';
+import AddProjectDialog from './AddProjectDialog';
 
-const AddProjectDialog = ({ open, onClose, onAdd }) => {
-    const [project, setProject] = useState('');
-    useEffect(() => {
-        if (open) {
-            setProject('');
-        }
-    }, [open]);
-
-    return (
-        <Dialog fullWidth open={open} onClose={onClose}>
-            <DialogTitle>New project</DialogTitle>
-            <DialogContent>
-                <TextField
-                    required
-                    autoFocus
-                    label='Name'
-                    type='text'
-                    margin='normal'
-                    fullWidth
-                    value={project}
-                    onChange={(event) => setProject(event.target.value)}
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button color='primary' onClick={onClose}>
-                    Close
-                </Button>
-                <Button color='primary' onClick={() => {
-                    fetch('/api/projects', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            project
-                        })
-                    })
-                        .then(() => onAdd(project))
-                        .catch((error) => {
-                            console.log(error);
-                            error.then((text) => showMessage(text, true));
-                        });
-                }}>
-                    Create
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-};
-
-const Header = () => {
+const AppBar = () => {
     const { config, setConfig, project, setProject, live, setLive, projects, refreshProjects } = useContext(Context);
     const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
     return (
-        <AppBar position='static'>
+        <MuiAppBar position='static'>
             <Toolbar>
                 <Typography
                     variant='h6'
@@ -143,8 +90,8 @@ const Header = () => {
                     refreshProjects();
                 }}
             />
-        </AppBar>
+        </MuiAppBar>
     );
 };
 
-export default Header;
+export default AppBar;

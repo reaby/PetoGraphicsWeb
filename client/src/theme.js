@@ -16,6 +16,13 @@ const theme = createTheme({
                 disableRipple: true
             }
         },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'capitalize'
+                }
+            }
+        },
         MuiListItemButton: {
             styleOverrides: {
                 root: {

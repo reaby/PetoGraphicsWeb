@@ -18,10 +18,11 @@ const app = Express();
 const wss = new WebSocketServer({ noServer: true });
 wss.on('connection', (ws) => {
     ws.id = uuidv4();
-    ws.on('message', ({ type, payload }) => {
+    ws.on('message', (msg) => {
+        const { type, payload } = JSON.parse(msg);
         switch (type) {
             case 'update-config':
-                app.locals.setConfig(payload);
+                app.locals.setConfig(payload, ws.id);
                 break;
             default:
                 break;
@@ -57,12 +58,13 @@ app.locals.setProject = (project, ignoreClient = null) => {
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
-
 // Routes
 app.use('/api/', ApiRouter);
-app.use('/static', Express.static(path.join(__dirname, 'configs')));
+app.use('/configs', Express.static(path.join(__dirname, 'configs')));
+app.use('/static', Express.static('C:'));
+app.use(Express.static(path.resolve(__dirname, './client')));
 app.get('*', (req, res) => {
-    res.send(404);
+    res.sendFile(path.resolve(__dirname, './client', 'index.html'));
 });
 
 const server = app.listen(port, () => console.log(`Listening on port ${port}`));
