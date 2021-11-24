@@ -16,9 +16,9 @@ const TextSettings = ({ selectedGraphic, updateGraphic, fonts, collapsed, setCol
     return (
         <>
             <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => setCollapsed((prev) => !prev)}>
                     <Typography variant='subtitle1' sx={{ flex: 1 }}>Text Settings</Typography>
-                    <IconButton onClick={() => setCollapsed((prev) => !prev)}>
+                    <IconButton>
                         {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon /> }
                     </IconButton>
                 </Box>

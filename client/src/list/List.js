@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE } from './Templates';
+import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE, MEDIA } from './Templates';
 import { Context } from '../Context';
 import Graphic from './Graphic';
 
@@ -74,6 +74,7 @@ const GraphicList = ({ matches }) => {
                     <MenuItem onClick={() => addGraphic(SINGLE_TEXT)}>Single Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(DOUBLE_TEXT)}>Double Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(IMAGE)}>Image</MenuItem>
+                    <MenuItem onClick={() => addGraphic(MEDIA)}>Media</MenuItem>
                 </Menu>
             </Toolbar>
             <Divider />

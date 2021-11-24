@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { memo } from 'react';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
@@ -10,25 +10,23 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import ClearIcon from '@mui/icons-material/Clear';
-import CircularProgress from '@mui/material/CircularProgress';
-import fetch from '../common/functions/fetchWrap';
-import { showMessage } from '../common/Notifier';
+import UploadButton from '../common/UploadButton';
+import useFetch from '../common/hooks/useFetch';
 
 const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed }) => {
-    const [uploading, setUploading] = useState(false);
+    const [{ data: files, refresh: refreshFiles }] = useFetch('/api/files');
     console.log('Render GeneralSettings');
     return (
         <>
             <Grid item xs={12}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => setCollapsed((prev) => !prev)}>
                     <Typography variant='subtitle1' sx={{ flex: 1 }}>General Settings</Typography>
-                    <IconButton onClick={() => setCollapsed((prev) => !prev)}>
+                    <IconButton>
                         {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon /> }
                     </IconButton>
                 </Box>
@@ -45,56 +43,28 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
                         <TextField
                             label='Image'
                             type='text'
                             value={image ?? ''}
+                            onChange={(event) => updateGraphic(id, 'image', event.target.value)}
                             fullWidth
-                            disabled
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position='end'>
-                                        {image && (
-                                            <Tooltip title='Clear'>
-                                                <IconButton component='span' onClick={() => updateGraphic(id, 'image', null)}>
-                                                    <ClearIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        )}
-                                        <Tooltip title='Upload'>
-                                            <label htmlFor='upload-image'>
-                                                <input
-                                                    id='upload-image'
-                                                    accept='image/*'
-                                                    type='file'
-                                                    style={{ display: 'none' }}
-                                                    onChange={(event) => {
-                                                        updateGraphic(id, 'image', event.target.files[0].name);
-                                                        const data = new FormData();
-                                                        data.append('file', event.target.files[0]);
-                                                        setUploading(true);
-                                                        fetch('/api/upload', {
-                                                            method: 'POST',
-                                                            body: data
-                                                        }).catch((error) => {
-                                                            error.then((text) => showMessage(text, true));
-                                                        }).finally(() => setUploading(false));
-                                                    }}
-                                                />
-                                                {uploading ? (
-                                                    <CircularProgress />
-                                                ) : (
-                                                    <IconButton component='span'>
-                                                        <UploadFileIcon />
-                                                    </IconButton>
-                                                )}
-                                            </label>
-                                        </Tooltip>
-                                    </InputAdornment>
-                                )
-                            }}
-                        />
+                            select
+                        >
+                            {files?.filter((file) => file !== 'config.json').map((item) => (
+                                <MenuItem key={item} value={item}>{item}</MenuItem>
+                            ))}
+                        </TextField>
+                        <Tooltip title='Clear'>
+                            <IconButton component='span' onClick={() => updateGraphic(id, 'image', null)} sx={{ mr: 1, ml: 1 }}>
+                                <ClearIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <UploadButton identifier='upload-image' accept='image/*' onUpload={(value) => {
+                            updateGraphic(id, 'image', value);
+                            refreshFiles();
+                        }} />
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth sx={{ flexDirection: 'row', alignItems: 'center' }}>

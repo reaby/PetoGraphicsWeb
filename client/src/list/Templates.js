@@ -23,6 +23,7 @@ const Base = () => ({
         delay: 0,
         ease: false
     },
+    media: null,
     texts: [],
     children: []
 });
@@ -90,4 +91,17 @@ export const IMAGE = () => ({
     type: 'IMAGE',
     width: 1280,
     height: 720
+});
+
+export const MEDIA = () => ({
+    ...Base(),
+    name: 'Media',
+    type: 'MEDIA',
+    width: 1280,
+    height: 720,
+    media: {
+        source: null,
+        duration: 0,
+        loop: false
+    }
 });

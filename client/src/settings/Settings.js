@@ -21,7 +21,7 @@ const Settings = () => {
     return (
         <Box sx={{ margin: 2 }}>
             <Grid container spacing={3}>
-                {selectedGraphic.texts?.length > 0 && (
+                {(selectedGraphic.texts?.length > 0 || selectedGraphic.media) && (
                     <ContentSettings
                         selectedGraphic={selectedGraphic}
                         updateGraphic={updateGraphic}

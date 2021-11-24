@@ -4,7 +4,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import morgan from 'morgan';
 import fs from 'fs';
-import ApiRouter from './api.js';
+import ApiRouter from './routes/router.js';
 
 const port = process.env.PORT || 5000;
 const __dirname = path.resolve();

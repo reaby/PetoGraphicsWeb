@@ -48,7 +48,7 @@ export const ContextProvider = ({ children }) => {
         if (!project) {
             return;
         }
-        fetch('/api/change_project', {
+        fetch('/api/projects/change', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

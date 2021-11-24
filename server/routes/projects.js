@@ -1,20 +1,7 @@
 import Express from 'express';
 import fs from 'fs';
-import multer from 'multer';
-import SystemFonts from 'system-font-families';
 
 const router = Express.Router();
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, `./configs/${req.app.locals.project}`);
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-});
-
-const upload = multer({ storage: storage });
 
 router.get('/projects', (req, res) => {
     const projects = fs.readdirSync('./configs', { withFileTypes: true })
@@ -131,7 +118,7 @@ router.delete('/projects', (req, res) => {
     });
 });
 
-router.post('/change_project', (req, res) => {
+router.post('/projects/change', (req, res) => {
     const newProject = req.body.project;
 
     if (!newProject) {
@@ -156,27 +143,6 @@ router.post('/change_project', (req, res) => {
         res.status(200);
         res.send({ project: newProject, config: newConfig });
     });
-});
-
-router.get('/fonts', (req, res) => {
-    const systemFonts = new SystemFonts.default();
-    const fontList = systemFonts.getFontsExtendedSync();
-    res.status(200);
-    res.send(fontList);
-    /*const fonts = fs.readdirSync('C:\\Windows\\Fonts', { withFileTypes: true }).map((file) => file.name);
-    res.status(200);
-    res.json(fonts);*/
-});
-
-router.post('/upload', upload.single('file'), (req, res) => {
-    const file = req.file;
-    if (!file) {
-        res.status(400);
-        res.send('Missing "file" from body');
-        return;
-    }
-    res.status(200);
-    res.send(file);
 });
 
 export default router;
