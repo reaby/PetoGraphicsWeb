@@ -23,4 +23,3 @@ move client\build dist\client
 rmdir /s /q dist\configs
 del dist\.gitignore
 del dist\.eslintrc.json
-del dist\Icon.ico
