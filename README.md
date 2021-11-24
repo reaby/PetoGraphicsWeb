@@ -18,17 +18,6 @@ After installation run `npm start` in root directory to start both client and se
 
 ### Building the project
 
-First run `npm run build` inside root directory to build client.
-
-Copy `client/build` directory to `server/client`.
-
 You need to have [nexe](https://github.com/nexe/nexe) installed globally to build the project.
 
-Navigate to `server` directory and run
-
-```
-nexe index.js
-nexe --build
-```
-
-After build is done you can copy the executable file and `client` directory to move the application. You can also move the `configs` directory but it is not required. Application will automatically create `configs` directory when started.
+Run `build.bat` to create production build. The build result is found at `dist` directory.

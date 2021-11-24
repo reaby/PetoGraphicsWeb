@@ -9,5 +9,8 @@
 # Local History for Visual Studio Code
 .history/
 
-# dependencies
+# Dependencies
 /node_modules
+
+# Build files
+/dist

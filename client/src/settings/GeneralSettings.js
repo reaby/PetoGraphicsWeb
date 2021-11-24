@@ -18,6 +18,16 @@ import ClearIcon from '@mui/icons-material/Clear';
 import UploadButton from '../common/UploadButton';
 import useFetch from '../common/hooks/useFetch';
 
+const isImage = (file) => {
+    const extensions = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp'];
+    for (const extension of extensions) {
+        if (file.endsWith(`.${extension}`)) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed }) => {
     const [{ data: files, refresh: refreshFiles }] = useFetch('/api/files');
     console.log('Render GeneralSettings');
@@ -52,7 +62,7 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
                             fullWidth
                             select
                         >
-                            {files?.filter((file) => file !== 'config.json').map((item) => (
+                            {files?.filter(isImage).map((item) => (
                                 <MenuItem key={item} value={item}>{item}</MenuItem>
                             ))}
                         </TextField>

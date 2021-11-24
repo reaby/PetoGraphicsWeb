@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import UploadButton from '../common/UploadButton';
@@ -37,17 +39,27 @@ const Content = ({ selectedGraphic, updateGraphic, collapsed, setCollapsed }) =>
                         </Grid>
                     ))}
                     {selectedGraphic.media && (
-                        <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
-                            <TextField
-                                label='Source'
-                                type='text'
-                                value={selectedGraphic.media.source ?? ''}
-                                onChange={(event) => updateGraphic(selectedGraphic.id, 'media.source', event.target.value)}
-                                fullWidth
-                                sx={{ mr: 1 }}
-                            />
-                            <UploadButton identifier='upload-media' accept='video/*,audio/*' onUpload={(value) => updateGraphic(selectedGraphic.id, 'media.source', value)} />
-                        </Grid>
+                        <>
+                            <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
+                                <TextField
+                                    label='Source'
+                                    type='text'
+                                    value={selectedGraphic.media.source ?? ''}
+                                    onChange={(event) => updateGraphic(selectedGraphic.id, 'media.source', event.target.value)}
+                                    fullWidth
+                                    sx={{ mr: 1 }}
+                                />
+                                <UploadButton identifier='upload-media' accept='video/*,audio/*' onUpload={(value) => updateGraphic(selectedGraphic.id, 'media.source', value)} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        checked={selectedGraphic.media.loop}
+                                        onChange={(event) => updateGraphic(selectedGraphic.id, 'media.loop', event.target.checked)}
+                                    />
+                                } label='Loop' />
+                            </Grid>
+                        </>
                     )}
                 </>
             )}
