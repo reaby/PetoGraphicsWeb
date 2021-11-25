@@ -30,7 +30,7 @@ export const ContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        socket = new WebSocket('ws://localhost:5000');
+        socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
         socket.onmessage = (msg) => {
             if (!config) {
                 const msgData = JSON.parse(msg.data);

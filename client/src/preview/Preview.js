@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
 import useFetch from '../common/hooks/useFetch';
 import Graphic from './Graphic';
@@ -61,7 +60,7 @@ const Preview = () => {
     const [{ data: fonts }] = useFetch('/api/fonts');
 
     useEffect(() => {
-        socket = new WebSocket('ws://localhost:5000');
+        socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
         socket.onmessage = (msg) => {
             const msgData = JSON.parse(msg.data);
             setConfig(msgData.payload.config);
