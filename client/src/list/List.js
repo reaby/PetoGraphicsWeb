@@ -9,11 +9,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
 import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE, MEDIA } from './Templates';
 import { Context } from '../Context';
-import Graphic from './Graphic';
+import Controller from './Controller';
 
 const GraphicList = ({ matches }) => {
     const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [grouping, setGrouping] = useState(false);
 
     const addGraphic = (graphicJSON) => {
         setAnchorEl(null);
@@ -78,9 +79,9 @@ const GraphicList = ({ matches }) => {
                 </Menu>
             </Toolbar>
             <Divider />
-            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={hotkeys}>
+            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={hotkeys} onKeyUp={() => setGrouping(false)}>
                 {config?.map((graphic, index) => (
-                    <Graphic
+                    <Controller
                         key={graphic.id}
                         id={graphic.id}
                         name={graphic.name}
@@ -88,6 +89,24 @@ const GraphicList = ({ matches }) => {
                         selected={graphic.id === selectedGraphic?.id}
                         onSelect={setSelectedGraphicId}
                         updateGraphic={updateGraphic}
+                        draggable
+                        onDragStart={(event) => {
+                            event.dataTransfer.dropEffect = 'move';
+                            event.dataTransfer.setData('startIndex', index);
+                        }}
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => {
+                            const endIndex = index;
+                            const startIndex = Number(event.dataTransfer.getData('startIndex'));
+                            setConfig((prev) => {
+                                if (endIndex === startIndex - 1) {
+                                    return prev;
+                                }
+                                const newConfig = [...prev];
+                                newConfig.splice(startIndex < endIndex ? endIndex : endIndex + 1, 0, newConfig.splice(startIndex, 1)[0]);
+                                return newConfig;
+                            });
+                        }}
                     />
                 ))}
             </List>

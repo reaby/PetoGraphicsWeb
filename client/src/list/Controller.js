@@ -6,10 +6,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 
-const Graphic = memo(({ id, name, visible, selected, onSelect, updateGraphic }) => {
+const Controller = memo(({ id, name, visible, selected, onSelect, updateGraphic, ...props }) => {
     console.log('Render ' + name);
     return (
-        <ListItem onClick={() => onSelect(id)} disablePadding>
+        <ListItem onClick={() => onSelect(id)} disablePadding {...props}>
             <ListItemButton selected={selected}>
                 <ListItemText primary={name} />
                 <ListItemSecondaryAction>
@@ -30,7 +30,7 @@ const Graphic = memo(({ id, name, visible, selected, onSelect, updateGraphic }) 
     );
 });
 
-Graphic.propTypes = {
+Controller.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
@@ -39,4 +39,4 @@ Graphic.propTypes = {
     updateGraphic: PropTypes.func.isRequired
 };
 
-export default Graphic;
+export default Controller;

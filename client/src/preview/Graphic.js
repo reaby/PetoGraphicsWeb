@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useMemo, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import {
     FadeIn, SlideTopIn, SlideLeftIn, SlideRightIn, SlideBottomIn, WipeLeftIn, WipeTopIn, ExpandYIn, ExpandXIn,
@@ -70,8 +71,8 @@ const Graphic = ({ graphic, graphicIndex, project }) => {
                 overflow: 'hidden'
             }} css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.media && <video ref={videoRef} src={`/configs/${project}/${graphic.media.source}`} loop={graphic.media.loop} style={{ width: '100%', height: '100%' }} />}
-            {graphic.texts?.map((text, index) => (
+            {graphic.media?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.media.source}`} loop={graphic.media.loop} style={{ width: '100%', height: '100%' }} />}
+            {graphic.texts.map((text, index) => (
                 <div
                     key={index}
                     style={{
@@ -91,8 +92,18 @@ const Graphic = ({ graphic, graphicIndex, project }) => {
                     {text.content}
                 </div>
             ))}
+            {graphic.children.map((child) => (
+                <Graphic graphic={child} graphicIndex={graphicIndex} project={project} />
+            ))}
         </div>
     );
+};
+
+
+Graphic.propTypes = {
+    graphic: PropTypes.object.isRequired,
+    graphicIndex: PropTypes.number.isRequired,
+    project: PropTypes.string
 };
 
 export default Graphic;

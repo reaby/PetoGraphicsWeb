@@ -132,6 +132,12 @@ router.post('/projects/change', (req, res) => {
         return;
     }
 
+    if (newProject === req.app.locals.project) {
+        res.status(200);
+        res.send({ project: req.app.locals.project, config: req.app.locals.config });
+        return;
+    }
+
     fs.readFile(`./configs/${newProject}/config.json`, (err, data) => {
         if (err) {
             res.send(409);
