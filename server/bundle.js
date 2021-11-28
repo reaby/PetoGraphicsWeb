@@ -1,4 +1,5 @@
 import { app, wss } from './app.js';
+import open from 'open';
 
 const port = process.env.PORT || 5000;
 
@@ -8,3 +9,5 @@ server.on('upgrade', (request, socket, head) => {
         wss.emit('connection', ws, request);
     });
 });
+
+open('http://localhost:5000');

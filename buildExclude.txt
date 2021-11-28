@@ -2,3 +2,4 @@
 \configs\
 .eslintrc.json
 .gitignore
+index.js

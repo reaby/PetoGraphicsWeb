@@ -1,5 +1,5 @@
 import Express from 'express';
-import fs from 'fs';
+import fs, { promises as fsp } from 'fs';
 import multer from 'multer';
 
 const router = Express.Router();
@@ -15,10 +15,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/files', (req, res) => {
-    const files = fs.readdirSync(`./configs/${req.app.locals.project}`, { withFileTypes: true }).map((file) => file.name);
+router.get('/files', async (req, res) => {
+    const files = await fsp.readdir(`./configs/${req.app.locals.project}`, { withFileTypes: true });
+    const filenames = files.map((file) => file.name);
     res.status(200);
-    res.send(files);
+    res.send(filenames);
 });
 
 router.post('/files', upload.single('file'), (req, res) => {
@@ -32,21 +33,19 @@ router.post('/files', upload.single('file'), (req, res) => {
     res.send(file);
 });
 
-router.delete('/files', (req, res) => {
+router.delete('/files', async (req, res) => {
     const file = req.body.file;
     if (!file) {
         res.status(400);
         res.send('Missing "file" from body');
     }
-    fs.unlink(`./configs/${req.app.locals.project}/${file}`, (err) => {
-        if (err) {
-            res.status(409);
-            res.send('Failed to remove file');
-            return;
-        }
+    try {
+        await fs.unlink(`./configs/${req.app.locals.project}/${file}`);
         res.send(200);
-
-    });
+    } catch(error) {
+        res.status(409);
+        res.send('Failed to remove file');
+    }
 });
 
 export default router;
