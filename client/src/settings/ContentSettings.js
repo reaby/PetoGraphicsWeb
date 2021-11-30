@@ -34,7 +34,7 @@ const Content = ({ selectedGraphic, updateGraphic, collapsed, setCollapsed }) =>
                                 onChange={(event) => updateGraphic(selectedGraphic.id, `texts[${index}].content`, event.target.value)}
                                 fullWidth
                                 multiline={text.rich}
-                                rows={4}
+                                minRows={4}
                             />
                         </Grid>
                     ))}
