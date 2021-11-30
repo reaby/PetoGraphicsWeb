@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useMemo, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import {
@@ -44,17 +44,16 @@ const computeAnimation = (graphic, isIn) => {
 
 const Graphic = ({ graphic, graphicIndex, project }) => {
     const videoRef = useRef();
-    const visible = useMemo(() => graphic.visible, [graphic.visible]);
     useEffect(() => {
         if (videoRef.current) {
-            if (visible) {
+            if (graphic.visible) {
                 videoRef.current.currentTime = 0;
                 videoRef.current.play();
             } else {
                 videoRef.current.pause();
             }
         }
-    }, [visible]);
+    }, [graphic.visible]);
     return (
         <div
             style={{

@@ -2,11 +2,20 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import useFetch from './common/hooks/useFetch';
 import fetch from './common/functions/fetchWrap';
 import { showMessage } from './common/Notifier';
-import _ from 'lodash';
+import findGraphic from './common/functions/findGraphic';
+import produce from 'immer';
+import _set from 'lodash/set';
 
 let socket;
 
 export const Context = React.createContext({});
+
+const updateChildren = (children, path, value) => {
+    for (const child of children) {
+        _set(child, path, value);
+        updateChildren(child.children, path, value);
+    }
+};
 
 export const ContextProvider = ({ children }) => {
     const [config, setConfig] = useState(null);
@@ -17,16 +26,17 @@ export const ContextProvider = ({ children }) => {
     const [{ data: projects, refresh: refreshProjects }] = useFetch('/api/projects');
 
     const selectedGraphic = useMemo(() => {
-        return config?.find((item) => item.id === selectedGraphicId);
+        return config && selectedGraphicId && findGraphic(config, selectedGraphicId);
     }, [config, selectedGraphicId]);
 
-    const updateGraphic = useCallback((id, path, value) => {
-        setConfig((prev) => {
-            const newConfig = [...prev];
-            const index = newConfig.findIndex((item) => item.id === id);
-            _.set(newConfig[index], path, value);
-            return newConfig;
-        });
+    const updateGraphic = useCallback((id, path, value, updateChilds = false) => {
+        setConfig((prev) => produce(prev, (newConfig) => {
+            const graphic = findGraphic(newConfig, id);
+            _set(graphic, path, value);
+            if (updateChilds) {
+                updateChildren(graphic.children, path, value);
+            }
+        }));
     }, []);
 
     useEffect(() => {

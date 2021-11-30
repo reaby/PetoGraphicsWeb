@@ -8,47 +8,97 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
 import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE, MEDIA } from './Templates';
+import findParentGraphic from '../common/functions/findParentGraphic';
+import findGraphic from '../common/functions/findGraphic';
 import { Context } from '../Context';
 import Controller from './Controller';
+import produce from 'immer';
+
+window.addEventListener('keydown', (event) => {
+    if (event.keyCode === 17) {
+        window.grouping = true;
+    }
+});
+
+window.addEventListener('keyup', (event) => {
+    if (event.keyCode === 17) {
+        window.grouping = false;
+    }
+});
 
 const GraphicList = ({ matches }) => {
     const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [grouping, setGrouping] = useState(false);
 
     const addGraphic = (graphicJSON) => {
         setAnchorEl(null);
         setConfig((prev) => [...prev, graphicJSON()]);
     };
 
-    const hotkeys = (event) => {
-        let index;
+    const onKeyDown = (event) => {
         switch(event.keyCode) {
-            case 38:
-                index = config.findIndex((item) => item.id === selectedGraphic?.id);
-                if (index > 0) {
-                    setSelectedGraphicId(config[index - 1].id);
-                }
-                break;
-            case 40:
-                index = config.findIndex((item) => item.id === selectedGraphic?.id);
-                if (index < config.length - 1) {
-                    setSelectedGraphicId(config[index + 1].id);
-                }
-                break;
             case 46:
-                if (!live) {
-                    index = config.findIndex((item) => item.id === selectedGraphic.id);
-                    setConfig((prev) => prev.filter((graphic) => graphic.id !== selectedGraphic?.id));
+                if (!live && selectedGraphic) {
+                    setConfig((prev) => produce(prev, (newConfig) => {
+                        const parent = findParentGraphic(newConfig, selectedGraphic.id);
+                        if (!parent) {
+                            const index = newConfig.findIndex((item) => item.id === selectedGraphic.id);
+                            newConfig.splice(index, 1);
+                        } else {
+                            const index = parent.children.findIndex((item) => item.id === selectedGraphic.id);
+                            parent.children.splice(index, 1);
+                        }
+                    }));
                     setSelectedGraphicId(null);
                 }
                 break;
             case 113:
-                updateGraphic(selectedGraphic.id, 'visible', !selectedGraphic.visible);
+                if (selectedGraphic) {
+                    updateGraphic(selectedGraphic.id, 'visible', !selectedGraphic.visible, true);
+                }
                 break;
             default:
                 break;
         }
+    };
+
+    const onDragStart = (event, graphic) => {
+        event.dataTransfer.dropEffect = 'move';
+        event.dataTransfer.setData('startId', graphic.id);
+    };
+
+    const onDragOver = (event) => event.preventDefault();
+
+    const onDrop = (event, dropGraphic) => {
+        setConfig((prev) => produce(prev, (newConfig) => {
+            const endId = dropGraphic.id;
+            const endParent = findParentGraphic(newConfig, endId);
+            const endIndex = (endParent?.children ?? newConfig).findIndex((item) => item.id === endId);
+            const startId = event.dataTransfer.getData('startId');
+            const startParent = findParentGraphic(newConfig, startId);
+            const startIndex = (startParent?.children ?? newConfig).findIndex((item) => item.id === startId);
+
+            // Same target so do nothing
+            if (endId === startId) {
+                return;
+            }
+
+            // Already in correct position so no changes needed
+            if (!window.grouping && startParent?.id === endParent?.id && endIndex === startIndex - 1) {
+                return;
+            }
+
+            const graphic = findGraphic(newConfig, endId);
+            // Remove from old
+            const target = (startParent?.children ?? newConfig).splice(startIndex, 1)[0];
+            if (!window.grouping) {
+                // Place to new parent
+                (endParent?.children ?? newConfig).splice(startParent?.id === endParent?.id && startIndex < endIndex ? endIndex : endIndex + 1, 0, target);
+            } else {
+                // Place as child
+                graphic.children.push(target);
+            }
+        }));
     };
 
     return (
@@ -79,34 +129,17 @@ const GraphicList = ({ matches }) => {
                 </Menu>
             </Toolbar>
             <Divider />
-            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={hotkeys} onKeyUp={() => setGrouping(false)}>
+            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={onKeyDown}>
                 {config?.map((graphic, index) => (
                     <Controller
                         key={graphic.id}
-                        id={graphic.id}
-                        name={graphic.name}
-                        visible={graphic.visible}
-                        selected={graphic.id === selectedGraphic?.id}
-                        onSelect={setSelectedGraphicId}
+                        graphic={graphic}
+                        selectedGraphicId={selectedGraphic?.id}
+                        setSelectedGraphicId={setSelectedGraphicId}
                         updateGraphic={updateGraphic}
-                        draggable
-                        onDragStart={(event) => {
-                            event.dataTransfer.dropEffect = 'move';
-                            event.dataTransfer.setData('startIndex', index);
-                        }}
-                        onDragOver={(event) => event.preventDefault()}
-                        onDrop={(event) => {
-                            const endIndex = index;
-                            const startIndex = Number(event.dataTransfer.getData('startIndex'));
-                            setConfig((prev) => {
-                                if (endIndex === startIndex - 1) {
-                                    return prev;
-                                }
-                                const newConfig = [...prev];
-                                newConfig.splice(startIndex < endIndex ? endIndex : endIndex + 1, 0, newConfig.splice(startIndex, 1)[0]);
-                                return newConfig;
-                            });
-                        }}
+                        onDragStart={onDragStart}
+                        onDragOver={onDragOver}
+                        onDrop={onDrop}
                     />
                 ))}
             </List>
