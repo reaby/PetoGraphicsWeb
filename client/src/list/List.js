@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -10,6 +10,7 @@ import Add from '@mui/icons-material/Add';
 import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE, MEDIA } from './Templates';
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
+import copyGraphic from '../common/functions/copyGraphic';
 import { Context } from '../Context';
 import Controller from './Controller';
 import produce from 'immer';
@@ -29,6 +30,24 @@ window.addEventListener('keyup', (event) => {
 const GraphicList = ({ matches }) => {
     const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
+    const copied = useRef();
+
+    useEffect(() => {
+        const checkCopyPaste = (event) => {
+            const key = event.which || event.keyCode; // keyCode detection
+            const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
+            if (key === 86 && ctrl && copied.current) {
+                const copy = copyGraphic(copied.current);
+                setConfig((prev) => [...prev, copy]);
+            } else if (key === 67 && ctrl) {
+                copied.current = selectedGraphic;
+            }
+        };
+        window.addEventListener('keydown', checkCopyPaste, false);
+        return () => {
+            window.removeEventListener('keydown', checkCopyPaste, false);
+        };
+    }, [selectedGraphic, setConfig]);
 
     const addGraphic = (graphicJSON) => {
         setAnchorEl(null);
