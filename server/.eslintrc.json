@@ -2,7 +2,7 @@
     "extends": "eslint:recommended",
     "env": {
         "node": true,
-        "jest/globals": true
+        "mocha": true
     },
     "parserOptions": {
         "ecmaVersion": 8,

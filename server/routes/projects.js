@@ -58,12 +58,6 @@ router.put('/projects/:project', async (req, res) => {
     const project = req.params.project;
     const config = req.body.config;
 
-    if (!project) {
-        res.status(400);
-        res.send('Missing project from url');
-        return;
-    }
-
     if (!config) {
         res.status(400);
         res.send('Missing "config" from body');
@@ -80,14 +74,8 @@ router.put('/projects/:project', async (req, res) => {
     }
 });
 
-router.delete('/projects', async (req, res) => {
-    const project = req.body.project;
-
-    if (!project) {
-        res.status(400);
-        res.send('Missing "project" from body');
-        return;
-    }
+router.delete('/projects/:project', async (req, res) => {
+    const project = req.params.project;
 
     try {
         await fsp.rm(`./configs/${project}`, { recursive: true, force: true });
@@ -95,7 +83,7 @@ router.delete('/projects', async (req, res) => {
             req.app.locals.setProject(null);
             req.app.locals.setConfig([]);
         }
-        res.send(200);
+        res.sendStatus(200);
     } catch(error) {
         res.status(409);
         res.send('Failed to remove project');
