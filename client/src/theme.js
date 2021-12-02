@@ -11,11 +11,6 @@ const theme = createTheme({
         }
     },
     components: {
-        MuiButtonBase: {
-            defaultProps: {
-                disableRipple: true
-            }
-        },
         MuiInputLabel: {
             styleOverrides: {
                 root: {

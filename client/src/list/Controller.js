@@ -23,7 +23,7 @@ const Controller = memo(({ graphic, selectedGraphicId, setSelectedGraphicId, upd
                 sx={{ height: 56 }}
                 {...props}
             >
-                <ListItemButton selected={selectedGraphicId === graphic.id}>
+                <ListItemButton selected={selectedGraphicId === graphic.id} disableRipple>
                     {graphic.children.length > 0 && (
                         <Box onClick={() => setCollapsed((prev) => !prev)} sx={{ display: 'flex', alignItems: 'center' }}>
                             {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon /> }
