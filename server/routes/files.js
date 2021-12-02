@@ -29,22 +29,25 @@ router.post('/files', upload.single('file'), (req, res) => {
         res.send('Missing "file" from body');
         return;
     }
-    res.status(200);
+    res.status(201);
     res.send(file);
 });
 
-router.delete('/files', async (req, res) => {
-    const file = req.body.file;
-    if (!file) {
-        res.status(400);
-        res.send('Missing "file" from body');
+router.delete('/files/:file', async (req, res) => {
+    const file = req.params.file;
+
+    if (!fs.existsSync(`./configs/${req.app.locals.project}/${file}`)) {
+        res.status(404);
+        res.send('File not found');
+        return;
     }
+
     try {
-        await fs.unlink(`./configs/${req.app.locals.project}/${file}`);
-        res.send(200);
+        await fsp.unlink(`./configs/${req.app.locals.project}/${file}`);
+        res.sendStatus(200);
     } catch(error) {
         res.status(409);
-        res.send('Failed to remove file');
+        res.send(error);
     }
 });
 

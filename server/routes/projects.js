@@ -45,7 +45,7 @@ router.post('/projects', async (req, res) => {
         await fsp.writeFile(`./configs/${newProject}/config.json`, '[]');
         req.app.locals.setProject(newProject);
         req.app.locals.setConfig([]);
-        res.status(200);
+        res.status(201);
         res.send({ project: newProject, config: [] });
     } catch (error) {
         console.log(error);
