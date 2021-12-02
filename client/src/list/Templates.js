@@ -24,6 +24,7 @@ const Base = () => ({
         ease: false
     },
     media: null,
+    countdown: null,
     texts: [],
     children: []
 });
@@ -85,12 +86,80 @@ export const DOUBLE_TEXT = () => ({
     ]
 });
 
+export const TRIPLE_TEXT = () => ({
+    ...Base(),
+    name: 'Triple Text',
+    type: 'TRIPLE_TEXT',
+    left: 0,
+    top: 200,
+    width: 700,
+    height: 500,
+    texts: [
+        {
+            ...BaseText(),
+            left: 50,
+            top: 15,
+            width: 600,
+        },
+        {
+            ...BaseText(),
+            left: 50,
+            top: 75,
+            width: 600
+        },
+        {
+            ...BaseText(),
+            left: 50,
+            top: 135,
+            width: 600
+        }
+    ]
+});
+
 export const IMAGE = () => ({
     ...Base(),
     name: 'Image',
     type: 'IMAGE',
     width: 1280,
     height: 720
+});
+
+export const CLOCK = () => ({
+    ...Base(),
+    name: 'Clock',
+    type: 'CLOCK',
+    left: 1600,
+    top: 100,
+    width: 200,
+    height: 150,
+    texts: [
+        {
+            ...BaseText(),
+            left: 0,
+            top: 43,
+            width: 200,
+            fontSize: 50,
+            textAlign: 'center'
+        },
+    ]
+});
+
+export const COUNTDOWN = () => ({
+    ...Base(),
+    name: 'Countdown',
+    type: 'COUNTDOWN',
+    left: 0,
+    top: 200,
+    width: 700,
+    height: 150,
+    texts: [
+        {
+            ...BaseText(),
+            left: 50,
+            top: 15,
+            width: 600,
+        },
+    ]
 });
 
 export const MEDIA = () => ({

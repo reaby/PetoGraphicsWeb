@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { SINGLE_TEXT, DOUBLE_TEXT, IMAGE, MEDIA } from './Templates';
+import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, MEDIA, CLOCK, COUNTDOWN } from './Templates';
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
 import copyGraphic from '../common/functions/copyGraphic';
@@ -81,14 +81,14 @@ const GraphicList = ({ matches }) => {
         }
     };
 
-    const onDragStart = (event, graphic) => {
+    const onDragStart = useCallback((event, graphic) => {
         event.dataTransfer.dropEffect = 'move';
         event.dataTransfer.setData('startId', graphic.id);
-    };
+    }, []);
 
-    const onDragOver = (event) => event.preventDefault();
+    const onDragOver = useCallback((event) => event.preventDefault(), []);
 
-    const onDrop = (event, dropGraphic) => {
+    const onDrop = useCallback((event, dropGraphic) => {
         setConfig((prev) => produce(prev, (newConfig) => {
             const endId = dropGraphic.id;
             const endParent = findParentGraphic(newConfig, endId);
@@ -118,7 +118,7 @@ const GraphicList = ({ matches }) => {
                 graphic.children.push(target);
             }
         }));
-    };
+    }, [setConfig]);
 
     return (
         <>
@@ -143,8 +143,11 @@ const GraphicList = ({ matches }) => {
                 >
                     <MenuItem onClick={() => addGraphic(SINGLE_TEXT)}>Single Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(DOUBLE_TEXT)}>Double Text</MenuItem>
+                    <MenuItem onClick={() => addGraphic(TRIPLE_TEXT)}>Triple Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(IMAGE)}>Image</MenuItem>
                     <MenuItem onClick={() => addGraphic(MEDIA)}>Media</MenuItem>
+                    <MenuItem onClick={() => addGraphic(CLOCK)}>Clock</MenuItem>
+                    <MenuItem onClick={() => addGraphic(COUNTDOWN)}>Countdown</MenuItem>
                 </Menu>
             </Toolbar>
             <Divider />

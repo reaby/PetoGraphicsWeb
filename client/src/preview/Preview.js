@@ -36,7 +36,7 @@ const getConfigFonts = (config, fonts) => {
                 }
             }
         }
-        fontMap = new Map([...fontMap, ...getConfigFonts(graphic.children)]);
+        fontMap = new Map([...fontMap, ...getConfigFonts(graphic.children, fonts)]);
     }
     return fontMap;
 };

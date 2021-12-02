@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
@@ -9,7 +9,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 
-const Controller = (({ graphic, selectedGraphicId, setSelectedGraphicId, updateGraphic, onDragStart, onDragOver, onDrop, ...props }) => {
+const Controller = memo(({ graphic, selectedGraphicId, setSelectedGraphicId, updateGraphic, onDragStart, onDragOver, onDrop, ...props }) => {
     const [collapsed, setCollapsed] = useState(false);
     return (
         <>

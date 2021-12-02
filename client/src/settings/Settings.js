@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Context } from '../Context';
 
-import ContentSettings from './ContentSettings';
+import Content from '../content/Content';
 import GeneralSettings from './GeneralSettings';
 import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
@@ -21,9 +21,12 @@ const Settings = () => {
     return (
         <Box sx={{ margin: 2 }}>
             <Grid container spacing={3}>
-                {(selectedGraphic.texts?.length > 0 || selectedGraphic.media) && (
-                    <ContentSettings
-                        selectedGraphic={selectedGraphic}
+                {(selectedGraphic.texts?.length > 0 || selectedGraphic.media) && selectedGraphic.type !== 'CLOCK' && (
+                    <Content
+                        id={selectedGraphic.id}
+                        type={selectedGraphic.type}
+                        texts={selectedGraphic.texts}
+                        media={selectedGraphic.media}
                         updateGraphic={updateGraphic}
                         collapsed={contentCollapsed}
                         setCollapsed={setContentCollapsed}
@@ -32,20 +35,30 @@ const Settings = () => {
                 {!live && (
                     <>
                         <GeneralSettings
-                            {...selectedGraphic}
+                            id={selectedGraphic.id}
+                            name={selectedGraphic.name}
+                            image={selectedGraphic.image}
+                            imageStretch={selectedGraphic.imageStretch}
+                            left={selectedGraphic.left}
+                            top={selectedGraphic.top}
+                            width={selectedGraphic.width}
+                            height={selectedGraphic.height}
                             updateGraphic={updateGraphic}
                             collapsed={generalCollapsed}
                             setCollapsed={setGeneralCollapsed}
                         />
                         <AnimationSettings
-                            selectedGraphic={selectedGraphic}
+                            id={selectedGraphic.id}
+                            animationIn={selectedGraphic.animationIn}
+                            animationOut={selectedGraphic.animationOut}
                             updateGraphic={updateGraphic}
                             collapsed={animationCollapsed}
                             setCollapsed={setAnimationCollapsed}
                         />
                         {selectedGraphic.texts?.length > 0 && (
                             <TextSettings
-                                selectedGraphic={selectedGraphic}
+                                id={selectedGraphic.id}
+                                texts={selectedGraphic.texts}
                                 updateGraphic={updateGraphic}
                                 fonts={fonts}
                                 collapsed={textCollapsed}

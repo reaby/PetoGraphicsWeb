@@ -92,7 +92,7 @@ const Graphic = ({ graphic, graphicIndex, project }) => {
                 </div>
             ))}
             {graphic.children.map((child) => (
-                <Graphic graphic={child} graphicIndex={graphicIndex} project={project} />
+                <Graphic key={child.id} graphic={child} graphicIndex={graphicIndex} project={project} />
             ))}
         </div>
     );
