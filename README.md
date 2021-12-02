@@ -16,9 +16,9 @@ First run `npm install` inside `client` and `server` directories to install depe
 
 After installation run `npm start` in root directory to start both client and server. Client opens at `http://localhost:3000` and server at `http://localhost:5000`.
 
-### Running test
+### Running tests
 
-Run `npm test` to run tests
+Run `npm test` to run tests.
 
 ### Building the project
 
