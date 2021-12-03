@@ -85,4 +85,13 @@ describe('/api/files', () => {
                 .end(done);
         });
     });
+
+    describe('REST /api/files', () => {
+        it('should return 405 if method is not supported', (done) => {
+            request(app)
+                .patch('/api/projects')
+                .expect(405)
+                .end(done);
+        });
+    });
 });

@@ -51,4 +51,6 @@ router.delete('/files/:file', async (req, res) => {
     }
 });
 
+router.all(['/files', '/files/:file'], (req, res) => res.sendStatus(405));
+
 export default router;

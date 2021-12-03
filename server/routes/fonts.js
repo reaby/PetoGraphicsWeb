@@ -10,4 +10,6 @@ router.get('/fonts', (req, res) => {
     res.send(fontList);
 });
 
+router.all('/fonts', (req, res) => res.sendStatus(405));
+
 export default router;

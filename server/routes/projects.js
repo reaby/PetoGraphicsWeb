@@ -123,4 +123,6 @@ router.post('/projects/change', async (req, res) => {
     }
 });
 
+router.all(['/projects', '/projects/:project', '/projects/change'], (req, res) => res.sendStatus(405));
+
 export default router;

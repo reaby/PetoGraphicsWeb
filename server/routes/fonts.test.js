@@ -20,4 +20,13 @@ describe('/api/fonts', () => {
         });
     });
 
+    describe('REST /api/fonts', () => {
+        it('should return 405 if method is not supported', (done) => {
+            request(app)
+                .patch('/api/fonts')
+                .expect(405)
+                .end(done);
+        });
+    });
+
 });

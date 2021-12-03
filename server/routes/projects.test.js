@@ -275,4 +275,13 @@ describe('/api/projects', () => {
                 .end(done);
         });
     });
+
+    describe('REST /api/projects', () => {
+        it('should return 405 if method is not supported', (done) => {
+            request(app)
+                .patch('/api/projects')
+                .expect(405)
+                .end(done);
+        });
+    });
 });
