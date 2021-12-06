@@ -4,6 +4,8 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material/styles';
 import { ContextProvider } from './Context';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CssBaseline from '@mui/material/CssBaseline';
 import Notifier from './common/Notifier';
 import './index.css';
@@ -11,6 +13,10 @@ import theme from './theme';
 
 import Main from './main/Main';
 import Preview from './preview/Preview';
+
+window.petoGraphics = {
+    countdowns: []
+};
 
 ReactDOM.render(
     <React.StrictMode>
@@ -21,9 +27,11 @@ ReactDOM.render(
                         <>
                             <Notifier />
                             <CssBaseline />
-                            <ContextProvider>
-                                <Main />
-                            </ContextProvider>
+                            <LocalizationProvider dateAdapter={DateAdapter}>
+                                <ContextProvider>
+                                    <Main />
+                                </ContextProvider>
+                            </LocalizationProvider>
                         </>
                     } />
                     <Route path='/preview' element={<Preview />} />

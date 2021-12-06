@@ -3,6 +3,7 @@ import useFetch from '../common/hooks/useFetch';
 import Graphic from './Graphic';
 
 let socket;
+let clockInterval;
 
 const getFontVariant = (text) => {
     if (text.fontStyle === 'italic' && text.fontWeight === 'bold') {
@@ -55,6 +56,7 @@ const loadFonts = (config, fonts) => {
 
 const Preview = () => {
     const [config, setConfig] = useState(null);
+    const [clock, setClock] = useState('00:00');
     const [project, setProject] = useState(null);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [{ data: fonts }] = useFetch('/api/fonts');
@@ -70,6 +72,18 @@ const Preview = () => {
             socket?.close();
         };
         // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        clockInterval = setInterval(() => {
+            setClock(() => {
+                const now = new Date();
+                return `${('0' + now.getHours()).slice(-2)}:${('0' + now.getMinutes()).slice(-2)}`;
+            });
+        }, 5000);
+        return () => {
+            clearInterval(clockInterval);
+        };
     }, []);
 
     useEffect(() => {
@@ -89,6 +103,7 @@ const Preview = () => {
                     graphic={graphic}
                     graphicIndex={graphicIndex}
                     project={project}
+                    clock={clock}
                 />
             ))}
         </>

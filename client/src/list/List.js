@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, MEDIA, CLOCK, COUNTDOWN } from './Templates';
+import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST } from './Templates';
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
 import copyGraphic from '../common/functions/copyGraphic';
@@ -28,7 +28,7 @@ window.addEventListener('keyup', (event) => {
 });
 
 const GraphicList = ({ matches }) => {
-    const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic } = useContext(Context);
+    const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
     const copied = useRef();
 
@@ -145,7 +145,8 @@ const GraphicList = ({ matches }) => {
                     <MenuItem onClick={() => addGraphic(DOUBLE_TEXT)}>Double Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(TRIPLE_TEXT)}>Triple Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(IMAGE)}>Image</MenuItem>
-                    <MenuItem onClick={() => addGraphic(MEDIA)}>Media</MenuItem>
+                    <MenuItem onClick={() => addGraphic(VIDEO)}>Video</MenuItem>
+                    <MenuItem onClick={() => addGraphic(PLAYLIST)}>Playlist</MenuItem>
                     <MenuItem onClick={() => addGraphic(CLOCK)}>Clock</MenuItem>
                     <MenuItem onClick={() => addGraphic(COUNTDOWN)}>Countdown</MenuItem>
                 </Menu>
@@ -159,6 +160,8 @@ const GraphicList = ({ matches }) => {
                         selectedGraphicId={selectedGraphic?.id}
                         setSelectedGraphicId={setSelectedGraphicId}
                         updateGraphic={updateGraphic}
+                        countdowns={countdowns}
+                        setCountdowns={setCountdowns}
                         onDragStart={onDragStart}
                         onDragOver={onDragOver}
                         onDrop={onDrop}

@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import ClearIcon from '@mui/icons-material/Clear';
 import UploadButton from '../common/UploadButton';
 import Collapse from '../common/Collapse';
-import useFetch from '../common/hooks/useFetch';
 
 const isImage = (file) => {
     const extensions = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp'];
@@ -24,8 +23,7 @@ const isImage = (file) => {
     return false;
 };
 
-const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed }) => {
-    const [{ data: files, refresh: refreshFiles }] = useFetch('/api/files');
+const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed, files, refreshFiles }) => {
     return (
         <Collapse title='General Settings' collapsed={collapsed} setCollapsed={setCollapsed}>
             <Grid item xs={12}>
@@ -56,7 +54,7 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
                     </IconButton>
                 </Tooltip>
                 <UploadButton identifier='upload-image' accept='image/*' onUpload={(value) => {
-                    updateGraphic(id, 'image', value);
+                    updateGraphic(id, 'image', value[0]?.name);
                     refreshFiles();
                 }} />
             </Grid>

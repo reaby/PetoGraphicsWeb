@@ -22,15 +22,15 @@ router.get('/files', async (req, res) => {
     res.send(filenames);
 });
 
-router.post('/files', upload.single('file'), (req, res) => {
-    const file = req.file;
-    if (!file) {
+router.post('/files', upload.array('files'), (req, res) => {
+    const files = req.files;
+    if (!files) {
         res.status(400);
-        res.send('Missing "file" from body');
+        res.send('Missing "files" from body');
         return;
     }
     res.status(201);
-    res.send(file);
+    res.send(files);
 });
 
 router.delete('/files/:file', async (req, res) => {

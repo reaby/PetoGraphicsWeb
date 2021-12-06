@@ -3,12 +3,10 @@ import useFetch from './common/hooks/useFetch';
 import fetch from './common/functions/fetchWrap';
 import { showMessage } from './common/Notifier';
 import findGraphic from './common/functions/findGraphic';
-import findGraphicsWithType from './common/functions/findGraphicsWithType';
 import produce from 'immer';
 import _set from 'lodash/set';
 
 let socket;
-let clockInterval;
 
 export const Context = React.createContext({});
 
@@ -23,9 +21,11 @@ export const ContextProvider = ({ children }) => {
     const [config, setConfig] = useState(null);
     const [project, setProject] = useState(null);
     const [live, setLive] = useState(false);
+    const [countdowns, setCountdowns] = useState([]);
     const [selectedGraphicId, setSelectedGraphicId] = useState(null);
     const [{ data: fonts, refresh: refreshFonts }] = useFetch('/api/fonts');
     const [{ data: projects, refresh: refreshProjects }] = useFetch('/api/projects');
+    const [{ data: files, refresh: refreshFiles }] = useFetch('/api/files');
 
     const selectedGraphic = useMemo(() => {
         return config && selectedGraphicId && findGraphic(config, selectedGraphicId);
@@ -54,23 +54,6 @@ export const ContextProvider = ({ children }) => {
             socket?.close();
         };
         // eslint-disable-next-line
-    }, []);
-
-    // Update all clocks
-    useEffect(() => {
-        clockInterval = setInterval(() => {
-            setConfig((prev) => produce(prev, (newConfig) => {
-                const now = new Date();
-                const time = `${('0' + now.getHours()).slice(-2)}:${('0' + now.getMinutes()).slice(-2)}`;
-                const clocks = findGraphicsWithType(newConfig, 'CLOCK');
-                for (const clock of clocks) {
-                    clock.texts[0].content = time;
-                }
-            }));
-        }, 5000);
-        return () => {
-            clearInterval(clockInterval);
-        };
     }, []);
 
     useEffect(() => {
@@ -105,10 +88,12 @@ export const ContextProvider = ({ children }) => {
                 config, setConfig,
                 project, setProject,
                 live, setLive,
+                countdowns, setCountdowns,
                 setSelectedGraphicId,
                 selectedGraphic, updateGraphic,
                 projects, refreshProjects,
-                fonts, refreshFonts
+                fonts, refreshFonts,
+                files, refreshFiles
             }}
         >
             {children}

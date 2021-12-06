@@ -42,7 +42,7 @@ const computeAnimation = (graphic, isIn) => {
     `;
 };
 
-const Graphic = ({ graphic, graphicIndex, project }) => {
+const Graphic = ({ graphic, graphicIndex, project, clock }) => {
     const videoRef = useRef();
     useEffect(() => {
         if (videoRef.current) {
@@ -70,7 +70,7 @@ const Graphic = ({ graphic, graphicIndex, project }) => {
                 overflow: 'hidden'
             }} css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.media?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.media.source}`} loop={graphic.media.loop} style={{ width: '100%', height: '100%' }} />}
+            {graphic.video?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />}
             {graphic.texts.map((text, index) => (
                 <div
                     key={index}
@@ -88,7 +88,7 @@ const Graphic = ({ graphic, graphicIndex, project }) => {
                         textAlign: text.textAlign
                     }}
                 >
-                    {text.content}
+                    {graphic.type === 'CLOCK' ? clock : text.content}
                 </div>
             ))}
             {graphic.children.map((child) => (

@@ -25,16 +25,19 @@ const UploadButton = ({ accept, identifier, onUpload }) => {
                     id={identifier}
                     accept={accept}
                     type='file'
+                    multiple
                     style={{ display: 'none' }}
                     onChange={(event) => {
                         const data = new FormData();
-                        data.append('file', event.target.files[0]);
+                        for (const file of event.target.files) {
+                            data.append('files', file);
+                        }
                         setUploading(true);
                         fetch('/api/files', {
                             method: 'POST',
                             body: data
                         })
-                            .then(() => onUpload(event.target.files[0].name))
+                            .then(() => onUpload(event.target.files))
                             .catch((error) => {
                                 error.then((text) => showMessage(text, true));
                             })

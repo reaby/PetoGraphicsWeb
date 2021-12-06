@@ -23,8 +23,9 @@ const Base = () => ({
         delay: 0,
         ease: false
     },
-    media: null,
+    video: null,
     countdown: null,
+    playlist: null,
     texts: [],
     children: []
 });
@@ -155,22 +156,37 @@ export const COUNTDOWN = () => ({
     texts: [
         {
             ...BaseText(),
+            content: '00:00:00',
             left: 50,
             top: 15,
             width: 600,
         },
-    ]
+    ],
+    countdown: {
+        type: 'remaining',
+        time: '00:05:00',
+        format: 'hh:mm:ss'
+    }
 });
 
-export const MEDIA = () => ({
+export const VIDEO = () => ({
     ...Base(),
-    name: 'Media',
-    type: 'MEDIA',
+    name: 'Video',
+    type: 'VIDEO',
     width: 1280,
     height: 720,
-    media: {
+    video: {
         source: null,
         duration: 0,
         loop: false
     }
+});
+
+export const PLAYLIST = () => ({
+    ...Base(),
+    name: 'Playlist',
+    type: 'PLAYLIST',
+    width: 1280,
+    height: 720,
+    playlist: []
 });

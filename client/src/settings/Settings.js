@@ -9,7 +9,7 @@ import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
 
 const Settings = () => {
-    const { selectedGraphic, updateGraphic, live, fonts } = useContext(Context);
+    const { selectedGraphic, updateGraphic, live, fonts, files, refreshFiles } = useContext(Context);
     // Keep collapsed logic here so we can keep them during re-renders
     const [contentCollapsed, setContentCollapsed] = useState(false);
     const [generalCollapsed, setGeneralCollapsed] = useState(false);
@@ -21,17 +21,14 @@ const Settings = () => {
     return (
         <Box sx={{ margin: 2 }}>
             <Grid container spacing={3}>
-                {(selectedGraphic.texts?.length > 0 || selectedGraphic.media) && selectedGraphic.type !== 'CLOCK' && (
-                    <Content
-                        id={selectedGraphic.id}
-                        type={selectedGraphic.type}
-                        texts={selectedGraphic.texts}
-                        media={selectedGraphic.media}
-                        updateGraphic={updateGraphic}
-                        collapsed={contentCollapsed}
-                        setCollapsed={setContentCollapsed}
-                    />
-                )}
+                <Content
+                    graphic={selectedGraphic}
+                    updateGraphic={updateGraphic}
+                    collapsed={contentCollapsed}
+                    setCollapsed={setContentCollapsed}
+                    files={files}
+                    refreshFiles={refreshFiles}
+                />
                 {!live && (
                     <>
                         <GeneralSettings
@@ -46,6 +43,8 @@ const Settings = () => {
                             updateGraphic={updateGraphic}
                             collapsed={generalCollapsed}
                             setCollapsed={setGeneralCollapsed}
+                            files={files}
+                            refreshFiles={refreshFiles}
                         />
                         <AnimationSettings
                             id={selectedGraphic.id}
