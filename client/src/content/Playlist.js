@@ -43,7 +43,7 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles }) => {
                     </IconButton>
                 </Tooltip>
                 <UploadButton identifier='upload-playlist-video' accept='video/*' onUpload={(values) => {
-                    updateGraphic(id, 'playlist', [...playlist, values?.map((item) => item.name)]);
+                    updateGraphic(id, 'playlist', [...playlist, ...Array.from(values).map((item) => item.name)]);
                     refreshFiles();
                 }} />
                 <Menu

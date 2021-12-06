@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import {
@@ -44,16 +44,53 @@ const computeAnimation = (graphic, isIn) => {
 
 const Graphic = ({ graphic, graphicIndex, project, clock }) => {
     const videoRef = useRef();
+    const playlistRef = useRef();
+    const [currentVideo, setCurrentVideo] = useState(0);
+
+    // Video
     useEffect(() => {
         if (videoRef.current) {
             if (graphic.visible) {
                 videoRef.current.currentTime = 0;
-                videoRef.current.play();
+                videoRef.current.play().catch(console.error);
             } else {
                 videoRef.current.pause();
             }
         }
-    }, [graphic.visible]);
+    }, [graphic.visible, graphic]);
+
+    // Playlist
+    useEffect(() => {
+        if (playlistRef.current) {
+            if (graphic.visible) {
+                setCurrentVideo(0);
+                playlistRef.current.currentTime = 0;
+                playlistRef.current.play().catch(console.error);
+            } else {
+                playlistRef.current.pause();
+            }
+        }
+    }, [graphic.visible, graphic]);
+
+    // Playlist handler
+    useEffect(() => {
+        const playlist = playlistRef.current;
+        const nextVideo = () => {
+            setCurrentVideo((prev) => prev < graphic.playlist.length - 1 ? prev + 1 : prev);
+        };
+        if (graphic.type === 'PLAYLIST' && playlistRef.current) {
+            playlist.addEventListener('ended', nextVideo);
+        }
+        return () => {
+            playlist?.removeEventListener('ended', nextVideo);
+        };
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        playlistRef.current?.play().catch(console.error);
+    }, [currentVideo]);
+
     return (
         <div
             style={{
@@ -71,6 +108,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
             }} css={computeAnimation(graphic, graphic.visible)}
         >
             {graphic.video?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />}
+            {graphic.playlist && <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />}
             {graphic.texts.map((text, index) => (
                 <div
                     key={index}
