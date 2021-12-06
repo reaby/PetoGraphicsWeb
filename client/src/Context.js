@@ -92,8 +92,8 @@ export const ContextProvider = ({ children }) => {
                 setSelectedGraphicId,
                 selectedGraphic, updateGraphic,
                 projects, refreshProjects,
-                fonts, refreshFonts,
-                files, refreshFiles
+                fonts: fonts ?? [], refreshFonts,
+                files: files ?? [], refreshFiles
             }}
         >
             {children}

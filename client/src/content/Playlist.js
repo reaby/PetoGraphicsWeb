@@ -20,7 +20,7 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles }) => {
         <Grid item xs={12}>
             <List sx={{ height: 200, border: '1px rgba(255, 255, 255, 0.23) solid', borderRadius: 1, mb: 1, overflowY: 'scroll' }} disablePadding>
                 {playlist.map((item, index) => (
-                    <ListItem key={item}>
+                    <ListItem key={index}>
                         <ListItemText primary={item} />
                         <ListItemSecondaryAction>
                             <Tooltip title='Remove'>

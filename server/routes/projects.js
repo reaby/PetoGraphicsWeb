@@ -4,10 +4,15 @@ import fs, { promises as fsp } from 'fs';
 const router = Express.Router();
 
 router.get('/projects', async (req, res) => {
-    const files = await fsp.readdir('./configs', { withFileTypes: true });
-    const projects = files.filter((file) => file.isDirectory()).map((file) => file.name);
-    res.status(200);
-    res.json(projects);
+    try {
+        const files = await fsp.readdir('./configs', { withFileTypes: true });
+        const projects = files.filter((file) => file.isDirectory()).map((file) => file.name);
+        res.status(200);
+        res.json(projects);
+    } catch (error) {
+        res.status(409);
+        res.send('Failed to get projects');
+    }
 });
 
 router.get('/projects/:project', async (req, res) => {

@@ -12,16 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ClearIcon from '@mui/icons-material/Clear';
 import UploadButton from '../common/UploadButton';
 import Collapse from '../common/Collapse';
-
-const isImage = (file) => {
-    const extensions = ['apng', 'avif', 'gif', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg', 'webp'];
-    for (const extension of extensions) {
-        if (file.endsWith(`.${extension}`)) {
-            return true;
-        }
-    }
-    return false;
-};
+import isImage from '../common/functions/isImage';
 
 const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed, files, refreshFiles }) => {
     return (
