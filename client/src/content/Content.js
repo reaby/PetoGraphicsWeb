@@ -1,11 +1,13 @@
-import { memo } from 'react';
+import { useState, memo } from 'react';
+import PropTypes from 'prop-types';
 import Collapse from '../common/Collapse';
 import Texts from './Texts';
 import Video from './Video';
 import Countdown from './Countdown';
 import Playlist from './Playlist';
 
-const Content = memo(({ graphic, updateGraphic, project, collapsed, setCollapsed, files, refreshFiles }) => {
+const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) => {
+    const [collapsed, setCollapsed] = useState(false);
     let content;
     switch (graphic.type) {
         case 'CLOCK':
@@ -33,5 +35,13 @@ const Content = memo(({ graphic, updateGraphic, project, collapsed, setCollapsed
         </Collapse>
     );
 });
+
+Content.propTypes = {
+    graphic: PropTypes.string.isRequired,
+    project: PropTypes.string.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    files: PropTypes.array.isRequired,
+    refreshFiles: PropTypes.func.isRequired,
+};
 
 export default Content;

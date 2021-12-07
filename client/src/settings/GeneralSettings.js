@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -102,5 +103,21 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
     );
 
 });
+
+GeneralSettings.propTypes = {
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    imageStretch: PropTypes.string.isRequired,
+    left: PropTypes.number.isRequired,
+    top: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    collapsed: PropTypes.bool.isRequired,
+    setCollapsed: PropTypes.func.isRequired,
+    files: PropTypes.array.isRequired,
+    refreshFiles: PropTypes.func.isRequired,
+};
 
 export default GeneralSettings;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
@@ -18,5 +19,11 @@ const Texts = ({ id, texts, updateGraphic }) => (
         ))}
     </>
 );
+
+Texts.propTypes = {
+    id: PropTypes.string.isRequired,
+    texts: PropTypes.array.isRequired,
+    updateGraphic: PropTypes.func.isRequired
+};
 
 export default Texts;

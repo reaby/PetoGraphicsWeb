@@ -1,4 +1,5 @@
 import { useState, useMemo, memo } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,7 +19,7 @@ const TextSettings = memo(({ id, texts, updateGraphic, fonts, collapsed, setColl
                     fullWidth
                     select
                 >
-                    {texts?.map((text, index) => (
+                    {texts.map((text, index) => (
                         <MenuItem key={index} value={index}>
                             Text {index + 1}
                         </MenuItem>
@@ -37,5 +38,13 @@ const TextSettings = memo(({ id, texts, updateGraphic, fonts, collapsed, setColl
         </Collapse>
     );
 });
+
+TextSettings.propTypes = {
+    id: PropTypes.string.isRequired,
+    texts: PropTypes.array.isRequired,
+    fonts: PropTypes.array.isRequired,
+    collapsed: PropTypes.bool.isRequired,
+    setCollapse: PropTypes.func.isRequired
+};
 
 export default TextSettings;

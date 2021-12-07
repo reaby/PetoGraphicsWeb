@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -50,5 +51,14 @@ const Video = ({ id, video, updateGraphic, files, project, refreshFiles }) => (
         </Grid>
     </>
 );
+
+Video.propTypes = {
+    id: PropTypes.string.isRequired,
+    video: PropTypes.object.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    files: PropTypes.array.isRequired,
+    refreshFiles: PropTypes.func.isRequired,
+    project: PropTypes.string.isRequired,
+};
 
 export default Video;

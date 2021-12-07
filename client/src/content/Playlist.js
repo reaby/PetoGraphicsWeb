@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -98,6 +99,15 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
             </Box>
         </Grid>
     );
+};
+
+Playlist.propTypes = {
+    id: PropTypes.string.isRequired,
+    playlist: PropTypes.object.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    files: PropTypes.array.isRequired,
+    refreshFiles: PropTypes.func.isRequired,
+    project: PropTypes.string.isRequired,
 };
 
 export default Playlist;

@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Collapse from '../common/Collapse';
@@ -16,5 +17,14 @@ const AnimationSettings = memo(({ id, animationIn, animationOut, updateGraphic, 
         <AnimationProperties path='animationOut' {...animationOut} id={id} updateGraphic={updateGraphic} />
     </Collapse>
 ));
+
+AnimationSettings.propTypes = {
+    id: PropTypes.string.isRequired,
+    animationIn: PropTypes.object.isRequired,
+    animationOut: PropTypes.object.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    collapsed: PropTypes.bool.isRequired,
+    setCollapsed: PropTypes.func.isRequired
+};
 
 export default AnimationSettings;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 
 const isCountdownActive = (graphic, countdowns) => countdowns.find((item) => item.id === graphic.id) ? true : false;
@@ -96,5 +97,12 @@ const CountdownActions = ({ graphic, updateGraphic, countdowns, setCountdowns })
         </Button>
     </>
 );
+
+CountdownActions.propTypes = {
+    graphic: PropTypes.object.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
+    countdowns: PropTypes.array.isRequired,
+    setCountdowns: PropTypes.func.isRequired
+};
 
 export default CountdownActions;

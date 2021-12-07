@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -24,5 +25,11 @@ const Collapse = ({ title, children, collapsed, setCollapsed, ...props }) => (
         )}
     </>
 );
+
+Collapse.propTypes = {
+    title: PropTypes.string.isRequired,
+    collapse: PropTypes.bool.isRequired,
+    setCollapsed: PropTypes.func.isRequired
+};
 
 export default Collapse;

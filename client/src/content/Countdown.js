@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -45,5 +46,11 @@ const Countdown = ({ id, countdown, updateGraphic }) => (
         </Grid>
     </>
 );
+
+Countdown.propTypes = {
+    id: PropTypes.string.isRequired,
+    countdown: PropTypes.object.isRequired,
+    updateGraphic: PropTypes.func.isRequired
+};
 
 export default Countdown;
