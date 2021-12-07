@@ -13,21 +13,37 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import UploadButton from '../common/UploadButton';
 import isVideo from '../common/functions/isVideo';
+import getVideoDuration from '../common/functions/getVideoDuration';
 
-const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles }) => {
+const getPlaylistDuration = (sources, project) => {
+    return new Promise((resolve, reject) => {
+        Promise.all(sources.map((source) => getVideoDuration(`/configs/${project}/${source}`)))
+            .then((durations) => {
+                resolve(durations.reduce((partial_sum, a) => partial_sum + a, 0));
+            })
+            .catch(reject);
+    });
+};
+
+const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <Grid item xs={12}>
             <List sx={{ height: 200, border: '1px rgba(255, 255, 255, 0.23) solid', borderRadius: 1, mb: 1, overflowY: 'scroll' }} disablePadding>
-                {playlist.map((item, index) => (
+                {playlist.sources.map((item, index) => (
                     <ListItem key={index}>
                         <ListItemText primary={item} />
                         <ListItemSecondaryAction>
                             <Tooltip title='Remove'>
                                 <IconButton onClick={() => {
-                                    const clone = [...playlist];
+                                    const clone = [...playlist.sources];
                                     clone.splice(index, 1);
-                                    updateGraphic(id, 'playlist', clone);
+                                    updateGraphic(id, 'playlist.sources', clone);
+                                    getPlaylistDuration(clone, project)
+                                        .then((duration) => {
+                                            updateGraphic(id, 'playlist.duration', duration);
+                                        })
+                                        .catch(console.error);
                                 }}>
                                     <ClearIcon />
                                 </IconButton>
@@ -43,8 +59,14 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles }) => {
                     </IconButton>
                 </Tooltip>
                 <UploadButton identifier='upload-playlist-video' accept='video/*' onUpload={(values) => {
-                    updateGraphic(id, 'playlist', [...playlist, ...Array.from(values).map((item) => item.name)]);
+                    const newSources = [...playlist.sources, ...Array.from(values).map((item) => item.name)];
+                    updateGraphic(id, 'playlist.sources', newSources);
                     refreshFiles();
+                    getPlaylistDuration(newSources, project)
+                        .then((duration) => {
+                            updateGraphic(id, 'playlist.duration', duration);
+                        })
+                        .catch(console.error);
                 }} />
                 <Menu
                     anchorEl={anchorEl}
@@ -60,7 +82,17 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles }) => {
                     }}
                 >
                     {files.filter(isVideo).map((item) => (
-                        <MenuItem key={item} onClick={() => updateGraphic(id, 'playlist', [...playlist, item])}>{item}</MenuItem>
+                        <MenuItem key={item} onClick={() => {
+                            const newSources = [...playlist.sources, item];
+                            updateGraphic(id, 'playlist.sources', newSources);
+                            getPlaylistDuration(newSources, project)
+                                .then((duration) => {
+                                    updateGraphic(id, 'playlist.duration', duration);
+                                })
+                                .catch(console.error);
+                        }}>
+                            {item}
+                        </MenuItem>
                     ))}
                 </Menu>
             </Box>

@@ -9,7 +9,7 @@ import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
 
 const Settings = () => {
-    const { selectedGraphic, updateGraphic, live, fonts, files, refreshFiles } = useContext(Context);
+    const { selectedGraphic, updateGraphic, live, fonts, files, refreshFiles, project } = useContext(Context);
     // Keep collapsed logic here so we can keep them during re-renders
     const [contentCollapsed, setContentCollapsed] = useState(false);
     const [generalCollapsed, setGeneralCollapsed] = useState(false);
@@ -28,6 +28,7 @@ const Settings = () => {
                     setCollapsed={setContentCollapsed}
                     files={files}
                     refreshFiles={refreshFiles}
+                    project={project}
                 />
                 {!live && (
                     <>

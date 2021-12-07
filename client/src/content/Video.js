@@ -4,25 +4,24 @@ import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import UploadButton from '../common/UploadButton';
+import isVideo from '../common/functions/isVideo';
+import getVideoDuration from '../common/functions/getVideoDuration';
 
-const isVideo = (file) => {
-    const extensions = ['ogg', 'webm', 'mp4'];
-    for (const extension of extensions) {
-        if (file.endsWith(`.${extension}`)) {
-            return true;
-        }
-    }
-    return false;
-};
-
-const Video = ({ id, video, updateGraphic, files, refreshFiles }) => (
+const Video = ({ id, video, updateGraphic, files, project, refreshFiles }) => (
     <>
         <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
             <TextField
                 label='Source'
                 type='text'
                 value={video.source ?? ''}
-                onChange={(event) => updateGraphic(id, 'video.source', event.target.value)}
+                onChange={(event) => {
+                    updateGraphic(id, 'video.source', event.target.value);
+                    getVideoDuration(`/configs/${project}/${event.target.value}`)
+                        .then((duration) => {
+                            updateGraphic(id, 'video.duration', duration);
+                        })
+                        .catch(console.error);
+                }}
                 fullWidth
                 select
                 sx={{ mr: 1 }}
@@ -34,6 +33,11 @@ const Video = ({ id, video, updateGraphic, files, refreshFiles }) => (
             <UploadButton identifier='upload-video' accept='video/*' onUpload={(value) => {
                 refreshFiles();
                 updateGraphic(id, 'video.source', value[0]?.name);
+                getVideoDuration(`/configs/${project}/${value[0]?.name}`)
+                    .then((duration) => {
+                        updateGraphic(id, 'video.duration', duration);
+                    })
+                    .catch(console.error);
             }} />
         </Grid>
         <Grid item xs={12}>

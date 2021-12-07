@@ -188,5 +188,9 @@ export const PLAYLIST = () => ({
     type: 'PLAYLIST',
     width: 1280,
     height: 720,
-    playlist: []
+    playlist: {
+        sources: [],
+        duration: 0,
+        loop: false
+    }
 });

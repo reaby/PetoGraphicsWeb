@@ -5,14 +5,14 @@ import Video from './Video';
 import Countdown from './Countdown';
 import Playlist from './Playlist';
 
-const Content = memo(({ graphic, updateGraphic, collapsed, setCollapsed, files, refreshFiles }) => {
+const Content = memo(({ graphic, updateGraphic, project, collapsed, setCollapsed, files, refreshFiles }) => {
     let content;
     switch (graphic.type) {
         case 'CLOCK':
             break;
 
         case 'VIDEO':
-            content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} />;
+            content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
             break;
 
         case 'COUNTDOWN':
@@ -20,7 +20,7 @@ const Content = memo(({ graphic, updateGraphic, collapsed, setCollapsed, files, 
             break;
 
         case 'PLAYLIST':
-            content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} />;
+            content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
             break;
 
         default:

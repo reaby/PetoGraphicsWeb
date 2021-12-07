@@ -108,7 +108,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
             }} css={computeAnimation(graphic, graphic.visible)}
         >
             {graphic.video?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />}
-            {graphic.playlist && <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />}
+            {graphic.playlist && <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />}
             {graphic.texts.map((text, index) => (
                 <div
                     key={index}
