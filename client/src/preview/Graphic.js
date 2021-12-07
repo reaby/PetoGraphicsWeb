@@ -76,7 +76,13 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
     useEffect(() => {
         const playlist = playlistRef.current;
         const nextVideo = () => {
-            setCurrentVideo((prev) => prev < graphic.playlist.length - 1 ? prev + 1 : prev);
+            setCurrentVideo((prev) => {
+                if (prev < graphic.playlist.length - 1) {
+                    return prev + 1;
+                } else {
+                    return graphic.playlist.loop ? 0 : prev;
+                }
+            });
         };
         if (graphic.type === 'PLAYLIST' && playlistRef.current) {
             playlist.addEventListener('ended', nextVideo);

@@ -5,6 +5,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -53,22 +55,30 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                     </ListItem>
                 ))}
             </List>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Tooltip title='Add Video'>
-                    <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
-                        <AddIcon />
-                    </IconButton>
-                </Tooltip>
-                <UploadButton identifier='upload-playlist-video' accept='video/*' onUpload={(values) => {
-                    const newSources = [...playlist.sources, ...Array.from(values).map((item) => item.name)];
-                    updateGraphic(id, 'playlist.sources', newSources);
-                    refreshFiles();
-                    getPlaylistDuration(newSources, project)
-                        .then((duration) => {
-                            updateGraphic(id, 'playlist.duration', duration);
-                        })
-                        .catch(console.error);
-                }} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <FormControlLabel control={
+                    <Checkbox
+                        checked={playlist.loop}
+                        onChange={(event) => updateGraphic(id, 'playlist.loop', event.target.checked)}
+                    />
+                } label='Loop' />
+                <div>
+                    <Tooltip title='Add Video'>
+                        <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
+                            <AddIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <UploadButton identifier='upload-playlist-video' accept='video/*' onUpload={(values) => {
+                        const newSources = [...playlist.sources, ...Array.from(values).map((item) => item.name)];
+                        updateGraphic(id, 'playlist.sources', newSources);
+                        refreshFiles();
+                        getPlaylistDuration(newSources, project)
+                            .then((duration) => {
+                                updateGraphic(id, 'playlist.duration', duration);
+                            })
+                            .catch(console.error);
+                    }} />
+                </div>
                 <Menu
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
