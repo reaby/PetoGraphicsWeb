@@ -22,7 +22,9 @@ describe('/api/files', () => {
                 'Test3': {
                     'config.json': '[{ "id": "1111" }, { "id": "2222" }]'
                 },
-            }
+            },
+            'test4.txt': 'This is test file 4',
+            'test5.txt': 'This is test file 5'
         });
     });
 
@@ -54,6 +56,43 @@ describe('/api/files', () => {
                     'test.txt',
                     'test1.txt'
                 ])
+                .end(done);
+        });
+    });
+
+    describe('POST /api/files', () => {
+
+        it('should return 201', (done) => {
+            request(app)
+                .post('/api/files')
+                .attach('files', './test4.txt')
+                .attach('files', './test5.txt')
+                .expect(201)
+                .end(done);
+        });
+
+        it('should have Content-Type application/json', (done) => {
+            request(app)
+                .post('/api/files')
+                .attach('files', './test4.txt')
+                .attach('files', './test5.txt')
+                .expect('Content-Type', /json/)
+                .end(done);
+        });
+
+        it('should create files', (done) => {
+            request(app)
+                .post('/api/files')
+                .attach('files', './test4.txt')
+                .attach('files', './test5.txt')
+                .expect(() => {
+                    if (!fs.existsSync('./configs/Test1/test4.txt')) {
+                        throw new Error('File was not created');
+                    }
+                    if (!fs.existsSync('./configs/Test1/test5.txt')) {
+                        throw new Error('File was not created');
+                    }
+                })
                 .end(done);
         });
     });
