@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -170,6 +171,10 @@ const GraphicList = ({ matches }) => {
             </List>
         </>
     );
+};
+
+GraphicList.propTypes = {
+    matches: PropTypes.bool.isRequired
 };
 
 export default GraphicList;

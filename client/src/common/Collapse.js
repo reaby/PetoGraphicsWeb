@@ -28,8 +28,9 @@ const Collapse = ({ title, children, collapsed, setCollapsed, ...props }) => (
 
 Collapse.propTypes = {
     title: PropTypes.string.isRequired,
-    collapse: PropTypes.bool.isRequired,
-    setCollapsed: PropTypes.func.isRequired
+    collapsed: PropTypes.bool.isRequired,
+    setCollapsed: PropTypes.func.isRequired,
+    children: PropTypes.array.isRequired
 };
 
 export default Collapse;

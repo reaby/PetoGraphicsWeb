@@ -42,9 +42,10 @@ const TextSettings = memo(({ id, texts, updateGraphic, fonts, collapsed, setColl
 TextSettings.propTypes = {
     id: PropTypes.string.isRequired,
     texts: PropTypes.array.isRequired,
+    updateGraphic: PropTypes.func.isRequired,
     fonts: PropTypes.array.isRequired,
     collapsed: PropTypes.bool.isRequired,
-    setCollapse: PropTypes.func.isRequired
+    setCollapsed: PropTypes.func.isRequired
 };
 
 export default TextSettings;

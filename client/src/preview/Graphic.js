@@ -140,7 +140,8 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
 Graphic.propTypes = {
     graphic: PropTypes.object.isRequired,
     graphicIndex: PropTypes.number.isRequired,
-    project: PropTypes.string
+    project: PropTypes.string,
+    clock: PropTypes.string
 };
 
 export default Graphic;
