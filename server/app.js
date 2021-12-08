@@ -3,6 +3,7 @@ import { WebSocketServer } from 'ws';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import morgan from 'morgan';
+import compression from 'compression';
 import fs from 'fs';
 import ApiRouter from './routes/router.js';
 
@@ -58,6 +59,7 @@ app.locals.setProject = (project, ignoreClient = null) => {
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
+app.use(compression());
 
 // Routes
 app.use('/api/', ApiRouter);
