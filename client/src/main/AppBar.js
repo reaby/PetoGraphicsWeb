@@ -10,10 +10,13 @@ import fetch from '../common/functions/fetchWrap';
 import { showMessage } from '../common/Notifier';
 import { Context } from '../Context';
 import AddProjectDialog from './AddProjectDialog';
+import AskSaveDialog from './AskSaveDialog';
 
 const AppBar = () => {
-    const { config, setConfig, project, setProject, live, setLive, projects, refreshProjects } = useContext(Context);
+    const { config, project, setProject, live, setLive, projects, refreshProjects } = useContext(Context);
     const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
+    const [askSaveDialogOpen, setAskSaveDialogOpen] = useState(false);
+    const [selectedProject, setSelectedProject] = useState(null);
     return (
         <MuiAppBar position='static'>
             <Toolbar>
@@ -56,10 +59,15 @@ const AppBar = () => {
                         select
                         value={project || ''}
                         onChange={(event) => {
-                            if (event.target.value === 'add_new') {
-                                setAddProjectDialogOpen(true);
+                            if (project) {
+                                setSelectedProject(event.target.value);
+                                setAskSaveDialogOpen(true);
                             } else {
-                                setProject(event.target.value);
+                                if (event.target.value === 'add_new') {
+                                    setAddProjectDialogOpen(true);
+                                } else {
+                                    setProject(event.target.value);
+                                }
                             }
                         }}
                         size='small'
@@ -86,8 +94,20 @@ const AppBar = () => {
                 onAdd={(name) => {
                     setAddProjectDialogOpen(false);
                     setProject(name);
-                    setConfig([]);
                     refreshProjects();
+                }}
+            />
+            <AskSaveDialog
+                open={askSaveDialogOpen}
+                project={project}
+                config={config}
+                onClose={() => {
+                    setAskSaveDialogOpen(false);
+                    if (selectedProject === 'add_new') {
+                        setAddProjectDialogOpen(true);
+                    } else {
+                        setProject(selectedProject);
+                    }
                 }}
             />
         </MuiAppBar>
