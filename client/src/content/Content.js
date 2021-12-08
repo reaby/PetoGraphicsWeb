@@ -37,7 +37,7 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
 });
 
 Content.propTypes = {
-    graphic: PropTypes.string.isRequired,
+    graphic: PropTypes.object.isRequired,
     project: PropTypes.string.isRequired,
     updateGraphic: PropTypes.func.isRequired,
     files: PropTypes.array.isRequired,

@@ -21,9 +21,9 @@ const useFetch = (initialUrl, initialOptions) => {
             .catch((error) => setError(error))
             .finally(() => setLoading(false));
     }, [url, options]);
-    const refresh = () => {
+    const refresh = useCallback(() => {
         setRefech(true);
-    };
+    }, []);
     useEffect(() => {
         fetchData();
     }, [url, options, fetchData]);

@@ -45,7 +45,7 @@ const AskSaveDialog = ({ open, onClose, project, config }) => (
 AskSaveDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired,
+    project: PropTypes.string,
     config: PropTypes.array.isRequired
 };
 

@@ -30,7 +30,7 @@ Collapse.propTypes = {
     title: PropTypes.string.isRequired,
     collapsed: PropTypes.bool.isRequired,
     setCollapsed: PropTypes.func.isRequired,
-    children: PropTypes.array.isRequired
+    children: PropTypes.node.isRequired
 };
 
 export default Collapse;
