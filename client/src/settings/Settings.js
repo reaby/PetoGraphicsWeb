@@ -4,7 +4,7 @@ import GeneralSettings from './GeneralSettings';
 import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
 
-const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts }) => {
+const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts, project }) => {
     const [generalCollapsed, setGeneralCollapsed] = useState(false);
     const [animationCollapsed, setAnimationCollapsed] = useState(true);
     const [textCollapsed, setTextCollapsed] = useState(true);
@@ -25,6 +25,7 @@ const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts }
                 setCollapsed={setGeneralCollapsed}
                 files={files}
                 refreshFiles={refreshFiles}
+                project={project}
             />
             <AnimationSettings
                 id={selectedGraphic.id}
@@ -53,7 +54,8 @@ Settings.propTypes = {
     updateGraphic: PropTypes.func.isRequired,
     files: PropTypes.array.isRequired,
     refreshFiles: PropTypes.func.isRequired,
-    fonts: PropTypes.array.isRequired
+    fonts: PropTypes.array.isRequired,
+    project: PropTypes.string.isRequired
 };
 
 export default Settings;

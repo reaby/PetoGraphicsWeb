@@ -46,6 +46,7 @@ const Main = () => {
                                                     fonts={fonts}
                                                     files={files}
                                                     refreshFiles={refreshFiles}
+                                                    project={project}
                                                 />
                                             )}
                                         </Grid>
