@@ -94,8 +94,10 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
     }, []);
 
     useEffect(() => {
-        playlistRef.current?.play().catch(console.error);
-    }, [currentVideo]);
+        if (graphic.visible) {
+            playlistRef.current?.play().catch(console.error);
+        }
+    }, [currentVideo, graphic.visible]);
 
     return (
         <div
