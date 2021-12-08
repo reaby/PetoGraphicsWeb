@@ -30,7 +30,6 @@ router.get('/projects/:project', async (req, res) => {
         res.status(200);
         res.send({ project, config });
     } catch (error) {
-        console.log(error);
         res.status(409);
         res.send('Failed to read config');
     }
@@ -48,12 +47,9 @@ router.post('/projects', async (req, res) => {
     try {
         await fsp.mkdir(`./configs/${newProject}`);
         await fsp.writeFile(`./configs/${newProject}/config.json`, '[]');
-        req.app.locals.setProject(newProject);
-        req.app.locals.setConfig([]);
         res.status(201);
         res.send({ project: newProject, config: [] });
     } catch (error) {
-        console.log(error);
         res.status(409);
         res.send('Failed to create project');
     }
