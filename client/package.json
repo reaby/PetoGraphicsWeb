@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "author": "Beastrick",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "proxy": "http://localhost:5000",
   "dependencies": {

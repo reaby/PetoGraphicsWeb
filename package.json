@@ -1,17 +1,21 @@
 {
     "name": "petographicsweb",
     "version": "1.0.0",
-    "description": "",
+    "author": "Beastrick",
+    "private": false,
+    "license": "MIT",
     "scripts": {
-      "client": "cd client && npm start",
-      "server": "cd server && npm start",
-      "start": "concurrently --kill-others-on-fail \"npm run-script server\" \"npm run-script client\"",
+      "postinstall": "npm run-script install:client && npm run-script install:server",
+      "install:client": "cd client && npm install",
+      "install:server": "cd server && npm install",
+      "start:client": "cd client && npm start",
+      "start:server": "cd server && npm start",
+      "start": "concurrently --kill-others-on-fail \"npm run-script start:server\" \"npm run-script start:client\"",
       "build": "build.bat",
-      "test": "cd server && npm test"
+      "test:client": "cd client && npm test -- --watchAll=false",
+      "test:server": "cd server && npm test",
+      "test": "npm run-script test:server && npm run-script test:client"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
       "concurrently": "^6.4.0",
       "husky": "^4.3.8",

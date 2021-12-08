@@ -12,7 +12,7 @@ Graphic software for streaming in browser.
 
 ### Starting the project
 
-First run `npm install` inside `client` and `server` directories to install dependencies.
+Run `npm install` to install dependencies for client and server.
 
 After installation run `npm start` in root directory to start both client and server. Client opens at `http://localhost:3000` and server at `http://localhost:5000`.
 
