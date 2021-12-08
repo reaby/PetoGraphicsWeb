@@ -3,3 +3,4 @@
 .eslintrc.json
 .gitignore
 index.js
+.test.js
