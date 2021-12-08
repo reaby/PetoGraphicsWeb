@@ -12,11 +12,7 @@ import './index.css';
 import theme from './theme';
 
 import Main from './main/Main';
-import Preview from './preview/Preview';
-
-window.petoGraphics = {
-    countdowns: []
-};
+import Output from './output/Output';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -34,7 +30,7 @@ ReactDOM.render(
                             </LocalizationProvider>
                         </>
                     } />
-                    <Route path='/preview' element={<Preview />} />
+                    <Route path='/output' element={<Output />} />
                 </Routes>
             </ThemeProvider>
         </BrowserRouter>

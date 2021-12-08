@@ -47,9 +47,9 @@ const AppBar = () => {
                 <Button
                     color='primary'
                     sx={{ mr: 4 }}
-                    onClick={() => window.open('/preview')}
+                    onClick={() => window.open('/output')}
                 >
-                    Preview
+                    Output
                 </Button>
                 {!live && (
                     <TextField

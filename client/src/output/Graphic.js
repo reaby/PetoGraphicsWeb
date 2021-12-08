@@ -57,7 +57,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
                 videoRef.current.pause();
             }
         }
-    }, [graphic.visible, graphic]);
+    }, [graphic.visible]);
 
     // Playlist
     useEffect(() => {
@@ -70,7 +70,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
                 playlistRef.current.pause();
             }
         }
-    }, [graphic.visible, graphic]);
+    }, [graphic.visible]);
 
     // Playlist handler
     useEffect(() => {
