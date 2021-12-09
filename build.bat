@@ -1,3 +1,5 @@
+:: Remove old build
+rmdir /S /Q dist
 
 :: Build client
 cd client
