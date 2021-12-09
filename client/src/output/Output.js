@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Global, css } from '@emotion/react';
 import useFetch from '../common/hooks/useFetch';
 import Graphic from './Graphic';
 
@@ -97,6 +98,15 @@ const Preview = () => {
 
     return (
         <>
+            <Global
+                styles={css`
+                    body {
+                        width: 100vw;
+                        height: 100vh;
+                        overflow: hidden;
+                    }
+                `}
+            />
             {config.map((graphic, graphicIndex) => (
                 <Graphic
                     key={graphic.id}
