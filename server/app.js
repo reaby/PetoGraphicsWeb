@@ -62,7 +62,7 @@ app.use(morgan('tiny'));
 app.use(compression());
 
 // Routes
-app.use('/api/', ApiRouter);
+app.use('/api', ApiRouter);
 app.use('/configs', Express.static(path.join(__dirname, 'configs')));
 app.use('/static', Express.static('C:'));
 app.use(Express.static(path.resolve(__dirname, './client')));

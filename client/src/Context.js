@@ -44,16 +44,18 @@ export const ContextProvider = ({ children }) => {
     useEffect(() => {
         socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
         socket.onmessage = (msg) => {
-            if (!config) {
+            setConfig((prev) => {
+                if (prev) {
+                    return prev;
+                }
                 const msgData = JSON.parse(msg.data);
-                setConfig(msgData.payload.config);
                 setProject(msgData.payload.project);
-            }
+                return msgData.payload.config;
+            });
         };
         return () => {
             socket?.close();
         };
-        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {

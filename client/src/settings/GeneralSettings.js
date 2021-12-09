@@ -143,7 +143,7 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
 GeneralSettings.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     imageStretch: PropTypes.string.isRequired,
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired,
