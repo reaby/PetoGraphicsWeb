@@ -30,4 +30,4 @@ Run `npm test` to run tests.
 
 You need to have [nexe](https://github.com/nexe/nexe) installed globally to build the project.
 
-Run `build.bat` to create production build. The build result is found at `dist` directory.
+Run `npm run build` to create production build. The build result is found at `dist` directory.
