@@ -28,25 +28,27 @@ const AppBar = () => {
                 >
                     PetoGraphics
                 </Typography>
-                <Button
-                    color='primary'
-                    sx={{ mr: 4 }}
-                    onClick={() => {
-                        fetch(`/api/projects/${project}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                config
+                {project && (
+                    <Button
+                        color='primary'
+                        sx={{ mr: 4 }}
+                        onClick={() => {
+                            fetch(`/api/projects/${project}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    config
+                                })
                             })
-                        })
-                            .then(() => showMessage('Config saved'))
-                            .catch(console.error);
-                    }}
-                >
-                    Save
-                </Button>
+                                .then(() => showMessage('Config saved'))
+                                .catch(console.error);
+                        }}
+                    >
+                        Save
+                    </Button>
+                )}
                 <Button
                     color='primary'
                     sx={{ mr: 4 }}
