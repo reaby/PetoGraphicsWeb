@@ -18,6 +18,7 @@ const AnimationProperties = ({
                 fullWidth
                 select
             >
+                <MenuItem value='None'>None</MenuItem>
                 <MenuItem value='Fade'>Fade</MenuItem>
                 <MenuItem value='SlideTop'>Slide Top</MenuItem>
                 <MenuItem value='SlideBottom'>Slide Bottom</MenuItem>

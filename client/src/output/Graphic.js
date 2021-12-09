@@ -32,6 +32,9 @@ const animationMap = {
 
 const computeAnimation = (graphic, isIn) => {
     const animation = isIn ? graphic.animationIn : graphic.animationOut;
+    if (animation.style === 'None') {
+        return css``;
+    }
     return css`
         animation-name: ${animationMap[`${animation.style}${isIn ? 'In' : 'Out'}`](graphic)}${animation.addFade ? css`, ${isIn ? FadeIn(graphic) : FadeOut(graphic)}` : ''};
         animation-duration: ${animation.duration / 1000}s;
@@ -39,7 +42,7 @@ const computeAnimation = (graphic, isIn) => {
         animation-delay: ${animation.delay / 1000}s;
         animation-iteration-count: 1;
         animation-direction: normal;
-        animation-fill-mode: forwards;
+        animation-fill-mode: both;
         animation-play-state: running;
     `;
 };
