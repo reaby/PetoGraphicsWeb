@@ -5,6 +5,7 @@ import Texts from './Texts';
 import Video from './Video';
 import Countdown from './Countdown';
 import Playlist from './Playlist';
+import Slider from './Slider';
 
 const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -23,6 +24,10 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
 
         case 'PLAYLIST':
             content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
+            break;
+
+        case 'SLIDER':
+            content = <Slider id={graphic.id} slider={graphic.slider} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
             break;
 
         default:

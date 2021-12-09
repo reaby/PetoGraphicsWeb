@@ -26,6 +26,7 @@ const Base = () => ({
     video: null,
     countdown: null,
     playlist: null,
+    slider: null,
     texts: [],
     children: []
 });
@@ -192,5 +193,17 @@ export const PLAYLIST = () => ({
         sources: [],
         duration: 0,
         loop: false
+    }
+});
+
+export const SLIDER = () => ({
+    ...Base(),
+    name: 'Slider',
+    type: 'SLIDER',
+    width: 400,
+    height: 300,
+    slider: {
+        sources: [],
+        duration: 10
     }
 });

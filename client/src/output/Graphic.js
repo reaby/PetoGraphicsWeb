@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
+import Video from './Video';
+import Playlist from './Playlist';
+import Slider from './Slider';
 import {
     FadeIn, SlideTopIn, SlideLeftIn, SlideRightIn, SlideBottomIn, WipeLeftIn, WipeTopIn, ExpandYIn, ExpandXIn,
     FadeOut, SlideTopOut, SlideLeftOut, SlideRightOut, SlideBottomOut, WipeLeftOut, WipeTopOut, ExpandYOut, ExpandXOut
@@ -43,62 +45,6 @@ const computeAnimation = (graphic, isIn) => {
 };
 
 const Graphic = ({ graphic, graphicIndex, project, clock }) => {
-    const videoRef = useRef();
-    const playlistRef = useRef();
-    const [currentVideo, setCurrentVideo] = useState(0);
-
-    // Video
-    useEffect(() => {
-        if (videoRef.current) {
-            if (graphic.visible) {
-                videoRef.current.currentTime = 0;
-                videoRef.current.play().catch(console.error);
-            } else {
-                videoRef.current.pause();
-            }
-        }
-    }, [graphic.visible]);
-
-    // Playlist
-    useEffect(() => {
-        if (playlistRef.current) {
-            if (graphic.visible) {
-                setCurrentVideo(0);
-                playlistRef.current.currentTime = 0;
-                playlistRef.current.play().catch(console.error);
-            } else {
-                playlistRef.current.pause();
-            }
-        }
-    }, [graphic.visible]);
-
-    // Playlist handler
-    useEffect(() => {
-        const playlist = playlistRef.current;
-        const nextVideo = () => {
-            setCurrentVideo((prev) => {
-                if (prev < graphic.playlist.length - 1) {
-                    return prev + 1;
-                } else {
-                    return graphic.playlist.loop ? 0 : prev;
-                }
-            });
-        };
-        if (graphic.type === 'PLAYLIST' && playlistRef.current) {
-            playlist.addEventListener('ended', nextVideo);
-        }
-        return () => {
-            playlist?.removeEventListener('ended', nextVideo);
-        };
-        // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {
-        if (graphic.visible) {
-            playlistRef.current?.play().catch(console.error);
-        }
-    }, [currentVideo, graphic.visible]);
-
     return (
         <div
             style={{
@@ -115,8 +61,9 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
                 overflow: 'hidden'
             }} css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.video?.source && <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />}
-            {graphic.playlist && <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />}
+            {graphic.video?.source && <Video graphic={graphic} project={project} />}
+            {graphic.playlist && <Playlist graphic={graphic} project={project} />}
+            {graphic.slider && <Slider graphic={graphic} project={project} />}
             {graphic.texts.map((text, index) => (
                 <div
                     key={index}

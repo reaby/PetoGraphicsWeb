@@ -8,7 +8,7 @@ import List from '@mui/material/List';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST } from './Templates';
+import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST, SLIDER } from './Templates';
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
 import copyGraphic from '../common/functions/copyGraphic';
@@ -146,6 +146,7 @@ const GraphicList = ({ matches }) => {
                     <MenuItem onClick={() => addGraphic(DOUBLE_TEXT)}>Double Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(TRIPLE_TEXT)}>Triple Text</MenuItem>
                     <MenuItem onClick={() => addGraphic(IMAGE)}>Image</MenuItem>
+                    <MenuItem onClick={() => addGraphic(SLIDER)}>Slider</MenuItem>
                     <MenuItem onClick={() => addGraphic(VIDEO)}>Video</MenuItem>
                     <MenuItem onClick={() => addGraphic(PLAYLIST)}>Playlist</MenuItem>
                     <MenuItem onClick={() => addGraphic(CLOCK)}>Clock</MenuItem>
