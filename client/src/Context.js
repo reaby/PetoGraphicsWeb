@@ -18,7 +18,7 @@ const updateChildren = (children, path, value) => {
 };
 
 export const ContextProvider = ({ children }) => {
-    const [config, setConfig] = useState(null);
+    const [config, _setConfig] = useState(null);
     const [project, setProject] = useState(null);
     const [live, setLive] = useState(false);
     const [countdowns, setCountdowns] = useState([]);
@@ -31,27 +31,36 @@ export const ContextProvider = ({ children }) => {
         return config && selectedGraphicId && findGraphic(config, selectedGraphicId);
     }, [config, selectedGraphicId]);
 
+    const setConfig = useCallback((param) => {
+        _setConfig((prev) => {
+            const result = param instanceof Function ? param(prev) : param;
+            socket.send(JSON.stringify({ type: 'update-config', payload: result }));
+            return result;
+        });
+    }, []);
+
     const updateGraphic = useCallback((id, path, value, updateChilds = false) => {
-        setConfig((prev) => produce(prev, (newConfig) => {
-            const graphic = findGraphic(newConfig, id);
-            _set(graphic, path, value);
-            if (updateChilds) {
-                updateChildren(graphic.children, path, value);
-            }
-        }));
+        _setConfig((prev) => {
+            const result = produce(prev, (newConfig) => {
+                const graphic = findGraphic(newConfig, id);
+                _set(graphic, path, value);
+                if (updateChilds) {
+                    updateChildren(graphic.children, path, value);
+                }
+            });
+            socket.send(JSON.stringify({ type: 'update-config', payload: result }));
+            return result;
+        });
     }, []);
 
     useEffect(() => {
         socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
         socket.onmessage = (msg) => {
-            setConfig((prev) => {
-                if (prev) {
-                    return prev;
-                }
-                const msgData = JSON.parse(msg.data);
+            const msgData = JSON.parse(msg.data);
+            if (msgData.type === 'config') {
+                _setConfig(msgData.payload.config);
                 setProject(msgData.payload.project);
-                return msgData.payload.config;
-            });
+            }
         };
         return () => {
             socket?.close();
@@ -72,17 +81,11 @@ export const ContextProvider = ({ children }) => {
             })
         })
             .then((response) => response.json())
-            .then((json) => setConfig(json.config))
+            .then((json) => _setConfig(json.config))
             .catch((error) => {
                 error.then((text) => showMessage(text, true));
             });
     }, [project]);
-
-    useEffect(() => {
-        if (config) {
-            socket.send(JSON.stringify({ type: 'update-config', payload: config }));
-        }
-    }, [config]);
 
     return (
         <Context.Provider
