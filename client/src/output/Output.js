@@ -23,12 +23,12 @@ const getConfigFonts = (config, fonts) => {
     for (const graphic of config) {
         for (const text of graphic.texts) {
             const variant = getFontVariant(text);
-            if (!fontMap.has(`${text.fontFamily}*${getFontVariant(text)}`)) {
+            if (!fontMap.has(`${text.fontFamily}*${variant}`)) {
                 const filepath = fonts.find((font) => font.family === text.fontFamily && font.files[variant] != null)?.files[variant]
                     .replace('C:\\', '')
                     .replace(/\\/g, '/');
                 if (filepath) {
-                    fontMap.set(`${text.fontFamily}*${getFontVariant(text)}`, {
+                    fontMap.set(`${text.fontFamily}*${variant}`, {
                         family: text.fontFamily,
                         variant: variant,
                         style: text.fontStyle,
