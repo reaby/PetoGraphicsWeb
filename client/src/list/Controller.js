@@ -21,7 +21,7 @@ const secondsToTime = (input) => {
 };
 
 const Controller = memo(({ graphic, selectedGraphicId, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns, onDragStart, onDragOver, onDrop, ...props }) => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     console.log(graphic.id, 'rendered');
     return (
         <>
