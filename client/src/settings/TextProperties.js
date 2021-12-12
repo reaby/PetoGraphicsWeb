@@ -17,7 +17,7 @@ const TextProperties = memo(({
     <>
         <Grid item xs={12} sm={6}>
             <TextField
-                label='Position Y'
+                label='Position X'
                 type='number'
                 value={left ?? 0}
                 onChange={(event) => updateGraphic(id, `texts[${selectedTextIndex}].left`, Number(event.target.value))}
