@@ -11,8 +11,9 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
     const [collapsed, setCollapsed] = useState(false);
     let content;
     switch (graphic.type) {
+        case 'IMAGE':
         case 'CLOCK':
-            break;
+            return null;
 
         case 'VIDEO':
             content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
