@@ -51,14 +51,14 @@ export const SINGLE_TEXT = () => ({
     name: 'Single Text',
     type: 'SINGLE_TEXT',
     left: 0,
-    top: 900,
+    top: 0,
     width: 600,
     height: 150,
     texts: [
         {
             ...BaseText(),
-            left: 50,
-            top: 15,
+            left: 0,
+            top: 0,
             width: 600
         }
     ]
@@ -69,21 +69,22 @@ export const DOUBLE_TEXT = () => ({
     name: 'Double Text',
     type: 'DOUBLE_TEXT',
     left: 0,
-    top: 900,
-    width: 700,
+    top: 0,
+    width: 600,
     height: 150,
     texts: [
         {
             ...BaseText(),
-            left: 50,
-            top: 15,
+            left: 0,
+            top: 0,
             width: 600,
         },
         {
             ...BaseText(),
-            left: 50,
-            top: 75,
-            width: 600
+            left: 0,
+            top: 0,
+            width: 600,
+            textAlign: 'right'
         }
     ]
 });
@@ -93,26 +94,26 @@ export const TRIPLE_TEXT = () => ({
     name: 'Triple Text',
     type: 'TRIPLE_TEXT',
     left: 0,
-    top: 200,
-    width: 700,
+    top: 0,
+    width: 600,
     height: 500,
     texts: [
         {
             ...BaseText(),
-            left: 50,
-            top: 15,
+            left: 0,
+            top: 0,
             width: 600,
         },
         {
             ...BaseText(),
-            left: 50,
-            top: 75,
+            left: 0,
+            top: 50,
             width: 600
         },
         {
             ...BaseText(),
-            left: 50,
-            top: 135,
+            left: 0,
+            top: 100,
             width: 600
         }
     ]
@@ -174,8 +175,8 @@ export const VIDEO = () => ({
     ...Base(),
     name: 'Video',
     type: 'VIDEO',
-    width: 1280,
-    height: 720,
+    width: 1920,
+    height: 1080,
     video: {
         source: null,
         duration: 0,
@@ -187,8 +188,8 @@ export const PLAYLIST = () => ({
     ...Base(),
     name: 'Playlist',
     type: 'PLAYLIST',
-    width: 1280,
-    height: 720,
+    width: 1920,
+    height: 1080,
     playlist: {
         sources: [],
         duration: 0,
