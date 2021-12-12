@@ -33,23 +33,6 @@ const GraphicList = ({ matches }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const copied = useRef();
 
-    useEffect(() => {
-        const checkCopyPaste = (event) => {
-            const key = event.which || event.keyCode; // keyCode detection
-            const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
-            if (key === 86 && ctrl && copied.current) {
-                const copy = copyGraphic(copied.current);
-                setConfig((prev) => [...prev, copy]);
-            } else if (key === 67 && ctrl) {
-                copied.current = selectedGraphic;
-            }
-        };
-        window.addEventListener('keydown', checkCopyPaste, false);
-        return () => {
-            window.removeEventListener('keydown', checkCopyPaste, false);
-        };
-    }, [selectedGraphic, setConfig]);
-
     const addGraphic = (graphicJSON) => {
         setAnchorEl(null);
         setConfig((prev) => [...prev, graphicJSON()]);
@@ -79,6 +62,16 @@ const GraphicList = ({ matches }) => {
                 break;
             default:
                 break;
+        }
+
+        // Check copy-paste
+        const key = event.which || event.keyCode; // keyCode detection
+        const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
+        if (key === 86 && ctrl && copied.current) {
+            const copy = copyGraphic(copied.current);
+            setConfig((prev) => [...prev, copy]);
+        } else if (key === 67 && ctrl) {
+            copied.current = selectedGraphic;
         }
     };
 
