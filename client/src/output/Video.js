@@ -1,7 +1,18 @@
 import { useEffect, useRef } from 'react';
 
-const Video = ({ graphic, project }) => {
+const Video = ({ graphic, project, updateGraphic }) => {
     const videoRef = useRef();
+
+    useEffect(() => {
+        const video = videoRef.current;
+        const hideOnEnd = () => {
+            if (graphic.video.hideOnEnd) {
+                updateGraphic(graphic.id, 'visible', false, true);
+            }
+        };
+        video.addEventListener('ended', hideOnEnd);
+        return () => video?.removeEventListener('ended', hideOnEnd);
+    }, [graphic.id, graphic.video.hideOnEnd, updateGraphic]);
 
     useEffect(() => {
         if (videoRef.current) {

@@ -47,7 +47,7 @@ const computeAnimation = (graphic, isIn) => {
     `;
 };
 
-const Graphic = ({ graphic, graphicIndex, project, clock }) => {
+const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
     return (
         <div
             style={{
@@ -64,8 +64,8 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
                 overflow: 'hidden'
             }} css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.video?.source && <Video graphic={graphic} project={project} />}
-            {graphic.playlist && <Playlist graphic={graphic} project={project} />}
+            {graphic.video?.source && <Video graphic={graphic} project={project} updateGraphic={updateGraphic} />}
+            {graphic.playlist && <Playlist graphic={graphic} project={project} updateGraphic={updateGraphic} />}
             {graphic.slider && <Slider graphic={graphic} project={project} />}
             {graphic.texts.map((text, index) => (
                 <div
@@ -88,7 +88,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock }) => {
                 </div>
             ))}
             {graphic.children.map((child) => (
-                <Graphic key={child.id} graphic={child} graphicIndex={graphicIndex} project={project} />
+                <Graphic key={child.id} graphic={child} graphicIndex={graphicIndex} project={project} updateGraphic={updateGraphic} />
             ))}
         </div>
     );
@@ -99,7 +99,8 @@ Graphic.propTypes = {
     graphic: PropTypes.object.isRequired,
     graphicIndex: PropTypes.number.isRequired,
     project: PropTypes.string,
-    clock: PropTypes.string
+    clock: PropTypes.string,
+    updateGraphic: PropTypes.func.isRequired
 };
 
 export default Graphic;

@@ -41,13 +41,19 @@ const Video = ({ id, video, updateGraphic, files, project, refreshFiles }) => (
                     .catch(console.error);
             }} />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
             <FormControlLabel control={
                 <Checkbox
-                    checked={video.loop}
+                    checked={video.loop ?? false}
                     onChange={(event) => updateGraphic(id, 'video.loop', event.target.checked)}
                 />
             } label='Loop' />
+            <FormControlLabel control={
+                <Checkbox
+                    checked={video.hideOnEnd ?? false}
+                    onChange={(event) => updateGraphic(id, 'video.hideOnEnd', event.target.checked)}
+                />
+            } label='Hide on End' />
         </Grid>
     </>
 );

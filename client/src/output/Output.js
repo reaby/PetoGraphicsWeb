@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Global, css } from '@emotion/react';
+import findGraphic from '../common/functions/findGraphic';
+import updateChildren from '../common/functions/updateChildren';
+import produce from 'immer';
+import _set from 'lodash/set';
 import useFetch from '../common/hooks/useFetch';
 import Graphic from './Graphic';
 
@@ -55,12 +59,26 @@ const loadFonts = (config, fonts) => {
     }
 };
 
-const Preview = () => {
+const Output = () => {
     const [config, setConfig] = useState(null);
     const [clock, setClock] = useState('00:00');
     const [project, setProject] = useState(null);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const [{ data: fonts }] = useFetch('/api/fonts');
+
+    const updateGraphic = useCallback((id, path, value, updateChilds = false) => {
+        setConfig((prev) => {
+            const result = produce(prev, (newConfig) => {
+                const graphic = findGraphic(newConfig, id);
+                _set(graphic, path, value);
+                if (updateChilds) {
+                    updateChildren(graphic.children, path, value);
+                }
+            });
+            socket.send(JSON.stringify({ type: 'update-config', payload: result }));
+            return result;
+        });
+    }, []);
 
     useEffect(() => {
         socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
@@ -114,10 +132,11 @@ const Preview = () => {
                     graphicIndex={graphicIndex}
                     project={project}
                     clock={clock}
+                    updateGraphic={updateGraphic}
                 />
             ))}
         </>
     );
 };
 
-export default Preview;
+export default Output;

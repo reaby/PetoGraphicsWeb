@@ -3,20 +3,13 @@ import useFetch from './common/hooks/useFetch';
 import fetch from './common/functions/fetchWrap';
 import { showMessage } from './common/Notifier';
 import findGraphic from './common/functions/findGraphic';
+import updateChildren from './common/functions/updateChildren';
 import produce from 'immer';
 import _set from 'lodash/set';
 
 let socket;
 
 export const Context = React.createContext({});
-
-const updateChildren = (children, path, value) => {
-    for (const child of children) {
-        _set(child, path, value);
-        updateChildren(child.children, path, value);
-    }
-};
-
 export const ContextProvider = ({ children }) => {
     const [config, _setConfig] = useState(null);
     const [project, setProject] = useState(null);

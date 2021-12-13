@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 
-const Playlist = ({ graphic, project }) => {
+const Playlist = ({ graphic, project, updateGraphic }) => {
     const playlistRef = useRef();
     const [currentVideo, setCurrentVideo] = useState(0);
 
@@ -20,21 +20,23 @@ const Playlist = ({ graphic, project }) => {
         const playlist = playlistRef.current;
         const nextVideo = () => {
             setCurrentVideo((prev) => {
-                if (prev < graphic.playlist.length - 1) {
+                if (prev < graphic.playlist.sources.length - 1) {
                     return prev + 1;
-                } else {
-                    return graphic.playlist.loop ? 0 : prev;
                 }
+                if (graphic.playlist.loop) {
+                    return 0;
+                }
+                if (graphic.playlist.hideOnEnd) {
+                    setTimeout(() => updateGraphic(graphic.id, 'visible', false, true), 0);
+                }
+                return prev;
             });
         };
-        if (graphic.type === 'PLAYLIST' && playlistRef.current) {
-            playlist.addEventListener('ended', nextVideo);
-        }
+        playlist.addEventListener('ended', nextVideo);
         return () => {
             playlist?.removeEventListener('ended', nextVideo);
         };
-        // eslint-disable-next-line
-    }, []);
+    }, [graphic.playlist.loop, graphic.id, graphic.playlist.hideOnEnd, graphic.playlist.sources.length, updateGraphic]);
 
     useEffect(() => {
         if (graphic.visible) {
