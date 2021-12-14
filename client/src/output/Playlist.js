@@ -5,16 +5,30 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
     const [currentVideo, setCurrentVideo] = useState(0);
 
     useEffect(() => {
-        if (playlistRef.current) {
-            if (graphic.visible) {
-                setCurrentVideo(0);
-                playlistRef.current.currentTime = 0;
-                playlistRef.current.play().catch(console.error);
-            } else {
-                playlistRef.current.pause();
-            }
+        if (graphic.visible) {
+            setCurrentVideo(0);
+            playlistRef.current.currentTime = 0;
+            playlistRef.current.play().catch(console.error);
+        } else {
+            playlistRef.current.pause();
         }
     }, [graphic.visible]);
+
+    useEffect(() => {
+        let updateInterval;
+        if (graphic.visible)  {
+            updateInterval = setInterval(() => {
+                let currentTime = playlistRef.current.currentTime;
+                for (let i = 0; i < currentVideo; i++) {
+                    currentTime += graphic.playlist.durations[i];
+                }
+                updateGraphic(graphic.id, 'playlist.currentTime', currentTime);
+            }, 1000);
+        } else {
+            updateGraphic(graphic.id, 'playlist.currentTime', 0);
+        }
+        return () => clearInterval(updateInterval);
+    }, [graphic.visible, graphic.id, graphic.playlist.durations, currentVideo, updateGraphic]);
 
     useEffect(() => {
         const playlist = playlistRef.current;

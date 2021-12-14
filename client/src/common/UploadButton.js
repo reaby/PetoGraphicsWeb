@@ -14,7 +14,7 @@ const UploadButton = ({ accept, identifier, onUpload }) => {
     if (uploading) {
         return (
             <Box sx={{ height: 40, padding: 1 }}>
-                <CircularProgress size={24} />
+                <CircularProgress size={24} sx={{ display: 'inline-block' }} />
             </Box>
         );
     }

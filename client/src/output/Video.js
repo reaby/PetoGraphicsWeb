@@ -15,15 +15,21 @@ const Video = ({ graphic, project, updateGraphic }) => {
     }, [graphic.id, graphic.video.hideOnEnd, updateGraphic]);
 
     useEffect(() => {
-        if (videoRef.current) {
-            if (graphic.visible) {
-                videoRef.current.currentTime = 0;
-                videoRef.current.play().catch(console.error);
-            } else {
-                videoRef.current.pause();
-            }
+        let updateInterval;
+        if (graphic.visible) {
+            videoRef.current.currentTime = 0;
+            videoRef.current.play().catch(console.error);
+            updateGraphic(graphic.id, 'video.currentTime', 0);
+            updateInterval = setInterval(() => {
+                updateGraphic(graphic.id, 'video.currentTime', videoRef.current.currentTime);
+            }, 1000);
+        } else {
+            videoRef.current.pause();
+            updateGraphic(graphic.id, 'video.currentTime', 0);
         }
-    }, [graphic.visible]);
+        return () => clearInterval(updateInterval);
+    }, [graphic.id, graphic.visible, updateGraphic]);
+
     return (
         <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />
     );

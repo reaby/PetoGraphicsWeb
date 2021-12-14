@@ -21,9 +21,7 @@ import getVideoDuration from '../common/functions/getVideoDuration';
 const getPlaylistDuration = (sources, project) => {
     return new Promise((resolve, reject) => {
         Promise.all(sources.map((source) => getVideoDuration(`/configs/${project}/${source}`)))
-            .then((durations) => {
-                resolve(durations.reduce((partial_sum, a) => partial_sum + a, 0));
-            })
+            .then((durations) => resolve(durations))
             .catch(reject);
     });
 };
@@ -44,8 +42,8 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                                         clone.splice(index, 1);
                                         updateGraphic(id, 'playlist.sources', clone);
                                         getPlaylistDuration(clone, project)
-                                            .then((duration) => {
-                                                updateGraphic(id, 'playlist.duration', duration);
+                                            .then((durations) => {
+                                                updateGraphic(id, 'playlist.durations', durations);
                                             })
                                             .catch(console.error);
                                     }}>
@@ -71,7 +69,7 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                             />
                         } label='Hide on End' sx={{ ml: 2 }} />
                     </Box>
-                    <div>
+                    <Box sx={{ display: 'flex' }}>
                         <Tooltip title='Add Video'>
                             <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
                                 <AddIcon />
@@ -82,12 +80,12 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                             updateGraphic(id, 'playlist.sources', newSources);
                             refreshFiles();
                             getPlaylistDuration(newSources, project)
-                                .then((duration) => {
-                                    updateGraphic(id, 'playlist.duration', duration);
+                                .then((durations) => {
+                                    updateGraphic(id, 'playlist.duration', durations);
                                 })
                                 .catch(console.error);
                         }} />
-                    </div>
+                    </Box>
                     <Menu
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
@@ -106,8 +104,8 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                                 const newSources = [...playlist.sources, item];
                                 updateGraphic(id, 'playlist.sources', newSources);
                                 getPlaylistDuration(newSources, project)
-                                    .then((duration) => {
-                                        updateGraphic(id, 'playlist.duration', duration);
+                                    .then((durations) => {
+                                        updateGraphic(id, 'playlist.durations', durations);
                                     })
                                     .catch(console.error);
                             }}>

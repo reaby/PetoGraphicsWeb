@@ -10,6 +10,7 @@ import _set from 'lodash/set';
 let socket;
 
 export const Context = React.createContext({});
+
 export const ContextProvider = ({ children }) => {
     const [config, _setConfig] = useState(null);
     const [project, setProject] = useState(null);

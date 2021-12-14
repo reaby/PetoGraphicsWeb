@@ -181,7 +181,8 @@ export const VIDEO = () => ({
         source: null,
         duration: 0,
         loop: false,
-        hideOnEnd: false
+        hideOnEnd: false,
+        currentTime: 0
     }
 });
 
@@ -193,9 +194,10 @@ export const PLAYLIST = () => ({
     height: 1080,
     playlist: {
         sources: [],
-        duration: 0,
+        durations: [],
         loop: false,
-        hideOnEnd: false
+        hideOnEnd: false,
+        currentTime: 0
     }
 });
 

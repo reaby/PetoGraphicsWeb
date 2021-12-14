@@ -44,8 +44,18 @@ const Controller = memo(({ graphic, selectedGraphicId, setSelectedGraphicId, upd
                     <ListItemText primary={graphic.name} />
                     <ListItemSecondaryAction sx={{ display: 'flex', alignItems: 'center' }}>
                         {graphic.countdown && <CountdownActions graphic={graphic} updateGraphic={updateGraphic} countdowns={countdowns} setCountdowns={setCountdowns} />}
-                        {graphic.video && <Typography variant='subtitle1' sx={{ mr: 2 }}>{secondsToTime(graphic.video.duration)}</Typography>}
-                        {graphic.playlist && <Typography variant='subtitle1' sx={{ mr: 2 }}>{secondsToTime(graphic.playlist.duration)}</Typography>}
+                        {graphic.video && (
+                            <Typography variant='subtitle1' sx={{ mr: 2 }}>
+                                {graphic.video.currentTime === 0 ? secondsToTime(graphic.video.duration) : secondsToTime(graphic.video.duration - graphic.video.currentTime)}
+                            </Typography>
+                        )}
+                        {graphic.playlist && (
+                            <Typography variant='subtitle1' sx={{ mr: 2 }}>
+                                {graphic.playlist.currentTime === 0 ?
+                                    secondsToTime(graphic.playlist.durations.reduce((partial_sum, a) => partial_sum + a, 0)) :
+                                    secondsToTime(graphic.playlist.durations.reduce((partial_sum, a) => partial_sum + a, 0) - graphic.playlist.currentTime)}
+                            </Typography>
+                        )}
                         <Button
                             variant='contained'
                             color={graphic.visible ? 'primary' : 'secondary'}
