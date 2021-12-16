@@ -81,6 +81,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                         fontWeight: text.fontWeight,
                         fontStyle: text.fontStyle,
                         color: text.fontColor,
+                        lineHeight: text.lineHeight + 'px',
                         textAlign: text.textAlign
                     }}
                 >
