@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useCallback } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -11,8 +11,6 @@ import Add from '@mui/icons-material/Add';
 import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST, SLIDER } from './Templates';
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
-import copyGraphic from '../common/functions/copyGraphic';
-import updateChildren from '../common/functions/updateChildren';
 import { Context } from '../Context';
 import Controller from './Controller';
 import produce from 'immer';
@@ -30,56 +28,12 @@ window.addEventListener('keyup', (event) => {
 });
 
 const GraphicList = ({ matches }) => {
-    const { config, setConfig, live, selectedGraphic, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns } = useContext(Context);
+    const { config, setConfig, selectedGraphic, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
-    const copied = useRef();
 
     const addGraphic = (graphicJSON) => {
         setAnchorEl(null);
         setConfig((prev) => [...prev, graphicJSON()]);
-    };
-
-    const onKeyDown = (event) => {
-        switch(event.keyCode) {
-            case 27: {
-                setConfig((prev) => produce(prev, (newConfig) => {
-                    updateChildren(newConfig, 'visible', false);
-                }));
-                break;
-            }
-            case 46:
-                if (!live && selectedGraphic) {
-                    setConfig((prev) => produce(prev, (newConfig) => {
-                        const parent = findParentGraphic(newConfig, selectedGraphic.id);
-                        if (!parent) {
-                            const index = newConfig.findIndex((item) => item.id === selectedGraphic.id);
-                            newConfig.splice(index, 1);
-                        } else {
-                            const index = parent.children.findIndex((item) => item.id === selectedGraphic.id);
-                            parent.children.splice(index, 1);
-                        }
-                    }));
-                    setSelectedGraphicId(null);
-                }
-                break;
-            case 113:
-                if (selectedGraphic) {
-                    updateGraphic(selectedGraphic.id, 'visible', !selectedGraphic.visible, true);
-                }
-                break;
-            default:
-                break;
-        }
-
-        // Check copy-paste
-        const key = event.which || event.keyCode; // keyCode detection
-        const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
-        if (key === 86 && ctrl && copied.current) {
-            const copy = copyGraphic(copied.current);
-            setConfig((prev) => [...prev, copy]);
-        } else if (key === 67 && ctrl) {
-            copied.current = selectedGraphic;
-        }
     };
 
     const onDragStart = useCallback((event, graphic) => {
@@ -154,7 +108,7 @@ const GraphicList = ({ matches }) => {
                 </Menu>
             </Toolbar>
             <Divider />
-            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding onKeyDown={onKeyDown}>
+            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding>
                 {config?.map((graphic, index) => (
                     <Controller
                         key={graphic.id}
