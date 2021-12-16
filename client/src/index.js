@@ -4,8 +4,6 @@ import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material/styles';
 import { ContextProvider } from './Context';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DateAdapter from '@mui/lab/AdapterMoment';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import CssBaseline from '@mui/material/CssBaseline';
 import Notifier from './common/Notifier';
 import './index.css';
@@ -23,11 +21,9 @@ ReactDOM.render(
                         <>
                             <Notifier />
                             <CssBaseline />
-                            <LocalizationProvider dateAdapter={DateAdapter}>
-                                <ContextProvider>
-                                    <Main />
-                                </ContextProvider>
-                            </LocalizationProvider>
+                            <ContextProvider>
+                                <Main />
+                            </ContextProvider>
                         </>
                     } />
                     <Route path='/output' element={<Output />} />
