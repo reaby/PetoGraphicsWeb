@@ -12,6 +12,7 @@ import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, 
 import findParentGraphic from '../common/functions/findParentGraphic';
 import findGraphic from '../common/functions/findGraphic';
 import copyGraphic from '../common/functions/copyGraphic';
+import updateChildren from '../common/functions/updateChildren';
 import { Context } from '../Context';
 import Controller from './Controller';
 import produce from 'immer';
@@ -40,6 +41,12 @@ const GraphicList = ({ matches }) => {
 
     const onKeyDown = (event) => {
         switch(event.keyCode) {
+            case 27: {
+                setConfig((prev) => produce(prev, (newConfig) => {
+                    updateChildren(newConfig, 'visible', false);
+                }));
+                break;
+            }
             case 46:
                 if (!live && selectedGraphic) {
                     setConfig((prev) => produce(prev, (newConfig) => {
