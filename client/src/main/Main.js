@@ -20,7 +20,6 @@ const Main = () => {
     const copied = useRef();
 
     const onKeyDown = (event) => {
-        console.log(event.target);
         const key = event.which || event.keyCode; // keyCode detection
         const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
         switch(key) {
