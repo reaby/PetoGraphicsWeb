@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 const SliderImage = styled.img`
@@ -55,6 +56,11 @@ const Slider = ({ graphic, project }) => {
             <SliderImage alt='slider-source' visible={sliderImage2Visible} src={sliderImage2Source} />
         </>
     );
+};
+
+Slider.propTypes = {
+    graphic: PropTypes.object.isRequired,
+    project: PropTypes.string.isRequired
 };
 
 export default Slider;

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 const Playlist = ({ graphic, project, updateGraphic }) => {
     const playlistRef = useRef();
@@ -61,6 +62,12 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
     return (
         <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />
     );
+};
+
+Playlist.propTypes = {
+    graphic: PropTypes.object.isRequired,
+    project: PropTypes.string.isRequired,
+    updateGraphic: PropTypes.func.isRequired
 };
 
 export default Playlist;

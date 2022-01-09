@@ -15,6 +15,7 @@
         "prefer-const": ["error"],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
-        "semi-spacing": ["error", { "before": false, "after": true }]
+        "semi-spacing": ["error", { "before": false, "after": true }],
+        "react/prop-types": ["error"]
     }
 }

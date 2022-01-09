@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import useFetch from './common/hooks/useFetch';
 import fetch from './common/functions/fetchWrap';
 import { showMessage } from './common/Notifier';
@@ -98,4 +99,8 @@ export const ContextProvider = ({ children }) => {
             {children}
         </Context.Provider>
     );
+};
+
+ContextProvider.propTypes = {
+    children: PropTypes.node.isRequired
 };

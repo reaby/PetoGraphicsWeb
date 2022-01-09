@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 const Video = ({ graphic, project, updateGraphic }) => {
     const videoRef = useRef();
@@ -33,6 +34,12 @@ const Video = ({ graphic, project, updateGraphic }) => {
     return (
         <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />
     );
+};
+
+Video.propTypes = {
+    graphic: PropTypes.object.isRequired,
+    project: PropTypes.string.isRequired,
+    updateGraphic: PropTypes.func.isRequired
 };
 
 export default Video;
