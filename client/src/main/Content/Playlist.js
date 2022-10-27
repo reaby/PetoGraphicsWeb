@@ -14,9 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
-import UploadButton from '../common/UploadButton';
-import isVideo from '../common/functions/isVideo';
-import getVideoDuration from '../common/functions/getVideoDuration';
+import UploadButton from 'common/components/UploadButton';
+import isVideo from 'common/utils/isVideo';
+import getVideoDuration from 'common/utils/getVideoDuration';
+import useFiles from 'common/hooks/useFiles';
 
 const getPlaylistDuration = (sources, project) => {
     return new Promise((resolve, reject) => {
@@ -26,7 +27,8 @@ const getPlaylistDuration = (sources, project) => {
     });
 };
 
-const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project }) => {
+const Playlist = ({ id, playlist, updateGraphic, project }) => {
+    const { data: files, refetch: refreshFiles } = useFiles();
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
@@ -75,7 +77,7 @@ const Playlist = ({ id, playlist, updateGraphic, files, refreshFiles, project })
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
-                        <UploadButton identifier='upload-playlist-video' accept='video/*' onUpload={(values) => {
+                        <UploadButton accept='video/*' onUpload={(values) => {
                             const newSources = [...playlist.sources, ...Array.from(values).map((item) => item.name)];
                             updateGraphic(id, 'playlist.sources', newSources);
                             refreshFiles();
@@ -123,8 +125,6 @@ Playlist.propTypes = {
     id: PropTypes.string.isRequired,
     playlist: PropTypes.object.isRequired,
     updateGraphic: PropTypes.func.isRequired,
-    files: PropTypes.array.isRequired,
-    refreshFiles: PropTypes.func.isRequired,
     project: PropTypes.string.isRequired,
 };
 

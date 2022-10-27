@@ -2,7 +2,7 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Collapse from '../common/Collapse';
+import Collapse from 'common/components/Collapse';
 import AnimationProperties from './AnimationProperties';
 
 const AnimationSettings = memo(({ id, animationIn, animationOut, updateGraphic, collapsed, setCollapsed }) => (

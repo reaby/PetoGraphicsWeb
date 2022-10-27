@@ -13,10 +13,12 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
-import UploadButton from '../common/UploadButton';
-import isImage from '../common/functions/isImage';
+import UploadButton from 'common/components/UploadButton';
+import isImage from 'common/utils/isImage';
+import useFiles from 'common/hooks/useFiles';
 
-const Slider = ({ id, slider, updateGraphic, files, refreshFiles, project }) => {
+const Slider = ({ id, slider, updateGraphic }) => {
+    const { data: files, refetch: refreshFiles } = useFiles();
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
@@ -46,7 +48,7 @@ const Slider = ({ id, slider, updateGraphic, files, refreshFiles, project }) => 
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
-                        <UploadButton identifier='upload-imageslider-video' accept='image/*' onUpload={(values) => {
+                        <UploadButton accept='image/*' onUpload={(values) => {
                             const newSources = [...slider.sources, ...Array.from(values).map((item) => item.name)];
                             updateGraphic(id, 'slider.sources', newSources);
                             refreshFiles();
@@ -92,10 +94,7 @@ const Slider = ({ id, slider, updateGraphic, files, refreshFiles, project }) => 
 Slider.propTypes = {
     id: PropTypes.string.isRequired,
     slider: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    files: PropTypes.array.isRequired,
-    refreshFiles: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired,
+    updateGraphic: PropTypes.func.isRequired
 };
 
 export default Slider;

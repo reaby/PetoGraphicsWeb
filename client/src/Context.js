@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import useFetch from './common/hooks/useFetch';
-import fetch from './common/functions/fetchWrap';
-import { showMessage } from './common/Notifier';
-import findGraphic from './common/functions/findGraphic';
-import updateChildren from './common/functions/updateChildren';
+import fetch from 'common/utils/fetchWrap';
+import { showMessage } from 'common/components/Notifier';
+import findGraphic from 'common/utils/findGraphic';
+import updateChildren from 'common/utils/updateChildren';
 import produce from 'immer';
 import _set from 'lodash/set';
 
@@ -18,9 +17,6 @@ export const ContextProvider = ({ children }) => {
     const [live, setLive] = useState(false);
     const [countdowns, setCountdowns] = useState([]);
     const [selectedGraphicId, setSelectedGraphicId] = useState(null);
-    const [{ data: fonts, refresh: refreshFonts }] = useFetch('/api/fonts');
-    const [{ data: projects, refresh: refreshProjects }] = useFetch('/api/projects');
-    const [{ data: files, refresh: refreshFiles }] = useFetch('/api/files');
 
     const selectedGraphic = useMemo(() => {
         return config && selectedGraphicId && findGraphic(config, selectedGraphicId);
@@ -90,10 +86,7 @@ export const ContextProvider = ({ children }) => {
                 live, setLive,
                 countdowns, setCountdowns,
                 setSelectedGraphicId,
-                selectedGraphic, updateGraphic,
-                projects, refreshProjects,
-                fonts: fonts ?? [], refreshFonts,
-                files: files ?? [], refreshFiles
+                selectedGraphic, updateGraphic
             }}
         >
             {children}

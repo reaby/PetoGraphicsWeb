@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import Collapse from '../common/Collapse';
+import Collapse from 'common/components/Collapse';
 import TextProperties from './TextProperties';
 
-const TextSettings = memo(({ id, texts, updateGraphic, fonts, collapsed, setCollapsed }) => {
+const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }) => {
     const [selectedTextIndex, setSelectedTextIndex] = useState(0);
     const selectedText = useMemo(() => texts[selectedTextIndex], [texts, selectedTextIndex]);
     return (
@@ -32,7 +32,6 @@ const TextSettings = memo(({ id, texts, updateGraphic, fonts, collapsed, setColl
                     id={id}
                     selectedTextIndex={selectedTextIndex}
                     updateGraphic={updateGraphic}
-                    fonts={fonts}
                 />
             )}
         </Collapse>
@@ -43,7 +42,6 @@ TextSettings.propTypes = {
     id: PropTypes.string.isRequired,
     texts: PropTypes.array.isRequired,
     updateGraphic: PropTypes.func.isRequired,
-    fonts: PropTypes.array.isRequired,
     collapsed: PropTypes.bool.isRequired,
     setCollapsed: PropTypes.func.isRequired
 };

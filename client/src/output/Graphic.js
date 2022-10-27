@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
+import Box from '@mui/material/Box';
 import Video from './Video';
 import Playlist from './Playlist';
 import Slider from './Slider';
@@ -49,8 +50,8 @@ const computeAnimation = (graphic, isIn) => {
 
 const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
     return (
-        <div
-            style={{
+        <Box
+            sx={{
                 zIndex: graphicIndex + 1,
                 position: 'absolute',
                 left: graphic.left,
@@ -91,7 +92,7 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
             {graphic.children.map((child) => (
                 <Graphic key={child.id} graphic={child} graphicIndex={graphicIndex} project={project} updateGraphic={updateGraphic} />
             ))}
-        </div>
+        </Box>
     );
 };
 

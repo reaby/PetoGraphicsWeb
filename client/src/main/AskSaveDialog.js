@@ -5,8 +5,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import fetch from '../common/functions/fetchWrap';
-import { showMessage } from '../common/Notifier';
+import fetch from 'common/utils/fetchWrap';
+import { showMessage } from 'common/components/Notifier';
 
 const AskSaveDialog = ({ open, onClose, project, config }) => (
     <Dialog fullWidth open={open} onClose={onClose}>

@@ -4,7 +4,7 @@ import GeneralSettings from './GeneralSettings';
 import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
 
-const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts, project }) => {
+const Settings = ({ selectedGraphic, updateGraphic, project }) => {
     const [generalCollapsed, setGeneralCollapsed] = useState(false);
     const [animationCollapsed, setAnimationCollapsed] = useState(true);
     const [textCollapsed, setTextCollapsed] = useState(true);
@@ -23,8 +23,6 @@ const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts, 
                 updateGraphic={updateGraphic}
                 collapsed={generalCollapsed}
                 setCollapsed={setGeneralCollapsed}
-                files={files}
-                refreshFiles={refreshFiles}
                 project={project}
             />
             <AnimationSettings
@@ -40,7 +38,6 @@ const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts, 
                     id={selectedGraphic.id}
                     texts={selectedGraphic.texts}
                     updateGraphic={updateGraphic}
-                    fonts={fonts}
                     collapsed={textCollapsed}
                     setCollapsed={setTextCollapsed}
                 />
@@ -52,9 +49,6 @@ const Settings = ({ selectedGraphic, updateGraphic, files, refreshFiles, fonts, 
 Settings.propTypes = {
     selectedGraphic: PropTypes.object.isRequired,
     updateGraphic: PropTypes.func.isRequired,
-    files: PropTypes.array.isRequired,
-    refreshFiles: PropTypes.func.isRequired,
-    fonts: PropTypes.array.isRequired,
     project: PropTypes.string.isRequired
 };
 

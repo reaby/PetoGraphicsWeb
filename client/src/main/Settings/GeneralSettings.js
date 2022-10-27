@@ -17,12 +17,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import ClearIcon from '@mui/icons-material/Clear';
-import UploadButton from '../common/UploadButton';
-import Collapse from '../common/Collapse';
-import isImage from '../common/functions/isImage';
-import getImageSizes from '../common/functions/getImageSizes';
+import UploadButton from 'common/components/UploadButton';
+import Collapse from 'common/components/Collapse';
+import isImage from 'common/utils/isImage';
+import getImageSizes from 'common/utils/getImageSizes';
+import useFiles from 'common/hooks/useFiles';
 
-const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed, files, refreshFiles, project }) => {
+const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width, height, updateGraphic, collapsed, setCollapsed, project }) => {
+    const { data: files, refetch: refreshFiles } = useFiles();
     const [matchDialogOpen, setMatchDialogOpen] = useState(false);
     return (
         <Collapse title='General Settings' collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -56,7 +58,7 @@ const GeneralSettings = memo(({ id, name, image, imageStretch, left, top, width,
                         <ClearIcon />
                     </IconButton>
                 </Tooltip>
-                <UploadButton identifier='upload-image' accept='image/*' onUpload={(value) => {
+                <UploadButton accept='image/*' onUpload={(value) => {
                     updateGraphic(id, 'image', value[0]?.name);
                     setMatchDialogOpen(true);
                     refreshFiles();
@@ -152,8 +154,6 @@ GeneralSettings.propTypes = {
     updateGraphic: PropTypes.func.isRequired,
     collapsed: PropTypes.bool.isRequired,
     setCollapsed: PropTypes.func.isRequired,
-    files: PropTypes.array.isRequired,
-    refreshFiles: PropTypes.func.isRequired,
     project: PropTypes.string.isRequired
 };
 

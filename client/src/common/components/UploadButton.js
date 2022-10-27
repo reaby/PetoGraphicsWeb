@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import fetch from '../common/functions/fetchWrap';
-import { showMessage } from '../common/Notifier';
+import fetch from 'common/utils/fetchWrap';
+import { showMessage } from 'common/components/Notifier';
 
-const UploadButton = ({ accept, identifier, onUpload }) => {
+const UploadButton = ({ accept, onUpload }) => {
+    const id = useId();
     const [uploading, setUploading] = useState(false);
 
     if (uploading) {
@@ -20,9 +21,9 @@ const UploadButton = ({ accept, identifier, onUpload }) => {
     }
     return (
         <Tooltip title='Upload'>
-            <label htmlFor={identifier}>
+            <label htmlFor={id}>
                 <input
-                    id={identifier}
+                    id={id}
                     accept={accept}
                     type='file'
                     multiple
@@ -54,7 +55,6 @@ const UploadButton = ({ accept, identifier, onUpload }) => {
 
 UploadButton.propTypes = {
     accept: PropTypes.string.isRequired,
-    identifier: PropTypes.string.isRequired,
     onUpload: PropTypes.func.isRequired
 };
 

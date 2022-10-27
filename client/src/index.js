@@ -1,37 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Suspense } from 'react';
+import { createRoot } from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material/styles';
 import { ContextProvider } from './Context';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CssBaseline from '@mui/material/CssBaseline';
-import Notifier from './common/Notifier';
+import Notifier from 'common/components/Notifier';
 import './index.css';
 import theme from './theme';
 
 import Main from './main/Main';
 import Output from './output/Output';
 
-ReactDOM.render(
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            suspense: true
+        }
+    }
+});
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
     <React.StrictMode>
         <BrowserRouter>
-            <ThemeProvider theme={theme}>
-                <Routes>
-                    <Route path='/' exact element={
-                        <>
-                            <Notifier />
-                            <CssBaseline />
-                            <ContextProvider>
-                                <Main />
-                            </ContextProvider>
-                        </>
-                    } />
-                    <Route path='/output' element={<Output />} />
-                </Routes>
-            </ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider theme={theme}>
+                    <Suspense fallback={<div />}>
+                        <Routes>
+                            <Route path='/' exact element={
+                                <>
+                                    <Notifier />
+                                    <CssBaseline />
+                                    <ContextProvider>
+                                        <Main />
+                                    </ContextProvider>
+                                </>
+                            } />
+                            <Route path='/output' element={<Output />} />
+                        </Routes>
+                    </Suspense>
+                </ThemeProvider>
+            </QueryClientProvider>
         </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

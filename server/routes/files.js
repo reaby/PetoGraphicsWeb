@@ -16,6 +16,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/files', async (req, res) => {
+    if (!req.app.locals.project) {
+        res.status(200);
+        res.send([]);
+        return;
+    }
     try {
         const files = await fsp.readdir(`./configs/${req.app.locals.project}`, { withFileTypes: true });
         const filenames = files.map((file) => file.name);

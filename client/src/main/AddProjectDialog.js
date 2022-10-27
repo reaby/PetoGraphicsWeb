@@ -6,8 +6,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import fetch from '../common/functions/fetchWrap';
-import { showMessage } from '../common/Notifier';
+import fetch from 'common/utils/fetchWrap';
+import { showMessage } from 'common/components/Notifier';
 
 const AddProjectDialog = ({ open, onClose, onAdd }) => {
     const [project, setProject] = useState('');

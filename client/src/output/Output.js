@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Global, css } from '@emotion/react';
-import findGraphic from '../common/functions/findGraphic';
-import updateChildren from '../common/functions/updateChildren';
+import findGraphic from 'common/utils/findGraphic';
+import updateChildren from 'common/utils/updateChildren';
 import produce from 'immer';
 import _set from 'lodash/set';
-import useFetch from '../common/hooks/useFetch';
 import Graphic from './Graphic';
+import useFonts from 'common/hooks/useFonts';
 
 let socket;
 let clockInterval;
@@ -64,7 +64,7 @@ const Output = () => {
     const [clock, setClock] = useState('00:00');
     const [project, setProject] = useState(null);
     const [fontsLoaded, setFontsLoaded] = useState(false);
-    const [{ data: fonts }] = useFetch('/api/fonts');
+    const { data: fonts } = useFonts();
 
     const updateGraphic = useCallback((id, path, value, updateChilds = false) => {
         setConfig((prev) => {

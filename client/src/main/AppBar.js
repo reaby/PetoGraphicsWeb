@@ -6,14 +6,16 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
-import fetch from '../common/functions/fetchWrap';
-import { showMessage } from '../common/Notifier';
+import fetch from 'common/utils/fetchWrap';
+import { showMessage } from 'common/components/Notifier';
 import { Context } from '../Context';
 import AddProjectDialog from './AddProjectDialog';
 import AskSaveDialog from './AskSaveDialog';
+import useProjects from 'common/hooks/useProjects';
 
 const AppBar = () => {
-    const { config, project, setProject, live, setLive, projects, refreshProjects } = useContext(Context);
+    const { config, project, setProject, live, setLive } = useContext(Context);
+    const { data: projects, refetch: refreshProjects } = useProjects();
     const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
     const [askSaveDialogOpen, setAskSaveDialogOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);

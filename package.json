@@ -5,21 +5,21 @@
     "private": false,
     "license": "MIT",
     "scripts": {
-      "postinstall": "npm run-script install:client && npm run-script install:server",
+      "postinstall": "npm run install:client && npm run install:server",
       "install:client": "cd client && npm install",
       "install:server": "cd server && npm install",
       "start:client": "cd client && npm start",
       "start:server": "cd server && npm start",
-      "start": "concurrently --kill-others-on-fail \"npm run-script start:server\" \"npm run-script start:client\"",
+      "start": "concurrently --kill-others-on-fail \"npm run start:server\" \"npm run start:client\"",
       "build": "build.bat",
       "test:client": "cd client && npm test -- --watchAll=false",
       "test:server": "cd server && npm test",
-      "test": "npm run-script test:server && npm run-script test:client"
+      "test": "npm run test:server && npm run test:client"
     },
     "dependencies": {
-      "concurrently": "^6.4.0",
+      "concurrently": "^7.5.0",
       "husky": "^4.3.8",
-      "lint-staged": "^12.0.0"
+      "lint-staged": "^13.0.0"
     }
   }
   

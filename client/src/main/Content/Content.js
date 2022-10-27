@@ -1,13 +1,13 @@
 import { useState, memo } from 'react';
 import PropTypes from 'prop-types';
-import Collapse from '../common/Collapse';
+import Collapse from 'common/components/Collapse';
 import Texts from './Texts';
 import Video from './Video';
 import Countdown from './Countdown';
 import Playlist from './Playlist';
 import Slider from './Slider';
 
-const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) => {
+const Content = memo(({ graphic, updateGraphic, project }) => {
     const [collapsed, setCollapsed] = useState(false);
     let content;
     switch (graphic.type) {
@@ -16,7 +16,7 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
             return null;
 
         case 'VIDEO':
-            content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
+            content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} project={project} />;
             break;
 
         case 'COUNTDOWN':
@@ -24,11 +24,11 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
             break;
 
         case 'PLAYLIST':
-            content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
+            content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} project={project} />;
             break;
 
         case 'SLIDER':
-            content = <Slider id={graphic.id} slider={graphic.slider} updateGraphic={updateGraphic} files={files} refreshFiles={refreshFiles} project={project} />;
+            content = <Slider id={graphic.id} slider={graphic.slider} updateGraphic={updateGraphic} project={project} />;
             break;
 
         default:
@@ -45,9 +45,7 @@ const Content = memo(({ graphic, updateGraphic, project, files, refreshFiles }) 
 Content.propTypes = {
     graphic: PropTypes.object.isRequired,
     project: PropTypes.string.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    files: PropTypes.array.isRequired,
-    refreshFiles: PropTypes.func.isRequired,
+    updateGraphic: PropTypes.func.isRequired
 };
 
 export default Content;

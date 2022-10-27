@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, Suspense } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -6,16 +6,16 @@ import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Context } from '../Context';
 import AppBar from './AppBar';
-import GraphicList from '../list/List';
-import GraphicSettings from '../settings/Settings';
-import GraphicContent from '../content/Content';
-import findParentGraphic from '../common/functions/findParentGraphic';
-import copyGraphic from '../common/functions/copyGraphic';
-import updateChildren from '../common/functions/updateChildren';
+import GraphicList from './List';
+import GraphicSettings from './Settings';
+import GraphicContent from './Content';
+import findParentGraphic from 'common/utils/findParentGraphic';
+import copyGraphic from 'common/utils/copyGraphic';
+import updateChildren from 'common/utils/updateChildren';
 import produce from 'immer';
 
 const Main = () => {
-    const { projects, config, setConfig, project, selectedGraphic, setSelectedGraphicId, updateGraphic, files, refreshFiles, fonts, live } = useContext(Context);
+    const { config, setConfig, project, selectedGraphic, setSelectedGraphicId, updateGraphic, live } = useContext(Context);
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const copied = useRef();
 
@@ -70,7 +70,7 @@ const Main = () => {
         }
     };
 
-    if (!projects || !config) return null;
+    if (!config) return null;
 
     return (
         <>
@@ -80,34 +80,33 @@ const Main = () => {
                     <Grid container spacing={3} direction={matches ? 'row' : 'column'} sx={{ height: 'calc(100% + 24px)' }}>
                         <Grid item xs={7} sx={{ width: '100%', height: matches ? '100%' : '50%' }} onKeyDown={onKeyDown} tabIndex='0'>
                             <Paper sx={{ height: '100%' }}>
-                                <GraphicList matches={matches} />
+                                <Suspense fallback={<div />}>
+                                    <GraphicList matches={matches} />
+                                </Suspense>
                             </Paper>
                         </Grid>
                         <Grid item xs={5} sx={{ height: matches ? '100%' : '30%' }}>
                             <Paper sx={{ width: '100%', height: '100%', overflowY: 'scroll' }}>
-                                {selectedGraphic && (
-                                    <Box sx={{ margin: 2 }}>
-                                        <Grid container spacing={3}>
-                                            <GraphicContent
-                                                graphic={selectedGraphic}
-                                                updateGraphic={updateGraphic}
-                                                files={files}
-                                                refreshFiles={refreshFiles}
-                                                project={project}
-                                            />
-                                            {!live && (
-                                                <GraphicSettings
-                                                    selectedGraphic={selectedGraphic}
+                                <Suspense fallback={<div />}>
+                                    {selectedGraphic && (
+                                        <Box sx={{ margin: 2 }}>
+                                            <Grid container spacing={3}>
+                                                <GraphicContent
+                                                    graphic={selectedGraphic}
                                                     updateGraphic={updateGraphic}
-                                                    fonts={fonts}
-                                                    files={files}
-                                                    refreshFiles={refreshFiles}
                                                     project={project}
                                                 />
-                                            )}
-                                        </Grid>
-                                    </Box>
-                                )}
+                                                {!live && (
+                                                    <GraphicSettings
+                                                        selectedGraphic={selectedGraphic}
+                                                        updateGraphic={updateGraphic}
+                                                        project={project}
+                                                    />
+                                                )}
+                                            </Grid>
+                                        </Box>
+                                    )}
+                                </Suspense>
                             </Paper>
                         </Grid>
                     </Grid>

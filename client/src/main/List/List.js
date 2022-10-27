@@ -9,9 +9,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
 import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST, SLIDER } from './Templates';
-import findParentGraphic from '../common/functions/findParentGraphic';
-import findGraphic from '../common/functions/findGraphic';
-import { Context } from '../Context';
+import findParentGraphic from 'common/utils/findParentGraphic';
+import findGraphic from 'common/utils/findGraphic';
+import { Context } from '../../Context';
 import Controller from './Controller';
 import produce from 'immer';
 
