@@ -14,5 +14,5 @@ cd dist
 call npm install --only=prod
 
 :: Create executable
-call nexe bundle.js -b -o PetoGraphicsWeb.exe --ico ..\client\public\Icon.ico
+call nexe bundle.js -b -o PetoGraphicsWeb.exe --ico ..\client\favicon.ico
 cd ..
