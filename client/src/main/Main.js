@@ -15,34 +15,50 @@ import updateChildren from 'common/utils/updateChildren';
 import produce from 'immer';
 
 const Main = () => {
-    const { config, setConfig, project, selectedGraphic, setSelectedGraphicId, updateGraphic, live } = useContext(Context);
+    const {
+        config,
+        setConfig,
+        project,
+        selectedGraphic,
+        setSelectedGraphicId,
+        updateGraphic,
+        live,
+    } = useContext(Context);
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const copied = useRef();
 
     const onKeyDown = (event) => {
         const key = event.which || event.keyCode; // keyCode detection
-        const ctrl = event.ctrlKey ? event.ctrlKey : ((key === 17) ? true : false); // ctrl detection
-        switch(key) {
+        const ctrl = event.ctrlKey ? event.ctrlKey : key === 17 ? true : false; // ctrl detection
+        switch (key) {
             // Hide all
             case 27: {
-                setConfig((prev) => produce(prev, (newConfig) => {
-                    updateChildren(newConfig, 'visible', false);
-                }));
+                setConfig((prev) =>
+                    produce(prev, (newConfig) => {
+                        updateChildren(newConfig, 'visible', false);
+                    })
+                );
                 break;
             }
             // Delete
             case 46:
                 if (!live && selectedGraphic) {
-                    setConfig((prev) => produce(prev, (newConfig) => {
-                        const parent = findParentGraphic(newConfig, selectedGraphic.id);
-                        if (!parent) {
-                            const index = newConfig.findIndex((item) => item.id === selectedGraphic.id);
-                            newConfig.splice(index, 1);
-                        } else {
-                            const index = parent.children.findIndex((item) => item.id === selectedGraphic.id);
-                            parent.children.splice(index, 1);
-                        }
-                    }));
+                    setConfig((prev) =>
+                        produce(prev, (newConfig) => {
+                            const parent = findParentGraphic(newConfig, selectedGraphic.id);
+                            if (!parent) {
+                                const index = newConfig.findIndex(
+                                    (item) => item.id === selectedGraphic.id
+                                );
+                                newConfig.splice(index, 1);
+                            } else {
+                                const index = parent.children.findIndex(
+                                    (item) => item.id === selectedGraphic.id
+                                );
+                                parent.children.splice(index, 1);
+                            }
+                        })
+                    );
                     setSelectedGraphicId(null);
                 }
                 break;
@@ -76,21 +92,42 @@ const Main = () => {
         <>
             <AppBar />
             {project && (
-                <Container maxWidth={false} sx={{ height: 'calc(100vh - 64px)', pt: 3, pb: 3 }}>
-                    <Grid container spacing={3} direction={matches ? 'row' : 'column'} sx={{ height: 'calc(100% + 24px)' }}>
-                        <Grid item xs={7} sx={{ width: '100%', height: matches ? '100%' : '50%' }} onKeyDown={onKeyDown} tabIndex='0'>
+                <Container
+                    maxWidth={false}
+                    sx={{ height: 'calc(100vh - 64px)', pt: 3, pb: 3 }}
+                >
+                    <Grid
+                        container
+                        spacing={3}
+                        direction={matches ? 'row' : 'column'}
+                        sx={{ height: 'calc(100% + 24px)' }}
+                    >
+                        <Grid
+                            item
+                            xs={7}
+                            sx={{ width: '100%', height: matches ? '100%' : '50%' }}
+                            onKeyDown={onKeyDown}
+                            tabIndex='0'
+                        >
                             <Paper sx={{ height: '100%' }}>
                                 <Suspense fallback={<div />}>
                                     <GraphicList matches={matches} />
                                 </Suspense>
                             </Paper>
                         </Grid>
-                        <Grid item xs={5} sx={{ height: matches ? '100%' : '30%' }}>
+                        <Grid
+                            item
+                            xs={5}
+                            sx={{ height: matches ? '100%' : '30%' }}
+                        >
                             <Paper sx={{ width: '100%', height: '100%', overflowY: 'scroll' }}>
                                 <Suspense fallback={<div />}>
                                     {selectedGraphic && (
                                         <Box sx={{ margin: 2 }}>
-                                            <Grid container spacing={3}>
+                                            <Grid
+                                                container
+                                                spacing={3}
+                                            >
                                                 <GraphicContent
                                                     graphic={selectedGraphic}
                                                     updateGraphic={updateGraphic}

@@ -9,7 +9,11 @@ import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
 
 const AskSaveDialog = ({ open, onClose, project, config }) => (
-    <Dialog fullWidth open={open} onClose={onClose}>
+    <Dialog
+        fullWidth
+        open={open}
+        onClose={onClose}
+    >
         <DialogTitle>Save current project</DialogTitle>
         <DialogContent>
             <DialogContentText>
@@ -17,25 +21,31 @@ const AskSaveDialog = ({ open, onClose, project, config }) => (
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-            <Button color='primary' onClick={onClose}>
+            <Button
+                color='primary'
+                onClick={onClose}
+            >
                 Skip
             </Button>
-            <Button color='primary' onClick={() => {
-                fetch(`/api/projects/${project}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        config
+            <Button
+                color='primary'
+                onClick={() => {
+                    fetch(`/api/projects/${project}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            config,
+                        }),
                     })
-                })
-                    .then(() => {
-                        showMessage('Config saved');
-                        onClose();
-                    })
-                    .catch(console.error);
-            }}>
+                        .then(() => {
+                            showMessage('Config saved');
+                            onClose();
+                        })
+                        .catch(console.error);
+                }}
+            >
                 Save
             </Button>
         </DialogActions>
@@ -46,7 +56,7 @@ AskSaveDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     project: PropTypes.string,
-    config: PropTypes.array.isRequired
+    config: PropTypes.array.isRequired,
 };
 
 export default AskSaveDialog;

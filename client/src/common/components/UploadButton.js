@@ -15,7 +15,10 @@ const UploadButton = ({ accept, onUpload }) => {
     if (uploading) {
         return (
             <Box sx={{ height: 40, padding: 1 }}>
-                <CircularProgress size={24} sx={{ display: 'inline-block' }} />
+                <CircularProgress
+                    size={24}
+                    sx={{ display: 'inline-block' }}
+                />
             </Box>
         );
     }
@@ -36,7 +39,7 @@ const UploadButton = ({ accept, onUpload }) => {
                         setUploading(true);
                         fetch('/api/files', {
                             method: 'POST',
-                            body: data
+                            body: data,
                         })
                             .then(() => onUpload(event.target.files))
                             .catch((error) => {
@@ -55,7 +58,7 @@ const UploadButton = ({ accept, onUpload }) => {
 
 UploadButton.propTypes = {
     accept: PropTypes.string.isRequired,
-    onUpload: PropTypes.func.isRequired
+    onUpload: PropTypes.func.isRequired,
 };
 
 export default UploadButton;

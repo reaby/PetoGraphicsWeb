@@ -28,8 +28,9 @@ const getConfigFonts = (config, fonts) => {
         for (const text of graphic.texts) {
             const variant = getFontVariant(text);
             if (!fontMap.has(`${text.fontFamily}*${variant}`)) {
-                const filepath = fonts.find((font) => font.family === text.fontFamily && font.files[variant] != null)?.files[variant]
-                    .replace('C:\\', '')
+                const filepath = fonts
+                    .find((font) => font.family === text.fontFamily && font.files[variant] != null)
+                    ?.files[variant].replace('C:\\', '')
                     .replace(/\\/g, '/');
                 if (filepath) {
                     fontMap.set(`${text.fontFamily}*${variant}`, {
@@ -37,7 +38,7 @@ const getConfigFonts = (config, fonts) => {
                         variant: variant,
                         style: text.fontStyle,
                         weight: text.fontWeight,
-                        filepath: filepath
+                        filepath: filepath,
                     });
                 }
             }
@@ -50,9 +51,9 @@ const getConfigFonts = (config, fonts) => {
 const loadFonts = (config, fonts) => {
     const configFonts = Array.from(getConfigFonts(config, fonts), ([name, value]) => value);
     for (const font of configFonts) {
-        const fontFace = new FontFace(font.family, `url(/static/${(escape(font.filepath))})`, {
+        const fontFace = new FontFace(font.family, `url(/static/${escape(font.filepath)})`, {
             style: font.style,
-            weight: font.weight
+            weight: font.weight,
         });
         document.fonts.add(fontFace);
         fontFace.load().catch(console.error);
@@ -81,7 +82,11 @@ const Output = () => {
     }, []);
 
     useEffect(() => {
-        socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
+        socket = new WebSocket(
+            process.env.NODE_ENV === 'production'
+                ? window.location.href.replace('http', 'ws')
+                : 'ws://localhost:5000'
+        );
         socket.onmessage = (msg) => {
             const msgData = JSON.parse(msg.data);
             setConfig(msgData.payload.config);

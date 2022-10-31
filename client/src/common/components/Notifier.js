@@ -48,16 +48,16 @@ export const showMessage = (value, error = false) => {
 Notifier.propTypes = {
     autoHideDuration: PropTypes.number.isRequired,
     anchorOrigin: PropTypes.object.isRequired,
-    transitionComponent: PropTypes.elementType.isRequired
+    transitionComponent: PropTypes.elementType.isRequired,
 };
 
 Notifier.defaultProps = {
     autoHideDuration: 4000,
     anchorOrigin: {
         vertical: 'bottom',
-        horizontal: 'left'
+        horizontal: 'left',
     },
-    transitionComponent: Grow
+    transitionComponent: Grow,
 };
 
 export default Notifier;

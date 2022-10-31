@@ -32,13 +32,23 @@ wss.on('connection', (ws) => {
             console.log(`Received message => ${type}`);
         }
     });
-    ws.send(JSON.stringify({ type: 'config', payload: { project: app.locals.project, config: app.locals.config } }));
+    ws.send(
+        JSON.stringify({
+            type: 'config',
+            payload: { project: app.locals.project, config: app.locals.config },
+        })
+    );
 });
 
 wss.broadcastConfig = (ignoreClient = null) => {
     wss.clients.forEach((client) => {
         if (client.id !== ignoreClient) {
-            client.send(JSON.stringify({ type: 'config', payload: { project: app.locals.project, config: app.locals.config } }));
+            client.send(
+                JSON.stringify({
+                    type: 'config',
+                    payload: { project: app.locals.project, config: app.locals.config },
+                })
+            );
         }
     });
 };

@@ -10,8 +10,15 @@ const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }
     const [selectedTextIndex, setSelectedTextIndex] = useState(0);
     const selectedText = useMemo(() => texts[selectedTextIndex], [texts, selectedTextIndex]);
     return (
-        <Collapse title='Text Settings' collapsed={collapsed} setCollapsed={setCollapsed}>
-            <Grid item xs={12}>
+        <Collapse
+            title='Text Settings'
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+        >
+            <Grid
+                item
+                xs={12}
+            >
                 <TextField
                     label='Text'
                     value={selectedTextIndex}
@@ -20,7 +27,10 @@ const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }
                     select
                 >
                     {texts.map((text, index) => (
-                        <MenuItem key={index} value={index}>
+                        <MenuItem
+                            key={index}
+                            value={index}
+                        >
                             Text {index + 1}
                         </MenuItem>
                     ))}
@@ -43,7 +53,7 @@ TextSettings.propTypes = {
     texts: PropTypes.array.isRequired,
     updateGraphic: PropTypes.func.isRequired,
     collapsed: PropTypes.bool.isRequired,
-    setCollapsed: PropTypes.func.isRequired
+    setCollapsed: PropTypes.func.isRequired,
 };
 
 export default TextSettings;

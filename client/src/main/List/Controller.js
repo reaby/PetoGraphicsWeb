@@ -20,77 +20,122 @@ const secondsToTime = (input) => {
     return `${('0' + hours).slice(-2)}:${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`;
 };
 
-const Controller = memo(({ graphic, selectedGraphicId, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns, onDragStart, onDragOver, onDrop, ...props }) => {
-    const [collapsed, setCollapsed] = useState(true);
-    console.log(graphic.id, 'rendered');
-    return (
-        <>
-            <ListItem
-                onClick={() => setSelectedGraphicId(graphic.id)}
-                disablePadding
-                draggable
-                onDragStart={(event) => onDragStart(event, graphic)}
-                onDragOver={onDragOver}
-                onDrop={(event) => onDrop(event, graphic)}
-                sx={{ height: 56 }}
-                {...props}
-            >
-                <ListItemButton selected={selectedGraphicId === graphic.id} disableRipple>
-                    {graphic.children.length > 0 && (
-                        <Box onClick={() => setCollapsed((prev) => !prev)} sx={{ display: 'flex', alignItems: 'center' }}>
-                            {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon /> }
-                        </Box>
-                    )}
-                    <ListItemText primary={graphic.name} />
-                    <ListItemSecondaryAction sx={{ display: 'flex', alignItems: 'center' }}>
-                        {graphic.countdown && <CountdownActions graphic={graphic} updateGraphic={updateGraphic} countdowns={countdowns} setCountdowns={setCountdowns} />}
-                        {graphic.video && (
-                            <Typography variant='subtitle1' sx={{ mr: 2 }}>
-                                {graphic.video.currentTime === 0 ? secondsToTime(graphic.video.duration) : secondsToTime(graphic.video.duration - graphic.video.currentTime)}
-                            </Typography>
+const Controller = memo(
+    ({
+        graphic,
+        selectedGraphicId,
+        setSelectedGraphicId,
+        updateGraphic,
+        countdowns,
+        setCountdowns,
+        onDragStart,
+        onDragOver,
+        onDrop,
+        ...props
+    }) => {
+        const [collapsed, setCollapsed] = useState(true);
+        return (
+            <>
+                <ListItem
+                    onClick={() => setSelectedGraphicId(graphic.id)}
+                    disablePadding
+                    draggable
+                    onDragStart={(event) => onDragStart(event, graphic)}
+                    onDragOver={onDragOver}
+                    onDrop={(event) => onDrop(event, graphic)}
+                    sx={{ height: 56 }}
+                    {...props}
+                >
+                    <ListItemButton
+                        selected={selectedGraphicId === graphic.id}
+                        disableRipple
+                    >
+                        {graphic.children.length > 0 && (
+                            <Box
+                                onClick={() => setCollapsed((prev) => !prev)}
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                                {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                            </Box>
                         )}
-                        {graphic.playlist && (
-                            <Typography variant='subtitle1' sx={{ mr: 2 }}>
-                                {graphic.playlist.currentTime === 0 ?
-                                    secondsToTime(graphic.playlist.durations.reduce((partial_sum, a) => partial_sum + a, 0)) :
-                                    secondsToTime(graphic.playlist.durations.reduce((partial_sum, a) => partial_sum + a, 0) - graphic.playlist.currentTime)}
-                            </Typography>
-                        )}
-                        <Button
-                            variant='contained'
-                            color={graphic.visible ? 'primary' : 'secondary'}
-                            onClick={(event) => {
-                                updateGraphic(graphic.id, 'visible', !graphic.visible, true);
-                                event.stopPropagation();
-                            }}
-                            sx={{ width: 100 }}
-                        >
-                            {graphic.visible ? 'Hide' : 'Show'}
-                        </Button>
-                    </ListItemSecondaryAction>
-                </ListItemButton>
-            </ListItem>
-            {!collapsed && graphic.children.length > 0 && (
-                <Box sx={{ ml: 2 }}>
-                    {graphic.children.map((child) => (
-                        <Controller
-                            key={child.id}
-                            graphic={child}
-                            selectedGraphicId={selectedGraphicId}
-                            setSelectedGraphicId={setSelectedGraphicId}
-                            countdowns={countdowns}
-                            setCountdowns={setCountdowns}
-                            updateGraphic={updateGraphic}
-                            onDragStart={onDragStart}
-                            onDragOver={onDragOver}
-                            onDrop={onDrop}
-                        />
-                    ))}
-                </Box>
-            )}
-        </>
-    );
-});
+                        <ListItemText primary={graphic.name} />
+                        <ListItemSecondaryAction sx={{ display: 'flex', alignItems: 'center' }}>
+                            {graphic.countdown && (
+                                <CountdownActions
+                                    graphic={graphic}
+                                    updateGraphic={updateGraphic}
+                                    countdowns={countdowns}
+                                    setCountdowns={setCountdowns}
+                                />
+                            )}
+                            {graphic.video && (
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ mr: 2 }}
+                                >
+                                    {graphic.video.currentTime === 0
+                                        ? secondsToTime(graphic.video.duration)
+                                        : secondsToTime(
+                                              graphic.video.duration - graphic.video.currentTime
+                                          )}
+                                </Typography>
+                            )}
+                            {graphic.playlist && (
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ mr: 2 }}
+                                >
+                                    {graphic.playlist.currentTime === 0
+                                        ? secondsToTime(
+                                              graphic.playlist.durations.reduce(
+                                                  (partial_sum, a) => partial_sum + a,
+                                                  0
+                                              )
+                                          )
+                                        : secondsToTime(
+                                              graphic.playlist.durations.reduce(
+                                                  (partial_sum, a) => partial_sum + a,
+                                                  0
+                                              ) - graphic.playlist.currentTime
+                                          )}
+                                </Typography>
+                            )}
+                            <Button
+                                variant='contained'
+                                color={graphic.visible ? 'primary' : 'secondary'}
+                                onClick={(event) => {
+                                    updateGraphic(graphic.id, 'visible', !graphic.visible, true);
+                                    event.stopPropagation();
+                                }}
+                                sx={{ width: 100 }}
+                            >
+                                {graphic.visible ? 'Hide' : 'Show'}
+                            </Button>
+                        </ListItemSecondaryAction>
+                    </ListItemButton>
+                </ListItem>
+                {!collapsed && graphic.children.length > 0 && (
+                    <Box sx={{ ml: 2 }}>
+                        {graphic.children.map((child) => (
+                            <Controller
+                                key={child.id}
+                                graphic={child}
+                                selectedGraphicId={selectedGraphicId}
+                                setSelectedGraphicId={setSelectedGraphicId}
+                                countdowns={countdowns}
+                                setCountdowns={setCountdowns}
+                                updateGraphic={updateGraphic}
+                                onDragStart={onDragStart}
+                                onDragOver={onDragOver}
+                                onDrop={onDrop}
+                            />
+                        ))}
+                    </Box>
+                )}
+            </>
+        );
+    }
+);
 
 Controller.propTypes = {
     graphic: PropTypes.object.isRequired,

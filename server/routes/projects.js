@@ -69,7 +69,7 @@ router.put('/projects/:project', async (req, res) => {
         await fsp.writeFile(`./configs/${project}/config.json`, JSON.stringify(config));
         res.status(200);
         res.send({ project, config });
-    } catch(error) {
+    } catch (error) {
         res.status(409);
         res.send('Failed to update config');
     }
@@ -85,7 +85,7 @@ router.delete('/projects/:project', async (req, res) => {
             req.app.locals.setConfig([]);
         }
         res.sendStatus(200);
-    } catch(error) {
+    } catch (error) {
         res.status(409);
         res.send('Failed to remove project');
     }
@@ -118,12 +118,14 @@ router.post('/projects/change', async (req, res) => {
         req.app.locals.setConfig(newConfig);
         res.status(200);
         res.send({ project: newProject, config: newConfig });
-    } catch(error) {
+    } catch (error) {
         res.status(409);
         res.send('Failed to load project');
     }
 });
 
-router.all(['/projects', '/projects/:project', '/projects/change'], (req, res) => res.sendStatus(405));
+router.all(['/projects', '/projects/:project', '/projects/change'], (req, res) =>
+    res.sendStatus(405)
+);
 
 export default router;

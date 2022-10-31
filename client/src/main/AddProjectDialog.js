@@ -18,7 +18,11 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
     }, [open]);
 
     return (
-        <Dialog fullWidth open={open} onClose={onClose}>
+        <Dialog
+            fullWidth
+            open={open}
+            onClose={onClose}
+        >
             <DialogTitle>New project</DialogTitle>
             <DialogContent>
                 <TextField
@@ -33,24 +37,30 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button color='primary' onClick={onClose}>
+                <Button
+                    color='primary'
+                    onClick={onClose}
+                >
                     Close
                 </Button>
-                <Button color='primary' onClick={() => {
-                    fetch('/api/projects', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            project
+                <Button
+                    color='primary'
+                    onClick={() => {
+                        fetch('/api/projects', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                project,
+                            }),
                         })
-                    })
-                        .then(() => onAdd(project))
-                        .catch((error) => {
-                            error.then((text) => showMessage(text, true));
-                        });
-                }}>
+                            .then(() => onAdd(project))
+                            .catch((error) => {
+                                error.then((text) => showMessage(text, true));
+                            });
+                    }}
+                >
                     Create
                 </Button>
             </DialogActions>
@@ -61,7 +71,7 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
 AddProjectDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onAdd: PropTypes.func.isRequired
+    onAdd: PropTypes.func.isRequired,
 };
 
 export default AddProjectDialog;

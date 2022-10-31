@@ -6,8 +6,24 @@ import Video from './Video';
 import Playlist from './Playlist';
 import Slider from './Slider';
 import {
-    FadeIn, SlideTopIn, SlideLeftIn, SlideRightIn, SlideBottomIn, WipeLeftIn, WipeTopIn, ExpandYIn, ExpandXIn,
-    FadeOut, SlideTopOut, SlideLeftOut, SlideRightOut, SlideBottomOut, WipeLeftOut, WipeTopOut, ExpandYOut, ExpandXOut
+    FadeIn,
+    SlideTopIn,
+    SlideLeftIn,
+    SlideRightIn,
+    SlideBottomIn,
+    WipeLeftIn,
+    WipeTopIn,
+    ExpandYIn,
+    ExpandXIn,
+    FadeOut,
+    SlideTopOut,
+    SlideLeftOut,
+    SlideRightOut,
+    SlideBottomOut,
+    WipeLeftOut,
+    WipeTopOut,
+    ExpandYOut,
+    ExpandXOut,
 } from './Animations';
 
 const animationMap = {
@@ -28,7 +44,7 @@ const animationMap = {
     ExpandYIn,
     ExpandYOut,
     ExpandXIn,
-    ExpandXOut
+    ExpandXOut,
 };
 
 const computeAnimation = (graphic, isIn) => {
@@ -62,12 +78,30 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                 backgroundSize: graphic.imageStretch === 'fit' ? 'contain' : '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 opacity: 1,
-                overflow: 'hidden'
-            }} css={computeAnimation(graphic, graphic.visible)}
+                overflow: 'hidden',
+            }}
+            css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.video?.source && <Video graphic={graphic} project={project} updateGraphic={updateGraphic} />}
-            {graphic.playlist && <Playlist graphic={graphic} project={project} updateGraphic={updateGraphic} />}
-            {graphic.slider && <Slider graphic={graphic} project={project} />}
+            {graphic.video?.source && (
+                <Video
+                    graphic={graphic}
+                    project={project}
+                    updateGraphic={updateGraphic}
+                />
+            )}
+            {graphic.playlist && (
+                <Playlist
+                    graphic={graphic}
+                    project={project}
+                    updateGraphic={updateGraphic}
+                />
+            )}
+            {graphic.slider && (
+                <Slider
+                    graphic={graphic}
+                    project={project}
+                />
+            )}
             {graphic.texts.map((text, index) => (
                 <div
                     key={index}
@@ -83,26 +117,31 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                         fontStyle: text.fontStyle,
                         color: text.fontColor,
                         lineHeight: text.lineHeight + 'px',
-                        textAlign: text.textAlign
+                        textAlign: text.textAlign,
                     }}
                 >
                     {graphic.type === 'CLOCK' ? clock : text.content}
                 </div>
             ))}
             {graphic.children.map((child) => (
-                <Graphic key={child.id} graphic={child} graphicIndex={graphicIndex} project={project} updateGraphic={updateGraphic} />
+                <Graphic
+                    key={child.id}
+                    graphic={child}
+                    graphicIndex={graphicIndex}
+                    project={project}
+                    updateGraphic={updateGraphic}
+                />
             ))}
         </Box>
     );
 };
-
 
 Graphic.propTypes = {
     graphic: PropTypes.object.isRequired,
     graphicIndex: PropTypes.number.isRequired,
     project: PropTypes.string,
     clock: PropTypes.string,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Graphic;

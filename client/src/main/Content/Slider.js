@@ -22,18 +22,32 @@ const Slider = ({ id, slider, updateGraphic }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
-            <Grid item xs={12}>
-                <List sx={{ height: 200, border: '1px rgba(255, 255, 255, 0.23) solid', borderRadius: 1, mb: 1, overflowY: 'scroll' }} disablePadding>
+            <Grid
+                item
+                xs={12}
+            >
+                <List
+                    sx={{
+                        height: 200,
+                        border: '1px rgba(255, 255, 255, 0.23) solid',
+                        borderRadius: 1,
+                        mb: 1,
+                        overflowY: 'scroll',
+                    }}
+                    disablePadding
+                >
                     {slider.sources.map((item, index) => (
                         <ListItem key={index}>
                             <ListItemText primary={item} />
                             <ListItemSecondaryAction>
                                 <Tooltip title='Remove'>
-                                    <IconButton onClick={() => {
-                                        const clone = [...slider.sources];
-                                        clone.splice(index, 1);
-                                        updateGraphic(id, 'slider.sources', clone);
-                                    }}>
+                                    <IconButton
+                                        onClick={() => {
+                                            const clone = [...slider.sources];
+                                            clone.splice(index, 1);
+                                            updateGraphic(id, 'slider.sources', clone);
+                                        }}
+                                    >
                                         <ClearIcon />
                                     </IconButton>
                                 </Tooltip>
@@ -48,11 +62,17 @@ const Slider = ({ id, slider, updateGraphic }) => {
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
-                        <UploadButton accept='image/*' onUpload={(values) => {
-                            const newSources = [...slider.sources, ...Array.from(values).map((item) => item.name)];
-                            updateGraphic(id, 'slider.sources', newSources);
-                            refreshFiles();
-                        }} />
+                        <UploadButton
+                            accept='image/*'
+                            onUpload={(values) => {
+                                const newSources = [
+                                    ...slider.sources,
+                                    ...Array.from(values).map((item) => item.name),
+                                ];
+                                updateGraphic(id, 'slider.sources', newSources);
+                                refreshFiles();
+                            }}
+                        />
                     </div>
                     <Menu
                         anchorEl={anchorEl}
@@ -68,17 +88,23 @@ const Slider = ({ id, slider, updateGraphic }) => {
                         }}
                     >
                         {files.filter(isImage).map((item) => (
-                            <MenuItem key={item} onClick={() => {
-                                const newSources = [...slider.sources, item];
-                                updateGraphic(id, 'slider.sources', newSources);
-                            }}>
+                            <MenuItem
+                                key={item}
+                                onClick={() => {
+                                    const newSources = [...slider.sources, item];
+                                    updateGraphic(id, 'slider.sources', newSources);
+                                }}
+                            >
                                 {item}
                             </MenuItem>
                         ))}
                     </Menu>
                 </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+                item
+                xs={12}
+            >
                 <TextField
                     label='Duration (s)'
                     type='number'
@@ -94,7 +120,7 @@ const Slider = ({ id, slider, updateGraphic }) => {
 Slider.propTypes = {
     id: PropTypes.string.isRequired,
     slider: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Slider;

@@ -45,7 +45,11 @@ export const ContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        socket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.href.replace('http', 'ws') : 'ws://localhost:5000');
+        socket = new WebSocket(
+            process.env.NODE_ENV === 'production'
+                ? window.location.href.replace('http', 'ws')
+                : 'ws://localhost:5000'
+        );
         socket.onmessage = (msg) => {
             const msgData = JSON.parse(msg.data);
             if (msgData.type === 'config') {
@@ -65,11 +69,11 @@ export const ContextProvider = ({ children }) => {
         fetch('/api/projects/change', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                project
-            })
+                project,
+            }),
         })
             .then((response) => response.json())
             .then((json) => _setConfig(json.config))
@@ -81,12 +85,17 @@ export const ContextProvider = ({ children }) => {
     return (
         <Context.Provider
             value={{
-                config, setConfig,
-                project, setProject,
-                live, setLive,
-                countdowns, setCountdowns,
+                config,
+                setConfig,
+                project,
+                setProject,
+                live,
+                setLive,
+                countdowns,
+                setCountdowns,
                 setSelectedGraphicId,
-                selectedGraphic, updateGraphic
+                selectedGraphic,
+                updateGraphic,
             }}
         >
             {children}
@@ -95,5 +104,5 @@ export const ContextProvider = ({ children }) => {
 };
 
 ContextProvider.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 };

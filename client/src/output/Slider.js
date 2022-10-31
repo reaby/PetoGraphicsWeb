@@ -10,7 +10,7 @@ const SliderImage = styled.img`
     max-height: 100%;
     transform: translate(-50%, -50%);
     transition: opacity 1s;
-    opacity: ${(props) => props.visible ? '1' : '0'};
+    opacity: ${(props) => (props.visible ? '1' : '0')};
 `;
 
 const Slider = ({ graphic, project }) => {
@@ -36,13 +36,17 @@ const Slider = ({ graphic, project }) => {
                     setSliderImage1Visible(true);
                     setSliderImage2Visible(false);
                     setTimeout(() => {
-                        setSliderImage2Source(`/configs/${project}/${graphic.slider.sources[sliderIndex]}`);
+                        setSliderImage2Source(
+                            `/configs/${project}/${graphic.slider.sources[sliderIndex]}`
+                        );
                     }, 1000);
                 } else {
                     setSliderImage1Visible(false);
                     setSliderImage2Visible(true);
                     setTimeout(() => {
-                        setSliderImage1Source(`/configs/${project}/${graphic.slider.sources[sliderIndex]}`);
+                        setSliderImage1Source(
+                            `/configs/${project}/${graphic.slider.sources[sliderIndex]}`
+                        );
                     }, 1000);
                 }
             }, graphic.slider.duration * 1000);
@@ -52,15 +56,23 @@ const Slider = ({ graphic, project }) => {
     }, [graphic.slider?.duration]);
     return (
         <>
-            <SliderImage alt='slider-source' visible={sliderImage1Visible} src={sliderImage1Source} />
-            <SliderImage alt='slider-source' visible={sliderImage2Visible} src={sliderImage2Source} />
+            <SliderImage
+                alt='slider-source'
+                visible={sliderImage1Visible}
+                src={sliderImage1Source}
+            />
+            <SliderImage
+                alt='slider-source'
+                visible={sliderImage2Visible}
+                src={sliderImage2Source}
+            />
         </>
     );
 };
 
 Slider.propTypes = {
     graphic: PropTypes.object.isRequired,
-    project: PropTypes.string.isRequired
+    project: PropTypes.string.isRequired,
 };
 
 export default Slider;

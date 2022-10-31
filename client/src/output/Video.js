@@ -32,14 +32,19 @@ const Video = ({ graphic, project, updateGraphic }) => {
     }, [graphic.id, graphic.visible, updateGraphic]);
 
     return (
-        <video ref={videoRef} src={`/configs/${project}/${graphic.video.source}`} loop={graphic.video.loop} style={{ width: '100%', height: '100%' }} />
+        <video
+            ref={videoRef}
+            src={`/configs/${project}/${graphic.video.source}`}
+            loop={graphic.video.loop}
+            style={{ width: '100%', height: '100%' }}
+        />
     );
 };
 
 Video.propTypes = {
     graphic: PropTypes.object.isRequired,
     project: PropTypes.string.isRequired,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Video;

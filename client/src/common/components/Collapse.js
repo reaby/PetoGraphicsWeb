@@ -9,20 +9,26 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Collapse = ({ title, children, collapsed, setCollapsed, ...props }) => (
     <>
-        <Grid item xs={12} {...props}>
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => setCollapsed((prev) => !prev)}>
-                <Typography variant='subtitle1' sx={{ flex: 1 }}>{title}</Typography>
-                <IconButton>
-                    {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon /> }
-                </IconButton>
+        <Grid
+            item
+            xs={12}
+            {...props}
+        >
+            <Box
+                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                onClick={() => setCollapsed((prev) => !prev)}
+            >
+                <Typography
+                    variant='subtitle1'
+                    sx={{ flex: 1 }}
+                >
+                    {title}
+                </Typography>
+                <IconButton>{collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}</IconButton>
             </Box>
             <Divider />
         </Grid>
-        {!collapsed && (
-            <>
-                {children}
-            </>
-        )}
+        {!collapsed && <>{children}</>}
     </>
 );
 
@@ -30,7 +36,7 @@ Collapse.propTypes = {
     title: PropTypes.string.isRequired,
     collapsed: PropTypes.bool.isRequired,
     setCollapsed: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 };
 
 export default Collapse;

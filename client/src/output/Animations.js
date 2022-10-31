@@ -179,4 +179,3 @@ export const ExpandXOut = (graphic) => keyframes`
         transform: scaleX(0);
     }
 `;
-

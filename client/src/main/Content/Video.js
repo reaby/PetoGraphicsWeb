@@ -13,7 +13,11 @@ const Video = ({ id, video, updateGraphic, project }) => {
     const { data: files, refetch: refreshFiles } = useFiles();
     return (
         <>
-            <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Grid
+                item
+                xs={12}
+                sx={{ display: 'flex', alignItems: 'center' }}
+            >
                 <TextField
                     label='Source'
                     type='text'
@@ -31,32 +35,55 @@ const Video = ({ id, video, updateGraphic, project }) => {
                     sx={{ mr: 1 }}
                 >
                     {files?.filter(isVideo).map((item) => (
-                        <MenuItem key={item} value={item}>{item}</MenuItem>
+                        <MenuItem
+                            key={item}
+                            value={item}
+                        >
+                            {item}
+                        </MenuItem>
                     ))}
                 </TextField>
-                <UploadButton accept='video/*' onUpload={(value) => {
-                    refreshFiles();
-                    updateGraphic(id, 'video.source', value[0]?.name);
-                    getVideoDuration(`/configs/${project}/${value[0]?.name}`)
-                        .then((duration) => {
-                            updateGraphic(id, 'video.duration', duration);
-                        })
-                        .catch(console.error);
-                }} />
+                <UploadButton
+                    accept='video/*'
+                    onUpload={(value) => {
+                        refreshFiles();
+                        updateGraphic(id, 'video.source', value[0]?.name);
+                        getVideoDuration(`/configs/${project}/${value[0]?.name}`)
+                            .then((duration) => {
+                                updateGraphic(id, 'video.duration', duration);
+                            })
+                            .catch(console.error);
+                    }}
+                />
             </Grid>
-            <Grid item xs={12} sm={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                <FormControlLabel control={
-                    <Checkbox
-                        checked={video.loop ?? false}
-                        onChange={(event) => updateGraphic(id, 'video.loop', event.target.checked)}
-                    />
-                } label='Loop' />
-                <FormControlLabel control={
-                    <Checkbox
-                        checked={video.hideOnEnd ?? false}
-                        onChange={(event) => updateGraphic(id, 'video.hideOnEnd', event.target.checked)}
-                    />
-                } label='Hide on End' />
+            <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}
+            >
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={video.loop ?? false}
+                            onChange={(event) =>
+                                updateGraphic(id, 'video.loop', event.target.checked)
+                            }
+                        />
+                    }
+                    label='Loop'
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={video.hideOnEnd ?? false}
+                            onChange={(event) =>
+                                updateGraphic(id, 'video.hideOnEnd', event.target.checked)
+                            }
+                        />
+                    }
+                    label='Hide on End'
+                />
             </Grid>
         </>
     );

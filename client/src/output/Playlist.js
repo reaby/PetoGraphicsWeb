@@ -17,7 +17,7 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
 
     useEffect(() => {
         let updateInterval;
-        if (graphic.visible)  {
+        if (graphic.visible) {
             updateInterval = setInterval(() => {
                 let currentTime = playlistRef.current.currentTime;
                 for (let i = 0; i < currentVideo; i++) {
@@ -51,7 +51,13 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
         return () => {
             playlist?.removeEventListener('ended', nextVideo);
         };
-    }, [graphic.playlist.loop, graphic.id, graphic.playlist.hideOnEnd, graphic.playlist.sources.length, updateGraphic]);
+    }, [
+        graphic.playlist.loop,
+        graphic.id,
+        graphic.playlist.hideOnEnd,
+        graphic.playlist.sources.length,
+        updateGraphic,
+    ]);
 
     useEffect(() => {
         if (graphic.visible) {
@@ -60,14 +66,18 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
     }, [currentVideo, graphic.visible]);
 
     return (
-        <video ref={playlistRef} src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`} style={{ width: '100%', height: '100%', background: 'black' }} />
+        <video
+            ref={playlistRef}
+            src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`}
+            style={{ width: '100%', height: '100%', background: 'black' }}
+        />
     );
 };
 
 Playlist.propTypes = {
     graphic: PropTypes.object.isRequired,
     project: PropTypes.string.isRequired,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Playlist;

@@ -8,7 +8,17 @@ import List from '@mui/material/List';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Add from '@mui/icons-material/Add';
-import { SINGLE_TEXT, DOUBLE_TEXT, TRIPLE_TEXT, IMAGE, VIDEO, CLOCK, COUNTDOWN, PLAYLIST, SLIDER } from './Templates';
+import {
+    SINGLE_TEXT,
+    DOUBLE_TEXT,
+    TRIPLE_TEXT,
+    IMAGE,
+    VIDEO,
+    CLOCK,
+    COUNTDOWN,
+    PLAYLIST,
+    SLIDER,
+} from './Templates';
 import findParentGraphic from 'common/utils/findParentGraphic';
 import findGraphic from 'common/utils/findGraphic';
 import { Context } from '../../Context';
@@ -28,7 +38,15 @@ window.addEventListener('keyup', (event) => {
 });
 
 const GraphicList = ({ matches }) => {
-    const { config, setConfig, selectedGraphic, setSelectedGraphicId, updateGraphic, countdowns, setCountdowns } = useContext(Context);
+    const {
+        config,
+        setConfig,
+        selectedGraphic,
+        setSelectedGraphicId,
+        updateGraphic,
+        countdowns,
+        setCountdowns,
+    } = useContext(Context);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const addGraphic = (graphicJSON) => {
@@ -43,37 +61,56 @@ const GraphicList = ({ matches }) => {
 
     const onDragOver = useCallback((event) => event.preventDefault(), []);
 
-    const onDrop = useCallback((event, dropGraphic) => {
-        setConfig((prev) => produce(prev, (newConfig) => {
-            const endId = dropGraphic.id;
-            const endParent = findParentGraphic(newConfig, endId);
-            const endIndex = (endParent?.children ?? newConfig).findIndex((item) => item.id === endId);
-            const startId = event.dataTransfer.getData('startId');
-            const startParent = findParentGraphic(newConfig, startId);
-            const startIndex = (startParent?.children ?? newConfig).findIndex((item) => item.id === startId);
+    const onDrop = useCallback(
+        (event, dropGraphic) => {
+            setConfig((prev) =>
+                produce(prev, (newConfig) => {
+                    const endId = dropGraphic.id;
+                    const endParent = findParentGraphic(newConfig, endId);
+                    const endIndex = (endParent?.children ?? newConfig).findIndex(
+                        (item) => item.id === endId
+                    );
+                    const startId = event.dataTransfer.getData('startId');
+                    const startParent = findParentGraphic(newConfig, startId);
+                    const startIndex = (startParent?.children ?? newConfig).findIndex(
+                        (item) => item.id === startId
+                    );
 
-            // Same target so do nothing
-            if (endId === startId) {
-                return;
-            }
+                    // Same target so do nothing
+                    if (endId === startId) {
+                        return;
+                    }
 
-            // Already in correct position so no changes needed
-            if (!window.grouping && startParent?.id === endParent?.id && endIndex === startIndex - 1) {
-                return;
-            }
+                    // Already in correct position so no changes needed
+                    if (
+                        !window.grouping &&
+                        startParent?.id === endParent?.id &&
+                        endIndex === startIndex - 1
+                    ) {
+                        return;
+                    }
 
-            const graphic = findGraphic(newConfig, endId);
-            // Remove from old
-            const target = (startParent?.children ?? newConfig).splice(startIndex, 1)[0];
-            if (!window.grouping) {
-                // Place to new parent
-                (endParent?.children ?? newConfig).splice(startParent?.id === endParent?.id && startIndex < endIndex ? endIndex : endIndex + 1, 0, target);
-            } else {
-                // Place as child
-                graphic.children.push(target);
-            }
-        }));
-    }, [setConfig]);
+                    const graphic = findGraphic(newConfig, endId);
+                    // Remove from old
+                    const target = (startParent?.children ?? newConfig).splice(startIndex, 1)[0];
+                    if (!window.grouping) {
+                        // Place to new parent
+                        (endParent?.children ?? newConfig).splice(
+                            startParent?.id === endParent?.id && startIndex < endIndex
+                                ? endIndex
+                                : endIndex + 1,
+                            0,
+                            target
+                        );
+                    } else {
+                        // Place as child
+                        graphic.children.push(target);
+                    }
+                })
+            );
+        },
+        [setConfig]
+    );
 
     return (
         <>
@@ -108,7 +145,10 @@ const GraphicList = ({ matches }) => {
                 </Menu>
             </Toolbar>
             <Divider />
-            <List sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }} disablePadding>
+            <List
+                sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }}
+                disablePadding
+            >
                 {config?.map((graphic, index) => (
                     <Controller
                         key={graphic.id}
@@ -129,7 +169,7 @@ const GraphicList = ({ matches }) => {
 };
 
 GraphicList.propTypes = {
-    matches: PropTypes.bool.isRequired
+    matches: PropTypes.bool.isRequired,
 };
 
 export default GraphicList;

@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);
-    }
+    },
 });
 
 const upload = multer({ storage: storage });
@@ -22,7 +22,9 @@ router.get('/files', async (req, res) => {
         return;
     }
     try {
-        const files = await fsp.readdir(`./configs/${req.app.locals.project}`, { withFileTypes: true });
+        const files = await fsp.readdir(`./configs/${req.app.locals.project}`, {
+            withFileTypes: true,
+        });
         const filenames = files.map((file) => file.name);
         res.status(200);
         res.send(filenames);
@@ -55,7 +57,7 @@ router.delete('/files/:file', async (req, res) => {
     try {
         await fsp.unlink(`./configs/${req.app.locals.project}/${file}`);
         res.sendStatus(200);
-    } catch(error) {
+    } catch (error) {
         res.status(409);
         res.send('Failed to delete file');
     }

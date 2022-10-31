@@ -32,23 +32,41 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
-            <Grid item xs={12}>
-                <List sx={{ height: 200, border: '1px rgba(255, 255, 255, 0.23) solid', borderRadius: 1, mb: 1, overflowY: 'scroll' }} disablePadding>
+            <Grid
+                item
+                xs={12}
+            >
+                <List
+                    sx={{
+                        height: 200,
+                        border: '1px rgba(255, 255, 255, 0.23) solid',
+                        borderRadius: 1,
+                        mb: 1,
+                        overflowY: 'scroll',
+                    }}
+                    disablePadding
+                >
                     {playlist.sources.map((item, index) => (
                         <ListItem key={index}>
                             <ListItemText primary={item} />
                             <ListItemSecondaryAction>
                                 <Tooltip title='Remove'>
-                                    <IconButton onClick={() => {
-                                        const clone = [...playlist.sources];
-                                        clone.splice(index, 1);
-                                        updateGraphic(id, 'playlist.sources', clone);
-                                        getPlaylistDuration(clone, project)
-                                            .then((durations) => {
-                                                updateGraphic(id, 'playlist.durations', durations);
-                                            })
-                                            .catch(console.error);
-                                    }}>
+                                    <IconButton
+                                        onClick={() => {
+                                            const clone = [...playlist.sources];
+                                            clone.splice(index, 1);
+                                            updateGraphic(id, 'playlist.sources', clone);
+                                            getPlaylistDuration(clone, project)
+                                                .then((durations) => {
+                                                    updateGraphic(
+                                                        id,
+                                                        'playlist.durations',
+                                                        durations
+                                                    );
+                                                })
+                                                .catch(console.error);
+                                        }}
+                                    >
                                         <ClearIcon />
                                     </IconButton>
                                 </Tooltip>
@@ -58,18 +76,33 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex' }}>
-                        <FormControlLabel control={
-                            <Checkbox
-                                checked={playlist.loop ?? false}
-                                onChange={(event) => updateGraphic(id, 'playlist.loop', event.target.checked)}
-                            />
-                        } label='Loop' />
-                        <FormControlLabel control={
-                            <Checkbox
-                                checked={playlist.hideOnEnd ?? false}
-                                onChange={(event) => updateGraphic(id, 'playlist.hideOnEnd', event.target.checked)}
-                            />
-                        } label='Hide on End' sx={{ ml: 2 }} />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={playlist.loop ?? false}
+                                    onChange={(event) =>
+                                        updateGraphic(id, 'playlist.loop', event.target.checked)
+                                    }
+                                />
+                            }
+                            label='Loop'
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={playlist.hideOnEnd ?? false}
+                                    onChange={(event) =>
+                                        updateGraphic(
+                                            id,
+                                            'playlist.hideOnEnd',
+                                            event.target.checked
+                                        )
+                                    }
+                                />
+                            }
+                            label='Hide on End'
+                            sx={{ ml: 2 }}
+                        />
                     </Box>
                     <Box sx={{ display: 'flex' }}>
                         <Tooltip title='Add Video'>
@@ -77,16 +110,22 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                                 <AddIcon />
                             </IconButton>
                         </Tooltip>
-                        <UploadButton accept='video/*' onUpload={(values) => {
-                            const newSources = [...playlist.sources, ...Array.from(values).map((item) => item.name)];
-                            updateGraphic(id, 'playlist.sources', newSources);
-                            refreshFiles();
-                            getPlaylistDuration(newSources, project)
-                                .then((durations) => {
-                                    updateGraphic(id, 'playlist.duration', durations);
-                                })
-                                .catch(console.error);
-                        }} />
+                        <UploadButton
+                            accept='video/*'
+                            onUpload={(values) => {
+                                const newSources = [
+                                    ...playlist.sources,
+                                    ...Array.from(values).map((item) => item.name),
+                                ];
+                                updateGraphic(id, 'playlist.sources', newSources);
+                                refreshFiles();
+                                getPlaylistDuration(newSources, project)
+                                    .then((durations) => {
+                                        updateGraphic(id, 'playlist.duration', durations);
+                                    })
+                                    .catch(console.error);
+                            }}
+                        />
                     </Box>
                     <Menu
                         anchorEl={anchorEl}
@@ -102,15 +141,18 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                         }}
                     >
                         {files.filter(isVideo).map((item) => (
-                            <MenuItem key={item} onClick={() => {
-                                const newSources = [...playlist.sources, item];
-                                updateGraphic(id, 'playlist.sources', newSources);
-                                getPlaylistDuration(newSources, project)
-                                    .then((durations) => {
-                                        updateGraphic(id, 'playlist.durations', durations);
-                                    })
-                                    .catch(console.error);
-                            }}>
+                            <MenuItem
+                                key={item}
+                                onClick={() => {
+                                    const newSources = [...playlist.sources, item];
+                                    updateGraphic(id, 'playlist.sources', newSources);
+                                    getPlaylistDuration(newSources, project)
+                                        .then((durations) => {
+                                            updateGraphic(id, 'playlist.durations', durations);
+                                        })
+                                        .catch(console.error);
+                                }}
+                            >
                                 {item}
                             </MenuItem>
                         ))}

@@ -38,11 +38,11 @@ const AppBar = () => {
                             fetch(`/api/projects/${project}`, {
                                 method: 'PUT',
                                 headers: {
-                                    'Content-Type': 'application/json'
+                                    'Content-Type': 'application/json',
                                 },
                                 body: JSON.stringify({
-                                    config
-                                })
+                                    config,
+                                }),
                             })
                                 .then(() => showMessage('Config saved'))
                                 .catch(console.error);
@@ -78,7 +78,10 @@ const AppBar = () => {
                         sx={{ width: 200, mr: 4 }}
                     >
                         {projects?.map((option) => (
-                            <MenuItem key={option} value={option}>
+                            <MenuItem
+                                key={option}
+                                value={option}
+                            >
                                 {option}
                             </MenuItem>
                         ))}

@@ -49,7 +49,7 @@ const Settings = ({ selectedGraphic, updateGraphic, project }) => {
 Settings.propTypes = {
     selectedGraphic: PropTypes.object.isRequired,
     updateGraphic: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired
+    project: PropTypes.string.isRequired,
 };
 
 export default Settings;

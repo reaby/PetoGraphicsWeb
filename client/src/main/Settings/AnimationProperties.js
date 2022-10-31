@@ -6,11 +6,20 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 const AnimationProperties = ({
-    id, path, updateGraphic,
-    style, duration, delay, addFade, ease
+    id,
+    path,
+    updateGraphic,
+    style,
+    duration,
+    delay,
+    addFade,
+    ease,
 }) => (
     <>
-        <Grid item xs={12}>
+        <Grid
+            item
+            xs={12}
+        >
             <TextField
                 label='Style'
                 value={style ?? 'Fade'}
@@ -30,16 +39,26 @@ const AnimationProperties = ({
                 <MenuItem value='ExpandX'>ExpandX</MenuItem>
             </TextField>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+            item
+            xs={12}
+            sm={6}
+        >
             <TextField
                 label='Duration (ms)'
                 type='number'
                 value={duration ?? 0}
-                onChange={(event) => updateGraphic(id, `${path}.duration`, Number(event.target.value))}
+                onChange={(event) =>
+                    updateGraphic(id, `${path}.duration`, Number(event.target.value))
+                }
                 fullWidth
             />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+            item
+            xs={12}
+            sm={6}
+        >
             <TextField
                 label='Delay (ms)'
                 type='number'
@@ -48,19 +67,34 @@ const AnimationProperties = ({
                 fullWidth
             />
         </Grid>
-        <Grid item xs={12} sm={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-            <FormControlLabel control={
-                <Checkbox
-                    checked={addFade}
-                    onChange={(event) => updateGraphic(id, `${path}.addFade`, event.target.checked)}
-                />
-            } label='Fade' />
-            <FormControlLabel control={
-                <Checkbox
-                    checked={ease}
-                    onChange={(event) => updateGraphic(id, `${path}.ease`, event.target.checked)}
-                />
-            } label='Ease' />
+        <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}
+        >
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={addFade}
+                        onChange={(event) =>
+                            updateGraphic(id, `${path}.addFade`, event.target.checked)
+                        }
+                    />
+                }
+                label='Fade'
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={ease}
+                        onChange={(event) =>
+                            updateGraphic(id, `${path}.ease`, event.target.checked)
+                        }
+                    />
+                }
+                label='Ease'
+            />
         </Grid>
     </>
 );

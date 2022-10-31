@@ -9,20 +9,37 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 const Countdown = ({ id, countdown, updateGraphic }) => (
     <>
-        <Grid item xs={12}>
-            <FormControl fullWidth sx={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Grid
+            item
+            xs={12}
+        >
+            <FormControl
+                fullWidth
+                sx={{ flexDirection: 'row', alignItems: 'center' }}
+            >
                 <FormLabel sx={{ mr: 3 }}>Type</FormLabel>
                 <RadioGroup
                     row
                     value={countdown.type ?? 'remaining'}
                     onChange={(event) => updateGraphic(id, 'countdown.type', event.target.value)}
                 >
-                    <FormControlLabel value='remaining' control={<Radio />} label='Remaining' />
-                    <FormControlLabel value='starts' control={<Radio />} label='Starts at' />
+                    <FormControlLabel
+                        value='remaining'
+                        control={<Radio />}
+                        label='Remaining'
+                    />
+                    <FormControlLabel
+                        value='starts'
+                        control={<Radio />}
+                        label='Starts at'
+                    />
                 </RadioGroup>
             </FormControl>
         </Grid>
-        <Grid item xs={12}>
+        <Grid
+            item
+            xs={12}
+        >
             <TextField
                 label='Time'
                 type='time'
@@ -31,11 +48,14 @@ const Countdown = ({ id, countdown, updateGraphic }) => (
                 fullWidth
                 inputProps={{
                     step: '1',
-                    required: true
+                    required: true,
                 }}
             />
         </Grid>
-        <Grid item xs={12}>
+        <Grid
+            item
+            xs={12}
+        >
             <TextField
                 label='Format'
                 type='text'
@@ -50,7 +70,7 @@ const Countdown = ({ id, countdown, updateGraphic }) => (
 Countdown.propTypes = {
     id: PropTypes.string.isRequired,
     countdown: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Countdown;

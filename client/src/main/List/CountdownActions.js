@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 
-const isCountdownActive = (graphic, countdowns) => countdowns.find((item) => item.id === graphic.id) ? true : false;
+const isCountdownActive = (graphic, countdowns) =>
+    countdowns.find((item) => item.id === graphic.id) ? true : false;
 
 const startCountdown = (graphic, setCountdowns, updateGraphic) => {
     let hours;
     let minutes;
     let seconds;
-    const [hoursString = '00', minutesString = '00', secondsString = '00' ] = graphic.countdown.time.split(':');
+    const [hoursString = '00', minutesString = '00', secondsString = '00'] =
+        graphic.countdown.time.split(':');
     if (graphic.countdown.type === 'remaining') {
         hours = Number(hoursString);
         minutes = Number(minutesString);
@@ -36,21 +38,24 @@ const startCountdown = (graphic, setCountdowns, updateGraphic) => {
                 hours--;
             }
         }
-        updateGraphic(graphic.id, 'texts[0].content', graphic.countdown.format
-            .replace('hh', ('0' + hours).slice(-2))
-            .replace('h', hours)
-            .replace('mm', ('0' + minutes).slice(-2))
-            .replace('m', minutes)
-            .replace('ss', ('0' + seconds).slice(-2))
-            .replace('s', seconds)
+        updateGraphic(
+            graphic.id,
+            'texts[0].content',
+            graphic.countdown.format
+                .replace('hh', ('0' + hours).slice(-2))
+                .replace('h', hours)
+                .replace('mm', ('0' + minutes).slice(-2))
+                .replace('m', minutes)
+                .replace('ss', ('0' + seconds).slice(-2))
+                .replace('s', seconds)
         );
     }, 1000);
     setCountdowns((prev) => [
         ...prev,
         {
             id: graphic.id,
-            interval: interval
-        }
+            interval: interval,
+        },
     ]);
 };
 
@@ -102,7 +107,7 @@ CountdownActions.propTypes = {
     graphic: PropTypes.object.isRequired,
     updateGraphic: PropTypes.func.isRequired,
     countdowns: PropTypes.array.isRequired,
-    setCountdowns: PropTypes.func.isRequired
+    setCountdowns: PropTypes.func.isRequired,
 };
 
 export default CountdownActions;

@@ -16,27 +16,64 @@ const Content = memo(({ graphic, updateGraphic, project }) => {
             return null;
 
         case 'VIDEO':
-            content = <Video id={graphic.id} video={graphic.video} updateGraphic={updateGraphic} project={project} />;
+            content = (
+                <Video
+                    id={graphic.id}
+                    video={graphic.video}
+                    updateGraphic={updateGraphic}
+                    project={project}
+                />
+            );
             break;
 
         case 'COUNTDOWN':
-            content = <Countdown id={graphic.id} countdown={graphic.countdown} updateGraphic={updateGraphic} />;
+            content = (
+                <Countdown
+                    id={graphic.id}
+                    countdown={graphic.countdown}
+                    updateGraphic={updateGraphic}
+                />
+            );
             break;
 
         case 'PLAYLIST':
-            content = <Playlist id={graphic.id} playlist={graphic.playlist} updateGraphic={updateGraphic} project={project} />;
+            content = (
+                <Playlist
+                    id={graphic.id}
+                    playlist={graphic.playlist}
+                    updateGraphic={updateGraphic}
+                    project={project}
+                />
+            );
             break;
 
         case 'SLIDER':
-            content = <Slider id={graphic.id} slider={graphic.slider} updateGraphic={updateGraphic} project={project} />;
+            content = (
+                <Slider
+                    id={graphic.id}
+                    slider={graphic.slider}
+                    updateGraphic={updateGraphic}
+                    project={project}
+                />
+            );
             break;
 
         default:
-            content = <Texts id={graphic.id} texts={graphic.texts} updateGraphic={updateGraphic} />;
+            content = (
+                <Texts
+                    id={graphic.id}
+                    texts={graphic.texts}
+                    updateGraphic={updateGraphic}
+                />
+            );
             break;
     }
     return (
-        <Collapse title='Content' collapsed={collapsed} setCollapsed={setCollapsed}>
+        <Collapse
+            title='Content'
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+        >
             {content}
         </Collapse>
     );
@@ -45,7 +82,7 @@ const Content = memo(({ graphic, updateGraphic, project }) => {
 Content.propTypes = {
     graphic: PropTypes.object.isRequired,
     project: PropTypes.string.isRequired,
-    updateGraphic: PropTypes.func.isRequired
+    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Content;

@@ -16,9 +16,9 @@ import Output from './output/Output';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            suspense: true
-        }
-    }
+            suspense: true,
+        },
+    },
 });
 
 const container = document.getElementById('root');
@@ -30,16 +30,23 @@ root.render(
                 <ThemeProvider theme={theme}>
                     <Suspense fallback={<div />}>
                         <Routes>
-                            <Route path='/' exact element={
-                                <>
-                                    <Notifier />
-                                    <CssBaseline />
-                                    <ContextProvider>
-                                        <Main />
-                                    </ContextProvider>
-                                </>
-                            } />
-                            <Route path='/output' element={<Output />} />
+                            <Route
+                                path='/'
+                                exact
+                                element={
+                                    <>
+                                        <Notifier />
+                                        <CssBaseline />
+                                        <ContextProvider>
+                                            <Main />
+                                        </ContextProvider>
+                                    </>
+                                }
+                            />
+                            <Route
+                                path='/output'
+                                element={<Output />}
+                            />
                         </Routes>
                     </Suspense>
                 </ThemeProvider>

@@ -14,21 +14,21 @@ const Base = () => ({
         addFade: false,
         duration: 500,
         delay: 0,
-        ease: false
+        ease: false,
     },
     animationOut: {
         style: 'Fade',
         addFade: false,
         duration: 500,
         delay: 0,
-        ease: false
+        ease: false,
     },
     video: null,
     countdown: null,
     playlist: null,
     slider: null,
     texts: [],
-    children: []
+    children: [],
 });
 
 const BaseText = () => ({
@@ -43,7 +43,7 @@ const BaseText = () => ({
     fontWeight: 'bold',
     fontStyle: 'normal',
     fontColor: '#ffffff',
-    textAlign: 'left'
+    textAlign: 'left',
 });
 
 export const SINGLE_TEXT = () => ({
@@ -59,9 +59,9 @@ export const SINGLE_TEXT = () => ({
             ...BaseText(),
             left: 0,
             top: 0,
-            width: 600
-        }
-    ]
+            width: 600,
+        },
+    ],
 });
 
 export const DOUBLE_TEXT = () => ({
@@ -84,9 +84,9 @@ export const DOUBLE_TEXT = () => ({
             left: 0,
             top: 0,
             width: 600,
-            textAlign: 'right'
-        }
-    ]
+            textAlign: 'right',
+        },
+    ],
 });
 
 export const TRIPLE_TEXT = () => ({
@@ -108,15 +108,15 @@ export const TRIPLE_TEXT = () => ({
             ...BaseText(),
             left: 0,
             top: 50,
-            width: 600
+            width: 600,
         },
         {
             ...BaseText(),
             left: 0,
             top: 100,
-            width: 600
-        }
-    ]
+            width: 600,
+        },
+    ],
 });
 
 export const IMAGE = () => ({
@@ -124,7 +124,7 @@ export const IMAGE = () => ({
     name: 'Image',
     type: 'IMAGE',
     width: 1280,
-    height: 720
+    height: 720,
 });
 
 export const CLOCK = () => ({
@@ -142,9 +142,9 @@ export const CLOCK = () => ({
             top: 43,
             width: 200,
             fontSize: 50,
-            textAlign: 'center'
+            textAlign: 'center',
         },
-    ]
+    ],
 });
 
 export const COUNTDOWN = () => ({
@@ -167,8 +167,8 @@ export const COUNTDOWN = () => ({
     countdown: {
         type: 'remaining',
         time: '00:05:00',
-        format: 'hh:mm:ss'
-    }
+        format: 'hh:mm:ss',
+    },
 });
 
 export const VIDEO = () => ({
@@ -182,8 +182,8 @@ export const VIDEO = () => ({
         duration: 0,
         loop: false,
         hideOnEnd: false,
-        currentTime: 0
-    }
+        currentTime: 0,
+    },
 });
 
 export const PLAYLIST = () => ({
@@ -197,8 +197,8 @@ export const PLAYLIST = () => ({
         durations: [],
         loop: false,
         hideOnEnd: false,
-        currentTime: 0
-    }
+        currentTime: 0,
+    },
 });
 
 export const SLIDER = () => ({
@@ -209,6 +209,6 @@ export const SLIDER = () => ({
     height: 300,
     slider: {
         sources: [],
-        duration: 10
-    }
+        duration: 10,
+    },
 });
