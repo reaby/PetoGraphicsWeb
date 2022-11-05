@@ -6,8 +6,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
+import axios from 'axios';
 
 const AddProjectDialog = ({ open, onClose, onAdd }) => {
     const [project, setProject] = useState('');
@@ -45,20 +45,13 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
                 </Button>
                 <Button
                     color='primary'
-                    onClick={() => {
-                        fetch('/api/projects', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                project,
-                            }),
-                        })
-                            .then(() => onAdd(project))
-                            .catch((error) => {
-                                error.then((text) => showMessage(text, true));
-                            });
+                    onClick={async () => {
+                        try {
+                            await axios.post('/api/projects', { project });
+                            onAdd(project);
+                        } catch (error) {
+                            if (error.response) showMessage(error.response.data, true);
+                        }
                     }}
                 >
                     Create

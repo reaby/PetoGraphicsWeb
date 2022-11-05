@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'common/utils/fetchWrap';
+import axios from 'axios';
 import { showMessage } from 'common/components/Notifier';
 import findGraphic from 'common/utils/findGraphic';
 import updateChildren from 'common/utils/updateChildren';
@@ -13,7 +13,7 @@ export const Context = React.createContext({});
 
 export const ContextProvider = ({ children }) => {
     const [config, _setConfig] = useState(null);
-    const [project, setProject] = useState(null);
+    const [project, _setProject] = useState(null);
     const [live, setLive] = useState(false);
     const [countdowns, setCountdowns] = useState([]);
     const [selectedGraphicId, setSelectedGraphicId] = useState(null);
@@ -21,6 +21,22 @@ export const ContextProvider = ({ children }) => {
     const selectedGraphic = useMemo(() => {
         return config && selectedGraphicId && findGraphic(config, selectedGraphicId);
     }, [config, selectedGraphicId]);
+
+    const setProject = useCallback(async (newProject) => {
+        try {
+            let previosProject;
+            _setProject((prev) => {
+                previosProject = prev;
+                return newProject;
+            });
+            const response = await axios.post('/api/projects/change', {
+                project: newProject,
+            });
+            _setConfig(response.data.config);
+        } catch (error) {
+            if (error.response) showMessage(error.response.data, true);
+        }
+    }, []);
 
     const setConfig = useCallback((param) => {
         _setConfig((prev) => {
@@ -54,33 +70,13 @@ export const ContextProvider = ({ children }) => {
             const msgData = JSON.parse(msg.data);
             if (msgData.type === 'config') {
                 _setConfig(msgData.payload.config);
-                setProject(msgData.payload.project);
+                _setProject(msgData.payload.project);
             }
         };
         return () => {
             socket?.close();
         };
     }, []);
-
-    useEffect(() => {
-        if (!project) {
-            return;
-        }
-        fetch('/api/projects/change', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                project,
-            }),
-        })
-            .then((response) => response.json())
-            .then((json) => _setConfig(json.config))
-            .catch((error) => {
-                error.then((text) => showMessage(text, true));
-            });
-    }, [project]);
 
     return (
         <Context.Provider

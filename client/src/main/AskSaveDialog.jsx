@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
+import axios from 'axios';
 
 const AskSaveDialog = ({ open, onClose, project, config }) => (
     <Dialog
@@ -29,21 +30,16 @@ const AskSaveDialog = ({ open, onClose, project, config }) => (
             </Button>
             <Button
                 color='primary'
-                onClick={() => {
-                    fetch(`/api/projects/${project}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
+                onClick={async () => {
+                    try {
+                        await axios.put(`/api/projects/${project}`, {
                             config,
-                        }),
-                    })
-                        .then(() => {
-                            showMessage('Config saved');
-                            onClose();
-                        })
-                        .catch(console.error);
+                        });
+                        showMessage('Config saved');
+                        onClose();
+                    } catch (error) {
+                        if (error.response) showMessage(error.response.data, true);
+                    }
                 }}
             >
                 Save

@@ -12,6 +12,7 @@ import { Context } from '../Context';
 import AddProjectDialog from './AddProjectDialog';
 import AskSaveDialog from './AskSaveDialog';
 import useProjects from 'common/hooks/useProjects';
+import axios from 'axios';
 
 const AppBar = () => {
     const { config, project, setProject, live, setLive } = useContext(Context);
@@ -34,18 +35,13 @@ const AppBar = () => {
                     <Button
                         color='primary'
                         sx={{ mr: 4 }}
-                        onClick={() => {
-                            fetch(`/api/projects/${project}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    config,
-                                }),
-                            })
-                                .then(() => showMessage('Config saved'))
-                                .catch(console.error);
+                        onClick={async () => {
+                            try {
+                                await axios.put(`/api/projects/${project}`, { config });
+                                showMessage('Config saved');
+                            } catch (error) {
+                                if (error.response) showMessage(error.response.data, true);
+                            }
                         }}
                     >
                         Save

@@ -5,8 +5,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
+import axios from 'axios';
 
 const UploadButton = ({ accept, onUpload }) => {
     const id = useId();
@@ -31,21 +31,19 @@ const UploadButton = ({ accept, onUpload }) => {
                     type='file'
                     multiple
                     style={{ display: 'none' }}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                         const data = new FormData();
                         for (const file of event.target.files) {
                             data.append('files', file);
                         }
                         setUploading(true);
-                        fetch('/api/files', {
-                            method: 'POST',
-                            body: data,
-                        })
-                            .then(() => onUpload(event.target.files))
-                            .catch((error) => {
-                                error.then((text) => showMessage(text, true));
-                            })
-                            .finally(() => setUploading(false));
+                        try {
+                            await axios.post('/api/files', data);
+                            onUpload(event.target.files);
+                        } catch (error) {
+                            if (error.response) showMessage(error.response.data, true);
+                        }
+                        setUploading(false);
                     }}
                 />
                 <IconButton component='span'>
