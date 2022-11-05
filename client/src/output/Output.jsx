@@ -83,7 +83,7 @@ const Output = () => {
 
     useEffect(() => {
         socket = new WebSocket(
-            process.env.NODE_ENV === 'production'
+            import.meta.env.MODE === 'production'
                 ? window.location.href.replace('http', 'ws')
                 : 'ws://localhost:5000'
         );
