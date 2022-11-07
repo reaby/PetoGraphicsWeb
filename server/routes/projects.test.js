@@ -42,7 +42,7 @@ describe('/api/projects', () => {
         });
     });
 
-    describe('GET /api/projects/:project', () => {
+    describe('GET /api/projects/:name', () => {
         it('should return 200', (done) => {
             request(app).get('/api/projects/Test1').expect(200).end(done);
         });
@@ -55,7 +55,7 @@ describe('/api/projects', () => {
             request(app)
                 .get('/api/projects/Test1')
                 .expect(200, {
-                    project: 'Test1',
+                    name: 'Test1',
                     config: [{ id: '1234' }, { id: '4567' }],
                 })
                 .end(done);
@@ -71,7 +71,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects')
                 .send({
-                    project: 'Test4',
+                    name: 'Test4',
                 })
                 .expect(201)
                 .end(done);
@@ -81,7 +81,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects')
                 .send({
-                    project: 'Test4',
+                    name: 'Test4',
                 })
                 .expect('Content-Type', /json/)
                 .end(done);
@@ -91,7 +91,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects')
                 .send({
-                    project: 'Test4',
+                    name: 'Test4',
                 })
                 .expect(() => {
                     if (!fs.existsSync('./configs/Test4')) {
@@ -105,21 +105,21 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects')
                 .send({
-                    project: 'Test4',
+                    name: 'Test4',
                 })
                 .expect(201, {
-                    project: 'Test4',
+                    name: 'Test4',
                     config: [],
                 })
                 .end(done);
         });
 
-        it('should return 400 when "project" is missing from body', (done) => {
+        it('should return 400 when "name" is missing from body', (done) => {
             request(app).post('/api/projects').send({}).expect(400).end(done);
         });
     });
 
-    describe('PUT /api/projects/:project', () => {
+    describe('PUT /api/projects/:name', () => {
         it('should return 200', (done) => {
             request(app)
                 .put('/api/projects/Test1')
@@ -160,7 +160,7 @@ describe('/api/projects', () => {
         });
     });
 
-    describe('DELETE /api/projects/:project', () => {
+    describe('DELETE /api/projects/:name', () => {
         it('should return 200', (done) => {
             request(app).delete('/api/projects/Test1').expect(200).end(done);
         });
@@ -182,7 +182,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects/change')
                 .send({
-                    project: 'Test1',
+                    name: 'Test1',
                 })
                 .expect(200)
                 .end(done);
@@ -192,7 +192,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects/change')
                 .send({
-                    project: 'Test1',
+                    name: 'Test1',
                 })
                 .expect('Content-Type', /json/)
                 .end(done);
@@ -202,10 +202,10 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects/change')
                 .send({
-                    project: 'Test1',
+                    name: 'Test1',
                 })
                 .expect(200, {
-                    project: 'Test1',
+                    name: 'Test1',
                     config: [{ id: '1234' }, { id: '4567' }],
                 })
                 .end(done);
@@ -215,7 +215,7 @@ describe('/api/projects', () => {
             request(app)
                 .post('/api/projects/change')
                 .send({
-                    project: 'Test4',
+                    name: 'Test4',
                 })
                 .expect(404)
                 .end(done);

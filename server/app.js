@@ -35,7 +35,7 @@ wss.on('connection', (ws) => {
     ws.send(
         JSON.stringify({
             type: 'config',
-            payload: { project: app.locals.project, config: app.locals.config },
+            payload: { name: app.locals.name, config: app.locals.config },
         })
     );
 });
@@ -46,7 +46,7 @@ wss.broadcastConfig = (ignoreClient = null) => {
             client.send(
                 JSON.stringify({
                     type: 'config',
-                    payload: { project: app.locals.project, config: app.locals.config },
+                    payload: { project: app.locals.name, config: app.locals.config },
                 })
             );
         }
@@ -59,9 +59,9 @@ app.locals.setConfig = (config, ignoreClient = null) => {
     app.locals.config = config;
     wss.broadcastConfig(ignoreClient);
 };
-app.locals.project = null;
-app.locals.setProject = (project, ignoreClient = null) => {
-    app.locals.project = project;
+app.locals.name = null;
+app.locals.setName = (name, ignoreClient = null) => {
+    app.locals.name = name;
     wss.broadcastConfig(ignoreClient);
 };
 

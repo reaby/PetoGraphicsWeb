@@ -16,9 +16,15 @@ import AddIcon from '@mui/icons-material/Add';
 import UploadButton from 'common/components/UploadButton';
 import isImage from 'common/utils/isImage';
 import useFiles from 'common/hooks/useFiles';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
-const Slider = ({ id, slider, updateGraphic }) => {
-    const { data: files, refetch: refreshFiles } = useFiles();
+const useSliderState = (id) => useProject((state) => findGraphic(state.config, id).slider);
+
+const Slider = ({ id }) => {
+    const slider = useSliderState(id);
+    const updateGraphic = useProject((state) => state.updateGraphic);
+    const { files } = useFiles();
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
@@ -70,7 +76,6 @@ const Slider = ({ id, slider, updateGraphic }) => {
                                     ...Array.from(values).map((item) => item.name),
                                 ];
                                 updateGraphic(id, 'slider.sources', newSources);
-                                refreshFiles();
                             }}
                         />
                     </div>
@@ -119,8 +124,6 @@ const Slider = ({ id, slider, updateGraphic }) => {
 
 Slider.propTypes = {
     id: PropTypes.string.isRequired,
-    slider: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
 };
 
 export default Slider;

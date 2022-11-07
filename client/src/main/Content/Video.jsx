@@ -8,9 +8,16 @@ import UploadButton from 'common/components/UploadButton';
 import isVideo from 'common/utils/isVideo';
 import getVideoDuration from 'common/utils/getVideoDuration';
 import useFiles from 'common/hooks/useFiles';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
-const Video = ({ id, video, updateGraphic, project }) => {
-    const { data: files, refetch: refreshFiles } = useFiles();
+const useVideoState = (id) => useProject((state) => findGraphic(state.config, id).video);
+
+const Video = ({ id }) => {
+    const video = useVideoState();
+    const updateGraphic = useProject((state) => state.updateGraphic);
+    const name = useProject((state) => state.name);
+    const { files } = useFiles();
     return (
         <>
             <Grid
@@ -22,13 +29,12 @@ const Video = ({ id, video, updateGraphic, project }) => {
                     label='Source'
                     type='text'
                     value={video.source ?? ''}
-                    onChange={(event) => {
+                    onChange={async (event) => {
                         updateGraphic(id, 'video.source', event.target.value);
-                        getVideoDuration(`/configs/${project}/${event.target.value}`)
-                            .then((duration) => {
-                                updateGraphic(id, 'video.duration', duration);
-                            })
-                            .catch(console.error);
+                        const duration = await getVideoDuration(
+                            `/configs/${name}/${event.target.value}`
+                        );
+                        updateGraphic(id, 'video.duration', duration);
                     }}
                     fullWidth
                     select
@@ -45,14 +51,12 @@ const Video = ({ id, video, updateGraphic, project }) => {
                 </TextField>
                 <UploadButton
                     accept='video/*'
-                    onUpload={(value) => {
-                        refreshFiles();
+                    onUpload={async (value) => {
                         updateGraphic(id, 'video.source', value[0]?.name);
-                        getVideoDuration(`/configs/${project}/${value[0]?.name}`)
-                            .then((duration) => {
-                                updateGraphic(id, 'video.duration', duration);
-                            })
-                            .catch(console.error);
+                        const duration = await getVideoDuration(
+                            `/configs/${name}/${value[0]?.name}`
+                        );
+                        updateGraphic(id, 'video.duration', duration);
                     }}
                 />
             </Grid>
@@ -91,9 +95,6 @@ const Video = ({ id, video, updateGraphic, project }) => {
 
 Video.propTypes = {
     id: PropTypes.string.isRequired,
-    video: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired,
 };
 
 export default Video;

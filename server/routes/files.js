@@ -6,7 +6,7 @@ const router = Express.Router();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `./configs/${req.app.locals.project}`);
+        cb(null, `./configs/${req.app.locals.name}`);
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);
@@ -16,13 +16,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get('/files', async (req, res) => {
-    if (!req.app.locals.project) {
+    if (!req.app.locals.name) {
         res.status(200);
         res.send([]);
         return;
     }
     try {
-        const files = await fsp.readdir(`./configs/${req.app.locals.project}`, {
+        const files = await fsp.readdir(`./configs/${req.app.locals.name}`, {
             withFileTypes: true,
         });
         const filenames = files.map((file) => file.name);
@@ -48,14 +48,14 @@ router.post('/files', upload.array('files'), (req, res) => {
 router.delete('/files/:file', async (req, res) => {
     const file = req.params.file;
 
-    if (!fs.existsSync(`./configs/${req.app.locals.project}/${file}`)) {
+    if (!fs.existsSync(`./configs/${req.app.locals.name}/${file}`)) {
         res.status(404);
         res.send('File not found');
         return;
     }
 
     try {
-        await fsp.unlink(`./configs/${req.app.locals.project}/${file}`);
+        await fsp.unlink(`./configs/${req.app.locals.name}/${file}`);
         res.sendStatus(200);
     } catch (error) {
         res.status(409);

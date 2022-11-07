@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -6,17 +6,19 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
-import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
-import { Context } from '../Context';
 import AddProjectDialog from './AddProjectDialog';
 import AskSaveDialog from './AskSaveDialog';
 import useProjects from 'common/hooks/useProjects';
 import axios from 'axios';
+import useProject from 'common/hooks/useProject';
+import useLive from 'common/hooks/useLive';
 
 const AppBar = () => {
-    const { config, project, setProject, live, setLive } = useContext(Context);
-    const { data: projects, refetch: refreshProjects } = useProjects();
+    const name = useProject((state) => state.name);
+    const changeProject = useProject((state) => state.changeProject);
+    const { live, setLive } = useLive();
+    const { projects } = useProjects();
     const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
     const [askSaveDialogOpen, setAskSaveDialogOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
@@ -31,13 +33,14 @@ const AppBar = () => {
                 >
                     PetoGraphics
                 </Typography>
-                {project && (
+                {name && (
                     <Button
                         color='primary'
                         sx={{ mr: 4 }}
                         onClick={async () => {
                             try {
-                                await axios.put(`/api/projects/${project}`, { config });
+                                const { config } = useProject.getState();
+                                await axios.put(`/api/projects/${name}`, { config });
                                 showMessage('Config saved');
                             } catch (error) {
                                 if (error.response) showMessage(error.response.data, true);
@@ -57,16 +60,16 @@ const AppBar = () => {
                 {!live && (
                     <TextField
                         select
-                        value={project || ''}
+                        value={name || ''}
                         onChange={(event) => {
-                            if (project) {
+                            if (name) {
                                 setSelectedProject(event.target.value);
                                 setAskSaveDialogOpen(true);
                             } else {
                                 if (event.target.value === 'add_new') {
                                     setAddProjectDialogOpen(true);
                                 } else {
-                                    setProject(event.target.value);
+                                    changeProject(event.target.value);
                                 }
                             }
                         }}
@@ -96,20 +99,18 @@ const AppBar = () => {
                 onClose={() => setAddProjectDialogOpen(false)}
                 onAdd={(name) => {
                     setAddProjectDialogOpen(false);
-                    setProject(name);
-                    refreshProjects();
+                    changeProject(name);
                 }}
             />
             <AskSaveDialog
                 open={askSaveDialogOpen}
-                project={project}
-                config={config}
+                name={name}
                 onClose={() => {
                     setAskSaveDialogOpen(false);
                     if (selectedProject === 'add_new') {
                         setAddProjectDialogOpen(true);
                     } else {
-                        setProject(selectedProject);
+                        changeProject(selectedProject);
                     }
                 }}
             />

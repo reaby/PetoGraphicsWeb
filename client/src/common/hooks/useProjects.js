@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { showMessage } from 'common/components/Notifier';
 import axios from 'axios';
 
 const getProjects = async () => {
@@ -6,6 +7,22 @@ const getProjects = async () => {
     return response.data;
 };
 
-const useProjects = () => useQuery(['projects'], getProjects);
+const addProject = async (name) => {
+    const response = await axios.post('/api/projects', { name });
+    return response.data;
+};
+
+const useProjects = () => {
+    const { data: projects, refetch } = useQuery(['projects'], getProjects);
+    const { mutate: add } = useMutation(addProject, {
+        onSuccess: () => {
+            refetch();
+        },
+        onError: (error) => {
+            if (error.response) showMessage(error.response.data, true);
+        },
+    });
+    return { projects, add };
+};
 
 export default useProjects;

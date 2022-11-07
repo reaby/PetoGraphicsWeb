@@ -1,5 +1,4 @@
-import { useState, useContext, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useCallback } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -21,9 +20,10 @@ import {
 } from './Templates';
 import findParentGraphic from 'common/utils/findParentGraphic';
 import findGraphic from 'common/utils/findGraphic';
-import { Context } from '../../Context';
 import Controller from './Controller';
 import produce from 'immer';
+import shallow from 'zustand/shallow';
+import useProject from 'common/hooks/useProject';
 
 window.addEventListener('keydown', (event) => {
     if (event.keyCode === 17) {
@@ -37,16 +37,9 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
-const GraphicList = ({ matches }) => {
-    const {
-        config,
-        setConfig,
-        selectedGraphic,
-        setSelectedGraphicId,
-        updateGraphic,
-        countdowns,
-        setCountdowns,
-    } = useContext(Context);
+const GraphicList = () => {
+    const rootIds = useProject((state) => state.config?.map((item) => item.id) ?? [], shallow);
+    const setConfig = useProject((state) => state.setConfig);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const addGraphic = (graphicJSON) => {
@@ -54,18 +47,17 @@ const GraphicList = ({ matches }) => {
         setConfig((prev) => [...prev, graphicJSON()]);
     };
 
-    const onDragStart = useCallback((event, graphic) => {
+    const onDragStart = useCallback((event, graphicId) => {
         event.dataTransfer.dropEffect = 'move';
-        event.dataTransfer.setData('startId', graphic.id);
+        event.dataTransfer.setData('startId', graphicId);
     }, []);
 
     const onDragOver = useCallback((event) => event.preventDefault(), []);
 
     const onDrop = useCallback(
-        (event, dropGraphic) => {
+        (event, endId) => {
             setConfig((prev) =>
                 produce(prev, (newConfig) => {
-                    const endId = dropGraphic.id;
                     const endParent = findParentGraphic(newConfig, endId);
                     const endIndex = (endParent?.children ?? newConfig).findIndex(
                         (item) => item.id === endId
@@ -149,15 +141,10 @@ const GraphicList = ({ matches }) => {
                 sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }}
                 disablePadding
             >
-                {config?.map((graphic, index) => (
+                {rootIds.map((id) => (
                     <Controller
-                        key={graphic.id}
-                        graphic={graphic}
-                        selectedGraphicId={selectedGraphic?.id}
-                        setSelectedGraphicId={setSelectedGraphicId}
-                        updateGraphic={updateGraphic}
-                        countdowns={countdowns}
-                        setCountdowns={setCountdowns}
+                        key={id}
+                        id={id}
                         onDragStart={onDragStart}
                         onDragOver={onDragOver}
                         onDrop={onDrop}
@@ -166,10 +153,6 @@ const GraphicList = ({ matches }) => {
             </List>
         </>
     );
-};
-
-GraphicList.propTypes = {
-    matches: PropTypes.bool.isRequired,
 };
 
 export default GraphicList;

@@ -6,14 +6,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { showMessage } from 'common/components/Notifier';
-import axios from 'axios';
+import useProjects from 'common/hooks/useProjects';
 
 const AddProjectDialog = ({ open, onClose, onAdd }) => {
-    const [project, setProject] = useState('');
+    const { add } = useProjects();
+    const [name, setName] = useState('');
     useEffect(() => {
         if (open) {
-            setProject('');
+            setName('');
         }
     }, [open]);
 
@@ -32,8 +32,8 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
                     type='text'
                     margin='normal'
                     fullWidth
-                    value={project}
-                    onChange={(event) => setProject(event.target.value)}
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
                 />
             </DialogContent>
             <DialogActions>
@@ -45,13 +45,10 @@ const AddProjectDialog = ({ open, onClose, onAdd }) => {
                 </Button>
                 <Button
                     color='primary'
-                    onClick={async () => {
-                        try {
-                            await axios.post('/api/projects', { project });
-                            onAdd(project);
-                        } catch (error) {
-                            if (error.response) showMessage(error.response.data, true);
-                        }
+                    onClick={() => {
+                        add(name, {
+                            onSuccess: () => onAdd(name),
+                        });
                     }}
                 >
                     Create

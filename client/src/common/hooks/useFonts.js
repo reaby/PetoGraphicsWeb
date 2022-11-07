@@ -6,6 +6,9 @@ const getFonts = async () => {
     return response.data;
 };
 
-const useFonts = () => useQuery(['fonts'], getFonts);
+const useFonts = () => {
+    const { data: fonts } = useQuery(['fonts'], getFonts);
+    return { fonts };
+};
 
 export default useFonts;

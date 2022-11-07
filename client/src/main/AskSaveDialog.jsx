@@ -5,11 +5,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import fetch from 'common/utils/fetchWrap';
 import { showMessage } from 'common/components/Notifier';
 import axios from 'axios';
+import useProject from 'common/hooks/useProject';
 
-const AskSaveDialog = ({ open, onClose, project, config }) => (
+const AskSaveDialog = ({ open, onClose, name }) => (
     <Dialog
         fullWidth
         open={open}
@@ -32,7 +32,8 @@ const AskSaveDialog = ({ open, onClose, project, config }) => (
                 color='primary'
                 onClick={async () => {
                     try {
-                        await axios.put(`/api/projects/${project}`, {
+                        const { config } = useProject.getState();
+                        await axios.put(`/api/projects/${name}`, {
                             config,
                         });
                         showMessage('Config saved');
@@ -51,8 +52,7 @@ const AskSaveDialog = ({ open, onClose, project, config }) => (
 AskSaveDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    project: PropTypes.string,
-    config: PropTypes.array.isRequired,
+    name: PropTypes.string,
 };
 
 export default AskSaveDialog;

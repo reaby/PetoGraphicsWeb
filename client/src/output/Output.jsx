@@ -6,6 +6,7 @@ import produce from 'immer';
 import _set from 'lodash/set';
 import Graphic from './Graphic';
 import useFonts from 'common/hooks/useFonts';
+import useProject from 'common/hooks/useProject';
 
 let socket;
 let clockInterval;
@@ -49,7 +50,7 @@ const getConfigFonts = (config, fonts) => {
 };
 
 const loadFonts = (config, fonts) => {
-    const configFonts = Array.from(getConfigFonts(config, fonts), ([name, value]) => value);
+    const configFonts = Array.from(getConfigFonts(config, fonts), ([, value]) => value);
     for (const font of configFonts) {
         const fontFace = new FontFace(font.family, `url(/static/${escape(font.filepath)})`, {
             style: font.style,
@@ -61,42 +62,10 @@ const loadFonts = (config, fonts) => {
 };
 
 const Output = () => {
-    const [config, setConfig] = useState(null);
+    const { config, name, updateGraphic } = useProject();
     const [clock, setClock] = useState('00:00');
-    const [project, setProject] = useState(null);
     const [fontsLoaded, setFontsLoaded] = useState(false);
-    const { data: fonts } = useFonts();
-
-    const updateGraphic = useCallback((id, path, value, updateChilds = false) => {
-        setConfig((prev) => {
-            const result = produce(prev, (newConfig) => {
-                const graphic = findGraphic(newConfig, id);
-                _set(graphic, path, value);
-                if (updateChilds) {
-                    updateChildren(graphic.children, path, value);
-                }
-            });
-            socket.send(JSON.stringify({ type: 'update-config', payload: result }));
-            return result;
-        });
-    }, []);
-
-    useEffect(() => {
-        socket = new WebSocket(
-            import.meta.env.MODE === 'production'
-                ? window.location.href.replace('http', 'ws')
-                : 'ws://localhost:5000'
-        );
-        socket.onmessage = (msg) => {
-            const msgData = JSON.parse(msg.data);
-            setConfig(msgData.payload.config);
-            setProject(msgData.payload.project);
-        };
-        return () => {
-            socket?.close();
-        };
-        // eslint-disable-next-line
-    }, []);
+    const { fonts } = useFonts();
 
     useEffect(() => {
         clockInterval = setInterval(() => {
@@ -135,7 +104,7 @@ const Output = () => {
                     key={graphic.id}
                     graphic={graphic}
                     graphicIndex={graphicIndex}
-                    project={project}
+                    project={name}
                     clock={clock}
                     updateGraphic={updateGraphic}
                 />

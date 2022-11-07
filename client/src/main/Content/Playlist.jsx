@@ -18,17 +18,24 @@ import UploadButton from 'common/components/UploadButton';
 import isVideo from 'common/utils/isVideo';
 import getVideoDuration from 'common/utils/getVideoDuration';
 import useFiles from 'common/hooks/useFiles';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
 const getPlaylistDuration = (sources, project) => {
     return new Promise((resolve, reject) => {
         Promise.all(sources.map((source) => getVideoDuration(`/configs/${project}/${source}`)))
             .then((durations) => resolve(durations))
-            .catch(reject);
+            .catch(() => reject());
     });
 };
 
-const Playlist = ({ id, playlist, updateGraphic, project }) => {
-    const { data: files, refetch: refreshFiles } = useFiles();
+const usePlaylistState = (id) => useProject((state) => findGraphic(state.config, id).playlist);
+
+const Playlist = ({ id }) => {
+    const playlist = usePlaylistState(id);
+    const name = useProject((state) => state.name);
+    const updateGraphic = useProject((state) => state.updateGraphic);
+    const { files } = useFiles();
     const [anchorEl, setAnchorEl] = useState(null);
     return (
         <>
@@ -52,19 +59,15 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                             <ListItemSecondaryAction>
                                 <Tooltip title='Remove'>
                                     <IconButton
-                                        onClick={() => {
+                                        onClick={async () => {
                                             const clone = [...playlist.sources];
                                             clone.splice(index, 1);
                                             updateGraphic(id, 'playlist.sources', clone);
-                                            getPlaylistDuration(clone, project)
-                                                .then((durations) => {
-                                                    updateGraphic(
-                                                        id,
-                                                        'playlist.durations',
-                                                        durations
-                                                    );
-                                                })
-                                                .catch(console.error);
+                                            const durations = await getPlaylistDuration(
+                                                clone,
+                                                name
+                                            );
+                                            updateGraphic(id, 'playlist.durations', durations);
                                         }}
                                     >
                                         <ClearIcon />
@@ -112,18 +115,14 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                         </Tooltip>
                         <UploadButton
                             accept='video/*'
-                            onUpload={(values) => {
+                            onUpload={async (values) => {
                                 const newSources = [
                                     ...playlist.sources,
                                     ...Array.from(values).map((item) => item.name),
                                 ];
                                 updateGraphic(id, 'playlist.sources', newSources);
-                                refreshFiles();
-                                getPlaylistDuration(newSources, project)
-                                    .then((durations) => {
-                                        updateGraphic(id, 'playlist.duration', durations);
-                                    })
-                                    .catch(console.error);
+                                const durations = await getPlaylistDuration(newSources, name);
+                                updateGraphic(id, 'playlist.duration', durations);
                             }}
                         />
                     </Box>
@@ -143,14 +142,11 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
                         {files.filter(isVideo).map((item) => (
                             <MenuItem
                                 key={item}
-                                onClick={() => {
+                                onClick={async () => {
                                     const newSources = [...playlist.sources, item];
                                     updateGraphic(id, 'playlist.sources', newSources);
-                                    getPlaylistDuration(newSources, project)
-                                        .then((durations) => {
-                                            updateGraphic(id, 'playlist.durations', durations);
-                                        })
-                                        .catch(console.error);
+                                    const durations = await getPlaylistDuration(newSources, name);
+                                    updateGraphic(id, 'playlist.durations', durations);
                                 }}
                             >
                                 {item}
@@ -165,9 +161,6 @@ const Playlist = ({ id, playlist, updateGraphic, project }) => {
 
 Playlist.propTypes = {
     id: PropTypes.string.isRequired,
-    playlist: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired,
 };
 
 export default Playlist;

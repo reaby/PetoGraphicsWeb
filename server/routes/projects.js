@@ -15,20 +15,20 @@ router.get('/projects', async (req, res) => {
     }
 });
 
-router.get('/projects/:project', async (req, res) => {
-    const project = req.params.project;
+router.get('/projects/:name', async (req, res) => {
+    const name = req.params.name;
 
-    if (!fs.existsSync(`./configs/${project}`)) {
+    if (!fs.existsSync(`./configs/${name}`)) {
         res.status(404);
-        res.send(`Project with name "${project}" does not exist.`);
+        res.send(`Project with name "${name}" does not exist.`);
         return;
     }
 
     try {
-        const data = await fsp.readFile(`./configs/${project}/config.json`);
+        const data = await fsp.readFile(`./configs/${name}/config.json`);
         const config = JSON.parse(data);
         res.status(200);
-        res.send({ project, config });
+        res.send({ name, config });
     } catch (error) {
         res.status(409);
         res.send('Failed to read config');
@@ -36,27 +36,27 @@ router.get('/projects/:project', async (req, res) => {
 });
 
 router.post('/projects', async (req, res) => {
-    const newProject = req.body.project;
+    const name = req.body.name;
 
-    if (!newProject) {
+    if (!name) {
         res.status(400);
-        res.send('Missing "project" from body');
+        res.send('Missing "name" from body');
         return;
     }
 
     try {
-        await fsp.mkdir(`./configs/${newProject}`);
-        await fsp.writeFile(`./configs/${newProject}/config.json`, '[]');
+        await fsp.mkdir(`./configs/${name}`);
+        await fsp.writeFile(`./configs/${name}/config.json`, '[]');
         res.status(201);
-        res.send({ project: newProject, config: [] });
+        res.send({ name, config: [] });
     } catch (error) {
         res.status(409);
         res.send('Failed to create project');
     }
 });
 
-router.put('/projects/:project', async (req, res) => {
-    const project = req.params.project;
+router.put('/projects/:name', async (req, res) => {
+    const name = req.params.name;
     const config = req.body.config;
 
     if (!config) {
@@ -66,22 +66,22 @@ router.put('/projects/:project', async (req, res) => {
     }
 
     try {
-        await fsp.writeFile(`./configs/${project}/config.json`, JSON.stringify(config));
+        await fsp.writeFile(`./configs/${name}/config.json`, JSON.stringify(config));
         res.status(200);
-        res.send({ project, config });
+        res.send({ name, config });
     } catch (error) {
         res.status(409);
         res.send('Failed to update config');
     }
 });
 
-router.delete('/projects/:project', async (req, res) => {
-    const project = req.params.project;
+router.delete('/projects/:name', async (req, res) => {
+    const name = req.params.name;
 
     try {
-        await fsp.rm(`./configs/${project}`, { recursive: true, force: true });
-        if (project === req.app.locals.project) {
-            req.app.locals.setProject(null);
+        await fsp.rm(`./configs/${name}`, { recursive: true, force: true });
+        if (name === req.app.locals.name) {
+            req.app.locals.setName(null);
             req.app.locals.setConfig([]);
         }
         res.sendStatus(200);
@@ -92,32 +92,32 @@ router.delete('/projects/:project', async (req, res) => {
 });
 
 router.post('/projects/change', async (req, res) => {
-    const newProject = req.body.project;
+    const name = req.body.name;
 
-    if (!newProject) {
+    if (!name) {
         res.status(400);
-        res.send('Missing "project" from body');
+        res.send('Missing "name" from body');
         return;
     }
-    if (!fs.existsSync(`./configs/${newProject}/config.json`)) {
+    if (!fs.existsSync(`./configs/${name}/config.json`)) {
         res.status(404);
         res.send('Project not found');
         return;
     }
 
-    if (newProject === req.app.locals.project) {
+    if (name === req.app.locals.name) {
         res.status(200);
-        res.send({ project: req.app.locals.project, config: req.app.locals.config });
+        res.send({ name: req.app.locals.name, config: req.app.locals.config });
         return;
     }
 
     try {
-        const data = await fsp.readFile(`./configs/${newProject}/config.json`);
+        const data = await fsp.readFile(`./configs/${name}/config.json`);
         const newConfig = JSON.parse(data);
-        req.app.locals.setProject(newProject);
+        req.app.locals.setName(name);
         req.app.locals.setConfig(newConfig);
         res.status(200);
-        res.send({ project: newProject, config: newConfig });
+        res.send({ name, config: newConfig });
     } catch (error) {
         res.status(409);
         res.send('Failed to load project');

@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import GeneralSettings from './GeneralSettings';
 import AnimationSettings from './AnimationSettings';
 import TextSettings from './TextSettings';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
-const Settings = ({ selectedGraphic, updateGraphic, project }) => {
+const Settings = () => {
+    const textsCount = useProject(
+        (state) => findGraphic(state.config, state.selectedGraphic).texts?.length ?? 0
+    );
+    const selectedGraphic = useProject((state) => state.selectedGraphic);
     const [generalCollapsed, setGeneralCollapsed] = useState(false);
     const [animationCollapsed, setAnimationCollapsed] = useState(true);
     const [textCollapsed, setTextCollapsed] = useState(true);
@@ -12,44 +17,24 @@ const Settings = ({ selectedGraphic, updateGraphic, project }) => {
     return (
         <>
             <GeneralSettings
-                id={selectedGraphic.id}
-                name={selectedGraphic.name}
-                image={selectedGraphic.image}
-                imageStretch={selectedGraphic.imageStretch}
-                left={selectedGraphic.left}
-                top={selectedGraphic.top}
-                width={selectedGraphic.width}
-                height={selectedGraphic.height}
-                updateGraphic={updateGraphic}
+                id={selectedGraphic}
                 collapsed={generalCollapsed}
                 setCollapsed={setGeneralCollapsed}
-                project={project}
             />
             <AnimationSettings
-                id={selectedGraphic.id}
-                animationIn={selectedGraphic.animationIn}
-                animationOut={selectedGraphic.animationOut}
-                updateGraphic={updateGraphic}
+                id={selectedGraphic}
                 collapsed={animationCollapsed}
                 setCollapsed={setAnimationCollapsed}
             />
-            {selectedGraphic.texts?.length > 0 && (
+            {textsCount > 0 && (
                 <TextSettings
-                    id={selectedGraphic.id}
-                    texts={selectedGraphic.texts}
-                    updateGraphic={updateGraphic}
+                    id={selectedGraphic}
                     collapsed={textCollapsed}
                     setCollapsed={setTextCollapsed}
                 />
             )}
         </>
     );
-};
-
-Settings.propTypes = {
-    selectedGraphic: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    project: PropTypes.string.isRequired,
 };
 
 export default Settings;

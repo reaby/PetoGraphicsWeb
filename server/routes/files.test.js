@@ -6,7 +6,7 @@ import { app } from '../app.js';
 
 describe('/api/files', () => {
     beforeEach(() => {
-        app.locals.project = 'Test1';
+        app.locals.name = 'Test1';
         mockFs({
             node_modules: mockFs.load(path.resolve('node_modules')),
             configs: {

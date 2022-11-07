@@ -28,7 +28,7 @@ const TextProperties = memo(
         fontStyle,
         rich,
     }) => {
-        const { data: fonts } = useFonts();
+        const { fonts } = useFonts();
         return (
             <>
                 <Grid

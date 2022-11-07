@@ -1,10 +1,9 @@
-import { useContext, useRef, Suspense } from 'react';
+import { useRef, Suspense } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Context } from '../Context';
 import AppBar from './AppBar';
 import GraphicList from './List';
 import GraphicSettings from './Settings';
@@ -13,17 +12,17 @@ import findParentGraphic from 'common/utils/findParentGraphic';
 import copyGraphic from 'common/utils/copyGraphic';
 import updateChildren from 'common/utils/updateChildren';
 import produce from 'immer';
+import useProject from 'common/hooks/useProject';
+import useLive from 'common/hooks/useLive';
 
 const Main = () => {
-    const {
-        config,
-        setConfig,
-        project,
-        selectedGraphic,
-        setSelectedGraphicId,
-        updateGraphic,
-        live,
-    } = useContext(Context);
+    const name = useProject((state) => state.name);
+    const setConfig = useProject((state) => state.setConfig);
+    const selectedGraphic = useProject((state) => state.selectedGraphic);
+    const setSelectedGraphic = useProject((state) => state.setSelectedGraphic);
+    const updateGraphic = useProject((state) => state.updateGraphic);
+    const configReady = useProject((state) => !!state.config);
+    const { live } = useLive();
     const matches = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const copied = useRef();
 
@@ -45,21 +44,21 @@ const Main = () => {
                 if (!live && selectedGraphic) {
                     setConfig((prev) =>
                         produce(prev, (newConfig) => {
-                            const parent = findParentGraphic(newConfig, selectedGraphic.id);
+                            const parent = findParentGraphic(newConfig, selectedGraphic);
                             if (!parent) {
                                 const index = newConfig.findIndex(
-                                    (item) => item.id === selectedGraphic.id
+                                    (item) => item.id === selectedGraphic
                                 );
                                 newConfig.splice(index, 1);
                             } else {
                                 const index = parent.children.findIndex(
-                                    (item) => item.id === selectedGraphic.id
+                                    (item) => item.id === selectedGraphic
                                 );
                                 parent.children.splice(index, 1);
                             }
                         })
                     );
-                    setSelectedGraphicId(null);
+                    setSelectedGraphic(null);
                 }
                 break;
             // Copy
@@ -86,12 +85,12 @@ const Main = () => {
         }
     };
 
-    if (!config) return null;
+    if (!configReady) return null;
 
     return (
         <>
             <AppBar />
-            {project && (
+            {name && (
                 <Container
                     maxWidth={false}
                     sx={{ height: 'calc(100vh - 64px)', pt: 3, pb: 3 }}
@@ -110,8 +109,8 @@ const Main = () => {
                             tabIndex='0'
                         >
                             <Paper sx={{ height: '100%' }}>
-                                <Suspense fallback={<div />}>
-                                    <GraphicList matches={matches} />
+                                <Suspense>
+                                    <GraphicList />
                                 </Suspense>
                             </Paper>
                         </Grid>
@@ -121,25 +120,15 @@ const Main = () => {
                             sx={{ height: matches ? '100%' : '30%' }}
                         >
                             <Paper sx={{ width: '100%', height: '100%', overflowY: 'scroll' }}>
-                                <Suspense fallback={<div />}>
+                                <Suspense>
                                     {selectedGraphic && (
                                         <Box sx={{ margin: 2 }}>
                                             <Grid
                                                 container
                                                 spacing={3}
                                             >
-                                                <GraphicContent
-                                                    graphic={selectedGraphic}
-                                                    updateGraphic={updateGraphic}
-                                                    project={project}
-                                                />
-                                                {!live && (
-                                                    <GraphicSettings
-                                                        selectedGraphic={selectedGraphic}
-                                                        updateGraphic={updateGraphic}
-                                                        project={project}
-                                                    />
-                                                )}
+                                                <GraphicContent id={selectedGraphic} />
+                                                {!live && <GraphicSettings id={selectedGraphic} />}
                                             </Grid>
                                         </Box>
                                     )}

@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
+import useCountdowns from 'common/hooks/useCountdowns';
+import useProjects from 'common/hooks/useProjects';
 
 const isCountdownActive = (graphic, countdowns) =>
     countdowns.find((item) => item.id === graphic.id) ? true : false;
@@ -72,42 +74,43 @@ const stopCountdown = (graphic, setCountdowns) => {
     });
 };
 
-const CountdownActions = ({ graphic, updateGraphic, countdowns, setCountdowns }) => (
-    <>
-        <Button
-            variant='contained'
-            color='secondary'
-            sx={{ width: 100, mr: 2 }}
-            onClick={() => {
-                stopCountdown(graphic, setCountdowns);
-                startCountdown(graphic, setCountdowns, updateGraphic);
-            }}
-        >
-            Reset
-        </Button>
-        <Button
-            variant='contained'
-            color={isCountdownActive(graphic, countdowns) ? 'primary' : 'secondary'}
-            onClick={(event) => {
-                if (isCountdownActive(graphic, countdowns)) {
-                    stopCountdown(graphic, setCountdowns);
-                } else {
-                    startCountdown(graphic, setCountdowns, updateGraphic);
-                }
-                event.stopPropagation();
-            }}
-            sx={{ width: 100, mr: 2 }}
-        >
-            {isCountdownActive(graphic, countdowns) ? 'Stop' : 'Start'}
-        </Button>
-    </>
-);
+const CountdownActions = ({ id }) => {
+    const updateGraphic = useProjects((state) => state.updateGraphic);
+    const { countdowns, setCountdowns } = useCountdowns();
+    return (
+        <>
+            <Button
+                variant='contained'
+                color='secondary'
+                sx={{ width: 100, mr: 2 }}
+                onClick={() => {
+                    stopCountdown(id, setCountdowns);
+                    startCountdown(id, setCountdowns, updateGraphic);
+                }}
+            >
+                Reset
+            </Button>
+            <Button
+                variant='contained'
+                color={isCountdownActive(id, countdowns) ? 'primary' : 'secondary'}
+                onClick={(event) => {
+                    if (isCountdownActive(id, countdowns)) {
+                        stopCountdown(id, setCountdowns);
+                    } else {
+                        startCountdown(id, setCountdowns, updateGraphic);
+                    }
+                    event.stopPropagation();
+                }}
+                sx={{ width: 100, mr: 2 }}
+            >
+                {isCountdownActive(id, countdowns) ? 'Stop' : 'Start'}
+            </Button>
+        </>
+    );
+};
 
 CountdownActions.propTypes = {
-    graphic: PropTypes.object.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
-    countdowns: PropTypes.array.isRequired,
-    setCountdowns: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
 };
 
 export default CountdownActions;

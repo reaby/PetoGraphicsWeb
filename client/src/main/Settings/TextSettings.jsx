@@ -1,14 +1,17 @@
-import { useState, useMemo, memo } from 'react';
+import { useState, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Collapse from 'common/components/Collapse';
 import TextProperties from './TextProperties';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
-const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }) => {
+const TextSettings = ({ id, collapsed, setCollapsed }) => {
     const [selectedTextIndex, setSelectedTextIndex] = useState(0);
-    const selectedText = useMemo(() => texts[selectedTextIndex], [texts, selectedTextIndex]);
+    const texts = useProject((state) => findGraphic(state.config, id).texts ?? []);
+    const updateGraphic = useProject((state) => state.updateGraphic);
     return (
         <Collapse
             title='Text Settings'
@@ -26,7 +29,7 @@ const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }
                     fullWidth
                     select
                 >
-                    {texts.map((text, index) => (
+                    {texts.map((_, index) => (
                         <MenuItem
                             key={index}
                             value={index}
@@ -36,22 +39,22 @@ const TextSettings = memo(({ id, texts, updateGraphic, collapsed, setCollapsed }
                     ))}
                 </TextField>
             </Grid>
-            {selectedText && (
-                <TextProperties
-                    {...selectedText}
-                    id={id}
-                    selectedTextIndex={selectedTextIndex}
-                    updateGraphic={updateGraphic}
-                />
+            {texts[selectedTextIndex] && (
+                <Suspense>
+                    <TextProperties
+                        id={id}
+                        selectedTextIndex={selectedTextIndex}
+                        updateGraphic={updateGraphic}
+                        {...texts[selectedTextIndex]}
+                    />
+                </Suspense>
             )}
         </Collapse>
     );
-});
+};
 
 TextSettings.propTypes = {
     id: PropTypes.string.isRequired,
-    texts: PropTypes.array.isRequired,
-    updateGraphic: PropTypes.func.isRequired,
     collapsed: PropTypes.bool.isRequired,
     setCollapsed: PropTypes.func.isRequired,
 };
