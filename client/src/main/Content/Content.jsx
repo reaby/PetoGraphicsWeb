@@ -6,11 +6,11 @@ import Video from './Video';
 import Countdown from './Countdown';
 import Playlist from './Playlist';
 import Slider from './Slider';
-import useProjects from 'common/hooks/useProjects';
+import useProject from 'common/hooks/useProject';
 import findGraphic from 'common/utils/findGraphic';
 
 const Content = ({ id }) => {
-    const type = useProjects((state) => findGraphic(state.config, id).type);
+    const type = useProject((state) => findGraphic(state.config, id).type);
     const [collapsed, setCollapsed] = useState(false);
     let content;
     switch (type) {

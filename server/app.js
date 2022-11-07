@@ -46,7 +46,7 @@ wss.broadcastConfig = (ignoreClient = null) => {
             client.send(
                 JSON.stringify({
                     type: 'config',
-                    payload: { project: app.locals.name, config: app.locals.config },
+                    payload: { name: app.locals.name, config: app.locals.config },
                 })
             );
         }

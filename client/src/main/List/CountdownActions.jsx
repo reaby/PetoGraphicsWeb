@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import useCountdowns from 'common/hooks/useCountdowns';
-import useProjects from 'common/hooks/useProjects';
+import useProject from 'common/hooks/useProject';
+import findGraphic from 'common/utils/findGraphic';
 
-const isCountdownActive = (graphic, countdowns) =>
-    countdowns.find((item) => item.id === graphic.id) ? true : false;
+const isCountdownActive = (id, countdowns) =>
+    countdowns.find((item) => item.id === id) ? true : false;
 
-const startCountdown = (graphic, setCountdowns, updateGraphic) => {
+const startCountdown = (id, graphicCountdown, setCountdowns, updateGraphic) => {
     let hours;
     let minutes;
     let seconds;
     const [hoursString = '00', minutesString = '00', secondsString = '00'] =
-        graphic.countdown.time.split(':');
-    if (graphic.countdown.type === 'remaining') {
+        graphicCountdown.time.split(':');
+    if (graphicCountdown.type === 'remaining') {
         hours = Number(hoursString);
         minutes = Number(minutesString);
         seconds = Number(secondsString);
@@ -28,7 +29,7 @@ const startCountdown = (graphic, setCountdowns, updateGraphic) => {
     }
     const interval = setInterval(() => {
         if (hours === 0 && minutes === 0 && seconds === 0) {
-            stopCountdown(graphic);
+            stopCountdown(id, setCountdowns);
             return;
         }
         seconds--;
@@ -41,9 +42,9 @@ const startCountdown = (graphic, setCountdowns, updateGraphic) => {
             }
         }
         updateGraphic(
-            graphic.id,
+            id,
             'texts[0].content',
-            graphic.countdown.format
+            graphicCountdown.format
                 .replace('hh', ('0' + hours).slice(-2))
                 .replace('h', hours)
                 .replace('mm', ('0' + minutes).slice(-2))
@@ -55,15 +56,15 @@ const startCountdown = (graphic, setCountdowns, updateGraphic) => {
     setCountdowns((prev) => [
         ...prev,
         {
-            id: graphic.id,
+            id: id,
             interval: interval,
         },
     ]);
 };
 
-const stopCountdown = (graphic, setCountdowns) => {
+const stopCountdown = (id, setCountdowns) => {
     setCountdowns((prev) => {
-        const index = prev.findIndex((item) => item.id === graphic.id);
+        const index = prev.findIndex((item) => item.id === id);
         if (index === -1) {
             return prev;
         }
@@ -75,7 +76,8 @@ const stopCountdown = (graphic, setCountdowns) => {
 };
 
 const CountdownActions = ({ id }) => {
-    const updateGraphic = useProjects((state) => state.updateGraphic);
+    const graphicCountdown = useProject((state) => findGraphic(state.config, id).countdown);
+    const updateGraphic = useProject((state) => state.updateGraphic);
     const { countdowns, setCountdowns } = useCountdowns();
     return (
         <>
@@ -85,7 +87,7 @@ const CountdownActions = ({ id }) => {
                 sx={{ width: 100, mr: 2 }}
                 onClick={() => {
                     stopCountdown(id, setCountdowns);
-                    startCountdown(id, setCountdowns, updateGraphic);
+                    startCountdown(id, graphicCountdown, setCountdowns, updateGraphic);
                 }}
             >
                 Reset
@@ -97,7 +99,7 @@ const CountdownActions = ({ id }) => {
                     if (isCountdownActive(id, countdowns)) {
                         stopCountdown(id, setCountdowns);
                     } else {
-                        startCountdown(id, setCountdowns, updateGraphic);
+                        startCountdown(id, graphicCountdown, setCountdowns, updateGraphic);
                     }
                     event.stopPropagation();
                 }}
