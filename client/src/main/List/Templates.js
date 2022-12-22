@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-
 const Base = () => ({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     left: 0,
     top: 0,
     width: 0,

@@ -1,10 +1,10 @@
 import Express from 'express';
 import { WebSocketServer } from 'ws';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import morgan from 'morgan';
 import compression from 'compression';
 import fs from 'fs';
+import { randomUUID } from 'crypto';
 import ApiRouter from './routes/router.js';
 
 const __dirname = path.resolve();
@@ -18,7 +18,7 @@ const app = Express();
 // WebSocket server
 const wss = new WebSocketServer({ noServer: true });
 wss.on('connection', (ws) => {
-    ws.id = uuidv4();
+    ws.id = randomUUID();
     ws.on('message', (msg) => {
         const { type, payload } = JSON.parse(msg);
         switch (type) {

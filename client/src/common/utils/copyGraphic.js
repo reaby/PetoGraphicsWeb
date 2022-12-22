@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import _cloneDeep from 'lodash/cloneDeep';
 
 const copyGraphic = (graphic) => {
@@ -8,7 +7,7 @@ const copyGraphic = (graphic) => {
 };
 
 const generateIds = (graphic) => {
-    graphic.id = uuidv4();
+    graphic.id = crypto.randomUUID();
     for (const child of graphic.children) {
         generateIds(child);
     }
