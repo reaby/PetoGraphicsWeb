@@ -24,6 +24,7 @@ const Slider = ({ graphic, project }) => {
         let sliderInterval;
         if (graphic.slider) {
             let sliderIndex = 1;
+            let sliderCounter = 0;
             setSliderImage1Visible(true);
             setSliderImage2Visible(false);
             setSliderImage1Source(
@@ -34,10 +35,11 @@ const Slider = ({ graphic, project }) => {
             );
             sliderInterval = setInterval(() => {
                 sliderIndex++;
+                sliderCounter++;
                 if (sliderIndex > graphic.slider.sources.length - 1) {
                     sliderIndex = 0;
                 }
-                if (sliderIndex % 2 === 0) {
+                if (sliderCounter % 2 == 0) {
                     setSliderImage1Visible(true);
                     setSliderImage2Visible(false);
                     setTimeout(() => {

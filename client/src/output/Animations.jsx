@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { keyframes } from '@emotion/react';
 
 export const FadeIn = (graphic) => keyframes`

@@ -1,14 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Global, css } from '@emotion/react';
-import findGraphic from 'common/utils/findGraphic';
-import updateChildren from 'common/utils/updateChildren';
-import { produce } from 'immer';
-import _set from 'lodash/set';
 import Graphic from './Graphic';
 import useFonts from 'common/hooks/useFonts';
 import useProject from 'common/hooks/useProject';
-
-let clockInterval;
+import PropTypes from 'prop-types';
 
 const getFontVariant = (text) => {
     if (text.fontStyle === 'italic' && text.fontWeight === 'bold') {
@@ -80,24 +75,10 @@ const getStyles = (mode) => {
     return css(style);
 };
 
-const Output = (prop) => {
-    const mode = prop.mode;
+const Output = ({ mode }) => {
     const { config, name, updateGraphic } = useProject();
-    const [clock, setClock] = useState('00:00');
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const { fonts } = useFonts();
-
-    useEffect(() => {
-        clockInterval = setInterval(() => {
-            setClock(() => {
-                const now = new Date();
-                return `${('0' + now.getHours()).slice(-2)}:${('0' + now.getMinutes()).slice(-2)}`;
-            });
-        }, 5000);
-        return () => {
-            clearInterval(clockInterval);
-        };
-    }, []);
 
     useEffect(() => {
         if (!fontsLoaded && config && fonts) {
@@ -117,12 +98,15 @@ const Output = (prop) => {
                     graphic={graphic}
                     graphicIndex={graphicIndex}
                     project={name}
-                    clock={clock}
                     updateGraphic={updateGraphic}
                 />
             ))}
         </>
     );
+};
+
+Output.propTypes = {
+    mode: PropTypes.string,
 };
 
 export default Output;

@@ -2,10 +2,12 @@
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
-import Video from './Video';
-import Playlist from './Playlist';
-import Slider from './Slider';
+import Video from './Modules/Video';
+import Playlist from './Modules/Playlist';
+import Slider from './Modules/Slider';
+import Text from './Modules/Text';
 import getBackendUrl from 'common/utils/getBackendUrl';
+import Clock from './Modules/Clock';
 
 import {
     FadeIn,
@@ -66,7 +68,7 @@ const computeAnimation = (graphic, isIn) => {
     `;
 };
 
-const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
+const Graphic = ({ graphic, graphicIndex, project, updateGraphic }) => {
     return (
         <Box
             className='graphic'
@@ -77,8 +79,9 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                 top: graphic.top,
                 width: graphic.width,
                 height: graphic.height,
-                backgroundImage:
-                    graphic.image && `url(${getBackendUrl()}/configs/${project}/${graphic.image})`,
+                backgroundImage: graphic.image
+                    ? `url(${getBackendUrl()}/configs/${project}/${graphic.image})`
+                    : `none`,
                 backgroundSize: graphic.imageStretch === 'fit' ? 'contain' : '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 opacity: 1,
@@ -86,50 +89,34 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
             }}
             css={computeAnimation(graphic, graphic.visible)}
         >
-            {graphic.video?.source && (
+            {graphic.type === 'VIDEO' && graphic.video?.source && (
                 <Video
                     graphic={graphic}
                     project={project}
                     updateGraphic={updateGraphic}
                 />
             )}
-            {graphic.playlist && (
+            {graphic.type === 'PLAYLIST' && (
                 <Playlist
                     graphic={graphic}
                     project={project}
                     updateGraphic={updateGraphic}
                 />
             )}
-            {graphic.slider && (
+            {graphic.type === 'SLIDER' && (
                 <Slider
                     graphic={graphic}
                     project={project}
                 />
             )}
-            {graphic.texts.map((text, index) => (
-                <div
-                    key={index}
-                    style={{
-                        position: 'absolute',
-                        left: text.left,
-                        top: text.top,
-                        width: text.width,
-                        whiteSpace: text.rich ? 'pre-line' : 'nowrap',
-                        fontFamily: text.fontFamily,
-                        fontSize: text.fontSize,
-                        fontWeight: text.fontWeight,
-                        fontStyle: text.fontStyle,
-                        color: text.fontColor,
-                        lineHeight: text.lineHeight + 'px',
-                        textAlign: text.textAlign,
-                        textShadow: text.outline
-                            ? `-1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px  1px 0 #000, 0 1px 0 #000, -1px  1px 0 #000, -1px 0 0 #000`
-                            : `none`,
-                    }}
-                >
-                    {graphic.type === 'CLOCK' ? clock : text.content}
-                </div>
-            ))}
+            {graphic.type === 'CLOCK' && <Clock text={graphic.texts[0]} />}
+            {(graphic.type.endsWith('TEXT') || graphic.type === 'COUNTDOWN') &&
+                graphic.texts.map((text, index) => (
+                    <Text
+                        key={index}
+                        text={text}
+                    />
+                ))}
             {graphic.children.map((child) => (
                 <Graphic
                     key={child.id}
@@ -147,7 +134,6 @@ Graphic.propTypes = {
     graphic: PropTypes.object.isRequired,
     graphicIndex: PropTypes.number.isRequired,
     project: PropTypes.string,
-    clock: PropTypes.string,
     updateGraphic: PropTypes.func.isRequired,
 };
 
