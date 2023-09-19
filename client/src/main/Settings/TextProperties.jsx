@@ -149,6 +149,78 @@ const TextProperties = memo(
                 <Grid
                     item
                     xs={12}
+                >
+                    <FormControl
+                        fullWidth
+                        sx={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                        <FormLabel sx={{ mr: 3 }}>Text Properties</FormLabel>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={outline}
+                                    onChange={(event) =>
+                                        updateGraphic(
+                                            id,
+                                            `texts[${selectedTextIndex}].outline`,
+                                            event.target.checked
+                                        )
+                                    }
+                                />
+                            }
+                            label='Outline'
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={rich}
+                                    onChange={(event) =>
+                                        updateGraphic(
+                                            id,
+                                            `texts[${selectedTextIndex}].rich`,
+                                            event.target.checked
+                                        )
+                                    }
+                                />
+                            }
+                            label='Rich'
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={fontWeight === 'bold'}
+                                    onChange={(event) =>
+                                        updateGraphic(
+                                            id,
+                                            `texts[${selectedTextIndex}].fontWeight`,
+                                            event.target.checked ? 'bold' : 'normal'
+                                        )
+                                    }
+                                />
+                            }
+                            label='Bold'
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={fontStyle === 'italic'}
+                                    onChange={(event) =>
+                                        updateGraphic(
+                                            id,
+                                            `texts[${selectedTextIndex}].fontStyle`,
+                                            event.target.checked ? 'italic' : 'normal'
+                                        )
+                                    }
+                                />
+                            }
+                            label='Italic'
+                        />
+                    </FormControl>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={12}
                     sm={6}
                 >
                     <TextField
@@ -211,73 +283,6 @@ const TextProperties = memo(
                             )
                         }
                         fullWidth
-                    />
-                </Grid>
-                <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}
-                >
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={outline}
-                                onChange={(event) =>
-                                    updateGraphic(
-                                        id,
-                                        `texts[${selectedTextIndex}].outline`,
-                                        event.target.checked
-                                    )
-                                }
-                            />
-                        }
-                        label='Outline'
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={rich}
-                                onChange={(event) =>
-                                    updateGraphic(
-                                        id,
-                                        `texts[${selectedTextIndex}].rich`,
-                                        event.target.checked
-                                    )
-                                }
-                            />
-                        }
-                        label='Rich'
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={fontWeight === 'bold'}
-                                onChange={(event) =>
-                                    updateGraphic(
-                                        id,
-                                        `texts[${selectedTextIndex}].fontWeight`,
-                                        event.target.checked ? 'bold' : 'normal'
-                                    )
-                                }
-                            />
-                        }
-                        label='Bold'
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={fontStyle === 'italic'}
-                                onChange={(event) =>
-                                    updateGraphic(
-                                        id,
-                                        `texts[${selectedTextIndex}].fontStyle`,
-                                        event.target.checked ? 'italic' : 'normal'
-                                    )
-                                }
-                            />
-                        }
-                        label='Italic'
                     />
                 </Grid>
             </>

@@ -14,7 +14,7 @@ import findGraphic from 'common/utils/findGraphic';
 const useVideoState = (id) => useProject((state) => findGraphic(state.config, id).video);
 
 const Video = ({ id }) => {
-    const video = useVideoState();
+    const video = useVideoState(id);
     const updateGraphic = useProject((state) => state.updateGraphic);
     const name = useProject((state) => state.name);
     const { files } = useFiles();
