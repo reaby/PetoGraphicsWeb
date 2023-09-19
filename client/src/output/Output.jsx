@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Global, css } from '@emotion/react';
 import findGraphic from 'common/utils/findGraphic';
 import updateChildren from 'common/utils/updateChildren';
-import produce from 'immer';
+import { produce } from 'immer';
 import _set from 'lodash/set';
 import Graphic from './Graphic';
 import useFonts from 'common/hooks/useFonts';

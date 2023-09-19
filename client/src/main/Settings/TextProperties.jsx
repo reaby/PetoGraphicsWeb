@@ -27,6 +27,7 @@ const TextProperties = memo(
         fontWeight,
         fontStyle,
         rich,
+        outline,
     }) => {
         const { fonts } = useFonts();
         return (
@@ -221,6 +222,21 @@ const TextProperties = memo(
                     <FormControlLabel
                         control={
                             <Checkbox
+                                checked={outline}
+                                onChange={(event) =>
+                                    updateGraphic(
+                                        id,
+                                        `texts[${selectedTextIndex}].outline`,
+                                        event.target.checked
+                                    )
+                                }
+                            />
+                        }
+                        label='Outline'
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
                                 checked={rich}
                                 onChange={(event) =>
                                     updateGraphic(
@@ -284,6 +300,7 @@ TextProperties.propTypes = {
     fontWeight: PropTypes.string.isRequired,
     fontStyle: PropTypes.string.isRequired,
     rich: PropTypes.bool.isRequired,
+    outline: PropTypes.bool.isRequired,
 };
 
 export default TextProperties;

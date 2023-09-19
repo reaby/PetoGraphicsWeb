@@ -24,7 +24,7 @@ import getImageSizes from 'common/utils/getImageSizes';
 import useFiles from 'common/hooks/useFiles';
 import useProject from 'common/hooks/useProject';
 import findGraphic from 'common/utils/findGraphic';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 const useGeneralSettingsState = (id) =>
     useProject((state) => {

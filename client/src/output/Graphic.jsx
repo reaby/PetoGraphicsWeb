@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
@@ -117,6 +118,9 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                         color: text.fontColor,
                         lineHeight: text.lineHeight + 'px',
                         textAlign: text.textAlign,
+                        textShadow: text.outline
+                            ? `-1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px  1px 0 #000, 0 1px 0 #000, -1px  1px 0 #000, -1px 0 0 #000`
+                            : `none`,
                     }}
                 >
                     {graphic.type === 'CLOCK' ? clock : text.content}

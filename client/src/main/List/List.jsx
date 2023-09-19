@@ -21,8 +21,8 @@ import {
 import findParentGraphic from 'common/utils/findParentGraphic';
 import findGraphic from 'common/utils/findGraphic';
 import Controller from './Controller';
-import produce from 'immer';
-import shallow from 'zustand/shallow';
+import { produce } from 'immer';
+import { shallow } from 'zustand/shallow';
 import useProject from 'common/hooks/useProject';
 
 window.addEventListener('keydown', (event) => {

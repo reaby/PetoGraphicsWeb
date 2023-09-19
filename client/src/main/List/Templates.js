@@ -36,6 +36,7 @@ const BaseText = () => ({
     width: 600,
     lineHeight: 60,
     rich: false,
+    outline: false,
     fontFamily: 'Roboto',
     fontSize: 60,
     fontWeight: 'bold',

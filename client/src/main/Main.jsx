@@ -11,7 +11,7 @@ import GraphicContent from './Content';
 import findParentGraphic from 'common/utils/findParentGraphic';
 import copyGraphic from 'common/utils/copyGraphic';
 import updateChildren from 'common/utils/updateChildren';
-import produce from 'immer';
+import { produce } from 'immer';
 import useProject from 'common/hooks/useProject';
 import useLive from 'common/hooks/useLive';
 
