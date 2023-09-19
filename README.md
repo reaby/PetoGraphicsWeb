@@ -8,6 +8,10 @@ Graphic software for streaming in browser.
 - View graphics in other tab and stream it using browser source in eg. OBS or vMix
 - Easily runnable using executable in Windows
 
+## Usage tips
+
+- Hold `Ctrl` + drag elements at list to form group
+
 ## Installation
 
 Download latest release from [releases](https://github.com/SampsaKaskela/PetoGraphicsWeb/releases) page.
