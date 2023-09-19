@@ -20,10 +20,15 @@ import getVideoDuration from 'common/utils/getVideoDuration';
 import useFiles from 'common/hooks/useFiles';
 import useProject from 'common/hooks/useProject';
 import findGraphic from 'common/utils/findGraphic';
+import getBackendUrl from 'common/utils/getBackendUrl';
 
 const getPlaylistDuration = (sources, project) => {
     return new Promise((resolve, reject) => {
-        Promise.all(sources.map((source) => getVideoDuration(`/configs/${project}/${source}`)))
+        Promise.all(
+            sources.map((source) =>
+                getVideoDuration(`${getBackendUrl()}/configs/${project}/${source}`)
+            )
+        )
             .then((durations) => resolve(durations))
             .catch(() => reject());
     });

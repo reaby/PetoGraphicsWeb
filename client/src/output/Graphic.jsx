@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Video from './Video';
 import Playlist from './Playlist';
 import Slider from './Slider';
+import getBackendUrl from 'common/utils/getBackendUrl';
+
 import {
     FadeIn,
     SlideTopIn,
@@ -75,7 +77,8 @@ const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
                 top: graphic.top,
                 width: graphic.width,
                 height: graphic.height,
-                backgroundImage: graphic.image && `url(/configs/${project}/${graphic.image})`,
+                backgroundImage:
+                    graphic.image && `url(${getBackendUrl()}/configs/${project}/${graphic.image})`,
                 backgroundSize: graphic.imageStretch === 'fit' ? 'contain' : '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 opacity: 1,

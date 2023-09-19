@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import getBackendUrl from 'common/utils/getBackendUrl';
 
 const SliderImage = styled.img`
     position: absolute;
@@ -25,8 +26,12 @@ const Slider = ({ graphic, project }) => {
             let sliderIndex = 1;
             setSliderImage1Visible(true);
             setSliderImage2Visible(false);
-            setSliderImage1Source(`/configs/${project}/${graphic.slider.sources[0]}`);
-            setSliderImage2Source(`/configs/${project}/${graphic.slider.sources[1]}`);
+            setSliderImage1Source(
+                `${getBackendUrl()}/configs/${project}/${graphic.slider.sources[0]}`
+            );
+            setSliderImage2Source(
+                `${getBackendUrl()}/configs/${project}/${graphic.slider.sources[1]}`
+            );
             sliderInterval = setInterval(() => {
                 sliderIndex++;
                 if (sliderIndex > graphic.slider.sources.length - 1) {
@@ -37,7 +42,9 @@ const Slider = ({ graphic, project }) => {
                     setSliderImage2Visible(false);
                     setTimeout(() => {
                         setSliderImage2Source(
-                            `/configs/${project}/${graphic.slider.sources[sliderIndex]}`
+                            `${getBackendUrl()}/configs/${project}/${
+                                graphic.slider.sources[sliderIndex]
+                            }`
                         );
                     }, 1000);
                 } else {
@@ -45,7 +52,9 @@ const Slider = ({ graphic, project }) => {
                     setSliderImage2Visible(true);
                     setTimeout(() => {
                         setSliderImage1Source(
-                            `/configs/${project}/${graphic.slider.sources[sliderIndex]}`
+                            `${getBackendUrl()}/configs/${project}/${
+                                graphic.slider.sources[sliderIndex]
+                            }`
                         );
                     }, 1000);
                 }

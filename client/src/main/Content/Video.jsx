@@ -10,7 +10,7 @@ import getVideoDuration from 'common/utils/getVideoDuration';
 import useFiles from 'common/hooks/useFiles';
 import useProject from 'common/hooks/useProject';
 import findGraphic from 'common/utils/findGraphic';
-
+import getBackendUrl from 'common/utils/getBackendUrl';
 const useVideoState = (id) => useProject((state) => findGraphic(state.config, id).video);
 
 const Video = ({ id }) => {
@@ -32,7 +32,7 @@ const Video = ({ id }) => {
                     onChange={async (event) => {
                         updateGraphic(id, 'video.source', event.target.value);
                         const duration = await getVideoDuration(
-                            `/configs/${name}/${event.target.value}`
+                            `${getBackendUrl}/configs/${name}/${event.target.value}`
                         );
                         updateGraphic(id, 'video.duration', duration);
                     }}
@@ -54,7 +54,7 @@ const Video = ({ id }) => {
                     onUpload={async (value) => {
                         updateGraphic(id, 'video.source', value[0]?.name);
                         const duration = await getVideoDuration(
-                            `/configs/${name}/${value[0]?.name}`
+                            `${getBackendUrl()}/configs/${name}/${value[0]?.name}`
                         );
                         updateGraphic(id, 'video.duration', duration);
                     }}

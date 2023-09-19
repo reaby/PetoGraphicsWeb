@@ -21,6 +21,7 @@ import UploadButton from 'common/components/UploadButton';
 import Collapse from 'common/components/Collapse';
 import isImage from 'common/utils/isImage';
 import getImageSizes from 'common/utils/getImageSizes';
+import getBackendUrl from 'common/utils/getBackendUrl';
 import useFiles from 'common/hooks/useFiles';
 import useProject from 'common/hooks/useProject';
 import findGraphic from 'common/utils/findGraphic';
@@ -208,7 +209,7 @@ const GeneralSettings = ({ id, collapsed, setCollapsed }) => {
                         onClick={async () => {
                             setMatchDialogOpen(false);
                             const { width, height } = await getImageSizes(
-                                `/configs/${projectName}/${image}`
+                                `${getBackendUrl()}/configs/${projectName}/${image}`
                             );
                             updateGraphic(id, 'width', Number(width));
                             updateGraphic(id, 'height', Number(height));

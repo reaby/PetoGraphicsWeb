@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import getBackendUrl from 'common/utils/getBackendUrl';
 
 const Playlist = ({ graphic, project, updateGraphic }) => {
     const playlistRef = useRef();
@@ -68,7 +69,7 @@ const Playlist = ({ graphic, project, updateGraphic }) => {
     return (
         <video
             ref={playlistRef}
-            src={`/configs/${project}/${graphic.playlist.sources[currentVideo]}`}
+            src={`${getBackendUrl}/configs/${project}/${graphic.playlist.sources[currentVideo]}`}
             style={{ width: '100%', height: '100%', background: 'black' }}
         />
     );

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import getBackendUrl from 'common/utils/getBackendUrl';
 
 const Video = ({ graphic, project, updateGraphic }) => {
     const videoRef = useRef();
@@ -34,7 +35,7 @@ const Video = ({ graphic, project, updateGraphic }) => {
     return (
         <video
             ref={videoRef}
-            src={`/configs/${project}/${graphic.video.source}`}
+            src={`${getBackendUrl()}/configs/${project}/${graphic.video.source}`}
             loop={graphic.video.loop}
             style={{ width: '100%', height: '100%' }}
         />
