@@ -67,6 +67,7 @@ const computeAnimation = (graphic, isIn) => {
 const Graphic = ({ graphic, graphicIndex, project, clock, updateGraphic }) => {
     return (
         <Box
+            className='graphic'
             sx={{
                 zIndex: graphicIndex + 1,
                 position: 'absolute',

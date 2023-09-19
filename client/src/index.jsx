@@ -42,6 +42,10 @@ root.render(
                                 path='/output'
                                 element={<Output />}
                             />
+                            <Route
+                                path='/preview'
+                                element={<Output mode='preview' />}
+                            />
                         </Routes>
                     </Suspense>
                 </ThemeProvider>

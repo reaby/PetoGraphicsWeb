@@ -8,7 +8,6 @@ import Graphic from './Graphic';
 import useFonts from 'common/hooks/useFonts';
 import useProject from 'common/hooks/useProject';
 
-let socket;
 let clockInterval;
 
 const getFontVariant = (text) => {
@@ -60,8 +59,29 @@ const loadFonts = (config, fonts) => {
         fontFace.load().catch(console.error);
     }
 };
+const getStyles = (mode) => {
+    let style = `
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-const Output = () => {
+    `;
+
+    if (mode) {
+        style += `
+        #root .graphic {
+           outline: 1px dotted red;
+        }        
+        `;
+    }
+
+    return css(style);
+};
+
+const Output = (prop) => {
+    const mode = prop.mode;
     const { config, name, updateGraphic } = useProject();
     const [clock, setClock] = useState('00:00');
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -90,15 +110,7 @@ const Output = () => {
 
     return (
         <>
-            <Global
-                styles={css`
-                    body {
-                        width: 100vw;
-                        height: 100vh;
-                        overflow: hidden;
-                    }
-                `}
-            />
+            <Global styles={getStyles(mode)} />
             {config.map((graphic, graphicIndex) => (
                 <Graphic
                     key={graphic.id}
